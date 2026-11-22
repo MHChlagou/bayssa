@@ -160,12 +160,10 @@ test('the page is right-to-left Arabic and an unknown route recovers', async ({ 
 test.describe('the page about Nafissa', () => {
   test('is reached from the navigation and shows the owner\'s text', async ({ page }, testInfo) => {
     await page.goto('./')
-    // The desktop layout lists it in the sidebar. Smaller screens offer it in the page header.
+    // It is one of the main destinations: in the sidebar on desktop, in the bottom bar on small screens.
     const isDesktop = testInfo.project.name.startsWith('desktop')
-    const link = isDesktop
-      ? page.getByRole('complementary').getByRole('link', { name: ABOUT_TEXT.title })
-      : page.getByRole('main').getByRole('link', { name: ABOUT_TEXT.title })
-    await link.click()
+    const navigation = isDesktop ? page.getByRole('complementary').getByRole('navigation') : page.locator('nav.fixed')
+    await navigation.getByRole('link', { name: ABOUT_TEXT.title }).click()
     await expect(page).toHaveURL(/#\/about$/)
     await expect(page.getByRole('heading', { level: 1, name: ABOUT_TEXT.title })).toBeVisible()
     await expect(page.getByRole('heading', { level: 2, name: ABOUT_TEXT.heading })).toBeVisible()

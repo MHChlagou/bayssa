@@ -1,4 +1,4 @@
-import { HandHeart, Search, Settings } from 'lucide-react'
+import { Search, Settings } from 'lucide-react'
 import type { CSSProperties, ReactElement } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
 import { formatHijriDate } from '../../domain/hijri/hijri.ts'
@@ -6,7 +6,6 @@ import { DIRECTION, t } from '../../i18n/t.ts'
 import { prefsStore } from '../../storage/stores.ts'
 import { usePersistentState } from '../../storage/usePersistentState.ts'
 import { cn } from '../../ui/cn.ts'
-import { ABOUT_TEXT } from '../about-text.ts'
 import { useIsStaticShell } from '../boot.ts'
 import { NAV_ITEMS } from '../registry.ts'
 
@@ -47,7 +46,8 @@ export function BottomNav(): ReactElement {
               {({ isActive }) => (
                 <>
                   <Icon className="size-[22px]" strokeWidth={isActive ? 2 : 1.6} aria-hidden="true" />
-                  <span>{label}</span>
+                  {/* Six labels share the bar: on the narrowest phones they are set a little smaller to stay on one line. */}
+                  <span className="whitespace-nowrap max-[359px]:text-[0.58rem]">{label}</span>
                 </>
               )}
             </NavLink>
@@ -115,12 +115,6 @@ export function Sidebar(): ReactElement {
         </ul>
         <div className="my-5 h-px bg-line" />
         <ul className="space-y-1">
-          <li>
-            <NavLink to="/about" className={sideLinkClass}>
-              <HandHeart className="size-5" strokeWidth={1.6} aria-hidden="true" />
-              {ABOUT_TEXT.title}
-            </NavLink>
-          </li>
           <li>
             <NavLink to="/search" className={sideLinkClass}>
               <Search className="size-5" strokeWidth={1.6} aria-hidden="true" />

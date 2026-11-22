@@ -134,9 +134,12 @@ export function HomePage(): ReactElement {
   return (
     <div className="space-y-6">
       <header className="flex items-center justify-between pt-1 lg:hidden">
-        <Link to="/" className="rounded-xl">
-          <span className="block text-lg font-semibold leading-tight text-ink">{t.appName}</span>
-          <span className="block text-xs text-muted">{t.tagline}</span>
+        <Link to="/" className="flex items-center gap-3 rounded-xl">
+          <img src={`${import.meta.env.BASE_URL}pwa-192x192.png`} alt="" width={44} height={44} className="size-11 rounded-full" />
+          <span>
+            <span className="block text-lg font-semibold leading-tight text-ink">{t.appName}</span>
+            <span className="block text-xs text-muted">{t.tagline}</span>
+          </span>
         </Link>
         <div className="-me-2 flex"><HeaderLinks /></div>
       </header>
