@@ -2,6 +2,8 @@
 
 Bayssa can save what a person has stored on a device to a file, and read such a file back. Everything happens on the device: nothing is uploaded, and the feature works offline.
 
+This is a manual backup and restore. It is not synchronization: nothing moves between devices unless a person exports a file on one and imports it on the other, and two devices do not stay in step afterwards.
+
 ## What the file is for
 
 - Keeping a copy of favorites and tasbih counters.
