@@ -29,11 +29,19 @@ npm run lint
 npm run typecheck
 npm test
 npm run build
-npx playwright install chromium firefox webkit
+npx playwright install chromium webkit
 npm run test:e2e
 ```
 
 If you changed anything under `content-sources/`, also run `npm run content:fetch`, `npm run content:import` and `npm run content:audit`, and include the regenerated reports.
+
+## Pull requests
+
+Changes reach `main` through a pull request. Fork the repository, work on a branch, and open the pull request against `main`.
+
+- The description starts from the template in `.github/PULL_REQUEST_TEMPLATE.md`. Keep its sections and tick its checklist: a check fails otherwise.
+- The tests run on every pull request. A pull request is reviewed once they pass.
+- One subject per pull request.
 
 ## Code
 

@@ -1,0 +1,31 @@
+name: Pull request description
+
+# A pull request must keep the sections of the template and confirm the content rules.
+# The description is read from the event and never run as a command.
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions: {}
+
+jobs:
+  template:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the description follows the template
+        env:
+          BODY: ${{ github.event.pull_request.body }}
+        run: |
+          missing=0
+          for heading in "## What this changes" "## Why" "## How it was checked" "## Checklist"; do
+            if ! printf '%s' "$BODY" | grep -qF -- "$heading"; then
+              echo "::error::The description is missing the section \"$heading\". Please use the pull request template."
+              missing=1
+            fi
+          done
+          if printf '%s' "$BODY" | grep -qE -- '^- \[ \] '; then
+            echo "::error::Every item of the checklist must be ticked, or the pull request must say why one does not apply."
+            missing=1
+          fi
+          exit "$missing"
