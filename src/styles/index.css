@@ -137,6 +137,23 @@ button {
   line-height: 2.3;
 }
 
+/* Quran text sits in a double frame, as on a mushaf page. */
+.mushaf {
+  border: 1px solid var(--md-accent-soft);
+  border-radius: 16px;
+  outline: 1px solid var(--md-accent-soft);
+  outline-offset: 3px;
+  margin: 3px;
+  /* Room above the first line for the pause marks that sit over the words. */
+  padding: 0.9rem 1rem 0.5rem;
+}
+
+/* Lines run edge to edge and the last one is centred. */
+.mushaf-lines {
+  text-align: justify;
+  text-align-last: center;
+}
+
 .pattern-stars {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23D9BD7F' stroke-width='1'%3E%3Crect x='22' y='22' width='28' height='28'/%3E%3Crect x='22' y='22' width='28' height='28' transform='rotate(45 36 36)'/%3E%3Cpath d='M36 0v16M36 56v16M0 36h16M56 36h16'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 72px 72px;

@@ -258,7 +258,8 @@ test.describe('right-to-left layout and Arabic fonts', () => {
     const ayah = page.locator('article').first().locator('p[lang="ar"]').first()
     await expect(ayah).toBeVisible()
     // Ayat al-Kursi must equal the reference file character for character, followed only by its ayah mark.
-    const shown = await ayah.evaluate((element) => element.firstChild?.textContent ?? '')
+    // Each ayah is a span holding its text, then its mark.
+    const shown = await ayah.evaluate((element) => element.querySelector('span')?.firstChild?.textContent ?? '')
     expect(shown).toBe(tanzilAyah(2, 255))
   })
 })
