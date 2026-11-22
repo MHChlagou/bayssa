@@ -18,6 +18,7 @@ import {
   hisnQuranRefs, hisnRawAsText, hisnReviewedMatches, tasbihPresetSpecs, type QuranSpec,
 } from '../content-sources/curation.ts'
 import { excerptAyah, loadMuyassar, loadSimpleClean, loadUthmani, stripLeadingBasmala, type AyahKey } from './lib/quran.ts'
+import { BRACKETED_ADDITION_NOTE, COMBINED_NARRATIONS_NOTE } from './lib/editor-notes.ts'
 import { must } from './lib/must.ts'
 import { lcsLength, skeleton, skeletonWords } from './lib/skeleton.ts'
 
@@ -398,9 +399,9 @@ function importHisnItem(chapter: number, raw: { ID: number; ARABIC_TEXT: string;
       flags.push(fullWords.length < MIN_WORDS_FOR_UNAIDED_MATCH && keywords.length === 0
         ? 'too-short-to-match' : 'wording-not-found-in-six-books')
     } else if (matchedAs === 'without bracketed additions') {
-      visibleSegments.push({ type: 'note', text: 'ما بين المعقوفين زيادة من رواية أخرى أوردها مؤلف حصن المسلم.' })
+      visibleSegments.push({ type: 'note', text: BRACKETED_ADDITION_NOTE })
     } else if (matchedAs === 'as a combination of narrations') {
-      visibleSegments.push({ type: 'note', text: 'هذا النص مجموع من أكثر من رواية كما أورده مؤلف حصن المسلم.' })
+      visibleSegments.push({ type: 'note', text: COMBINED_NARRATIONS_NOTE })
     }
     const METHOD_BY_LABEL: Record<string, MatchMethod> = {
       'without bracketed additions': 'bracketed',

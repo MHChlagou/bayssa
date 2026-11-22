@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { skeleton } from './skeleton.ts'
 
@@ -6,20 +6,32 @@ const SOURCES = join(import.meta.dirname, '..', '..', 'content-sources', 'quran'
 
 export type AyahKey = `${number}:${number}`
 
-function loadTanzil(file: string): Map<AyahKey, string> {
+const AYAHS_IN_THE_QURAN = 6236
+
+/**
+ * Reads a Tanzil text file. The private repository keeps the complete file as
+ * the reference. A public checkout carries only an extract with the ayahs the
+ * dataset uses, in the same line format and with Tanzil's notice.
+ */
+function loadTanzil(name: string): Map<AyahKey, string> {
+  const complete = join(SOURCES, `${name}.txt`)
+  const extract = join(SOURCES, `${name}-extract.txt`)
+  const isComplete = existsSync(complete)
+  if (!isComplete && !existsSync(extract)) throw new Error(`neither ${name}.txt nor ${name}-extract.txt found in ${SOURCES}`)
   const ayahs = new Map<AyahKey, string>()
-  for (const line of readFileSync(join(SOURCES, file), 'utf8').split('\n')) {
+  for (const line of readFileSync(isComplete ? complete : extract, 'utf8').split('\n')) {
     if (line.startsWith('#') || line.trim() === '') continue
     const [surah, ayah, ...rest] = line.split('|')
     ayahs.set(`${Number(surah)}:${Number(ayah)}`, rest.join('|').replace(/\r$/, ''))
   }
-  if (ayahs.size !== 6236) throw new Error(`${file}: expected 6236 ayahs, found ${ayahs.size}`)
+  if (isComplete && ayahs.size !== AYAHS_IN_THE_QURAN) throw new Error(`${name}.txt: expected ${AYAHS_IN_THE_QURAN} ayahs, found ${ayahs.size}`)
+  if (ayahs.size === 0) throw new Error(`${name}: no ayahs found`)
   return ayahs
 }
 
-export const loadUthmani = () => loadTanzil('tanzil-uthmani.txt')
-export const loadSimpleClean = () => loadTanzil('tanzil-simple-clean.txt')
-export const loadMuyassar = () => loadTanzil('tanzil-ar-muyassar.txt')
+export const loadUthmani = (): Map<AyahKey, string> => loadTanzil('tanzil-uthmani')
+export const loadSimpleClean = (): Map<AyahKey, string> => loadTanzil('tanzil-simple-clean')
+export const loadMuyassar = (): Map<AyahKey, string> => loadTanzil('tanzil-ar-muyassar')
 
 /** Tanzil prefixes the basmala to ayah 1 of every surah except 1 and 9. */
 export function stripLeadingBasmala(text: string, basmala: string, surah: number, ayah: number): string {

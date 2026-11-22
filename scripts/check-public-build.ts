@@ -7,16 +7,19 @@
 // as in a public checkout, there is nothing restricted to look for and the
 // check only confirms the bundle's own declared scope.
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
-import { extname, join } from 'node:path'
+import { extname, join, resolve } from 'node:path'
 import { SOURCES } from '../content-sources/sources.ts'
 import type { Collection, Entry } from '../src/content/schema.ts'
+import { EDITOR_NOTES } from './lib/editor-notes.ts'
 
 const ROOT = join(import.meta.dirname, '..')
 const target = process.argv[2]
 if (target === undefined) throw new Error('usage: check-public-build.ts <directory>')
-const directory = join(process.cwd(), target)
+const directory = resolve(process.cwd(), target)
 if (!existsSync(directory)) throw new Error(`${directory} does not exist`)
 
+// Assembled from parts so that this file does not contain the marker it looks for.
+const FULL_SCOPE_MARKER = ['"scope"', '"full"'].join(':')
 const TEXT_EXTENSIONS = new Set(['.js', '.html', '.css', '.json', '.txt', '.webmanifest', '.md', '.ts', '.tsx', '.svg', '.yml'])
 const MIN_NEEDLE_LENGTH = 12
 
@@ -37,7 +40,8 @@ if (existsSync(datasetPath)) {
   for (const entry of entries) {
     if (!isCleared(entry.provenance.text)) {
       for (const segment of entry.segments) {
-        if (segment.type !== 'quran') restricted.push({ label: `${entry.id} ${segment.type}`, text: segment.text })
+        if (segment.type === 'quran' || EDITOR_NOTES.includes(segment.text)) continue
+        restricted.push({ label: `${entry.id} ${segment.type}`, text: segment.text })
       }
     }
     if (entry.kind === 'quran' && entry.meaning && !isCleared(entry.provenance.meaning)) {
@@ -51,6 +55,18 @@ if (existsSync(datasetPath)) {
     }
   }
 }
+// The footnoted transcription is the whole book: its items and the author's footnotes are restricted too.
+const footnotedPath = join(ROOT, 'content-sources', 'hisn-footnotes', 'hisn-with-references.json')
+if (existsSync(footnotedPath)) {
+  const book = JSON.parse(readFileSync(footnotedPath, 'utf8')) as Record<string, { Adhkar: { Text: string; Reference: string }[] }>
+  for (const [chapter, { Adhkar }] of Object.entries(book)) {
+    Adhkar.forEach((item, index) => {
+      // Items that are Quran passages are written in braces in that file and are not the author's text.
+      if (!item.Text.trim().startsWith('{')) restricted.push({ label: `book item ${chapter} ${index + 1}`, text: item.Text })
+      restricted.push({ label: `book footnote ${chapter} ${index + 1}`, text: item.Reference })
+    })
+  }
+}
 // Very short phrases (a two-word dhikr) occur in the Quran and in ordinary Arabic, so they prove nothing.
 const needles = restricted.filter((needle) => needle.text.length >= MIN_NEEDLE_LENGTH)
 
@@ -61,7 +77,7 @@ for (const file of files) {
   for (const needle of needles) {
     if (content.includes(needle.text)) leaks.push(`${file.slice(directory.length + 1)}: ${needle.label}`)
   }
-  if (/"scope":"full"/.test(content)) leaks.push(`${file.slice(directory.length + 1)}: contains a full-scope content bundle`)
+  if (content.includes(FULL_SCOPE_MARKER)) leaks.push(`${file.slice(directory.length + 1)}: contains a full-scope content bundle`)
 }
 
 console.log(`public build check: ${files.length} files scanned for ${needles.length} restricted texts (${restricted.length - needles.length} too short to test)`)

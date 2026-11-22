@@ -14,7 +14,8 @@ const includeUnverified = process.argv.includes('--include-unverified')
 const checkOnly = process.argv.includes('--check')
 // `--rights=cleared`, or CONTENT_RIGHTS=cleared, writes the public bundle: only
 // material whose redistribution is documented in content-sources/sources.ts.
-const scope: BundleScope = process.argv.includes('--rights=cleared') || process.env.CONTENT_RIGHTS === 'cleared' ? 'cleared' : 'full'
+const isClearedRequested = process.argv.includes('--rights=cleared') || process.env.CONTENT_RIGHTS === 'cleared'
+let scope: BundleScope = isClearedRequested ? 'cleared' : 'full'
 if (scope === 'cleared' && includeUnverified) throw new Error('--include-unverified cannot be combined with the cleared scope')
 
 const verification = z.strictObject({
@@ -207,6 +208,10 @@ for (const entry of bundle.entries) {
   }
 }
 bundle.sources = Object.values(SOURCES).filter((source) => usedSources.has(source.id))
+// A dataset that already holds nothing but cleared material is a cleared bundle,
+// whether or not the filter was asked for. This is the case in a public checkout.
+if (bundle.sources.every((source) => source.redistribution === 'cleared')) scope = 'cleared'
+bundle.scope = scope
 if (scope === 'cleared') {
   const leaked = bundle.sources.filter((source) => source.redistribution !== 'cleared')
   if (leaked.length > 0) throw new Error(`cleared bundle still draws on: ${leaked.map((source) => source.id).join(', ')}`)

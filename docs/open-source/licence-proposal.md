@@ -11,12 +11,14 @@ Prepared on 2026-11-22 for review. The two files are in `docs/open-source/propos
 
 ## Copyright attribution
 
-"Copyright 2026 Bayssa contributors". You approved "Copyright 2026 Muslim Daily contributors" before the app was renamed. I carried the rename into the line. Confirm this is what you want.
+Not finalised. By your decision on 2026-11-22 the copyright holder is not to be recorded as "Bayssa contributors" until ownership is clarified. The proposed `NOTICE` carries the placeholder "[copyright holder to be confirmed]".
 
-Two things to know about that wording:
+What has to be clarified:
 
-- "Contributors" names no legal person. That is common in open-source projects and is fine for a licence grant. If you ever need to enforce the licence or re-license, the rights sit with whoever actually wrote each part, which today is you. Keeping the git history is what proves authorship.
-- All code so far was produced in this working session at your direction. The attribution names the project, not a tool, in line with your rule against AI attribution. Whether AI-assisted code is protected by copyright varies by country and is unsettled. It does not prevent you from publishing under Apache-2.0, but it could limit how far the licence can be enforced. This is a legal question I cannot settle.
+- Who owns the code. All of it was written in this working session at your direction. If you work alone, the holder is you, by name. If an organisation or other people are involved, it is whoever the agreement between you says.
+- Whether AI-assisted code is protected by copyright, which varies by country and is unsettled. It does not prevent publishing under Apache-2.0, but it could limit how far the licence can be enforced. This is a question for a lawyer.
+
+The Apache-2.0 licence cannot be activated without a named holder, so this blocks an open-source release of the code.
 
 ## Third-party notices checked
 

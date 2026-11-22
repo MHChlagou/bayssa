@@ -68,6 +68,41 @@ test('the sources screen names only the sources this build uses', async ({ page 
   await expect(page.getByRole('note')).toContainText('لم يراجع هذا المحتوى عالمٌ مختص حتى الآن')
 })
 
+test('is installable: manifest, icons and, in Chrome, no installability errors', async ({ page, request, browserName }) => {
+  await page.goto('./')
+  const href = await page.locator('link[rel="manifest"]').getAttribute('href')
+  const manifest = await (await request.get(href ?? '')).json()
+  expect(manifest).toMatchObject({ name: 'Bayssa · أذكار وأدعية', short_name: 'Bayssa', lang: 'ar', dir: 'rtl', display: 'standalone', start_url: '/bayssa/', scope: '/bayssa/' })
+  for (const icon of manifest.icons as { src: string }[]) expect((await request.get(`/bayssa/${icon.src}`)).ok(), icon.src).toBe(true)
+  expect(await page.locator('link[rel="apple-touch-startup-image"]').count()).toBeGreaterThanOrEqual(15)
+  const licences = await (await request.get('/bayssa/licenses.txt')).text()
+  expect(licences).toContain('SIL OPEN FONT LICENSE')
+
+  test.skip(browserName !== 'chromium', 'The installability report is a Chrome DevTools feature')
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready
+  })
+  await page.reload()
+  await expect.poll(() => page.evaluate(() => navigator.serviceWorker.controller !== null)).toBe(true)
+  const client = await page.context().newCDPSession(page)
+  expect((await client.send('Page.getAppManifest')).errors).toEqual([])
+  expect((await client.send('Page.getInstallabilityErrors')).installabilityErrors).toEqual([])
+})
+
+test('makes no third-party request', async ({ page }) => {
+  const foreign: string[] = []
+  page.on('request', (request) => {
+    const url = new URL(request.url())
+    if (url.protocol.startsWith('http') && url.hostname !== 'localhost') foreign.push(request.url())
+  })
+  await page.goto('./')
+  await page.goto('./#/duas/q-guidance')
+  await expect(page.locator('article').first()).toBeVisible()
+  await page.goto('./#/settings')
+  await expect(page.getByRole('link', { name: 'tanzil.net' })).toBeVisible()
+  expect(foreign).toEqual([])
+})
+
 test('works offline after the first visit', async ({ page, context }) => {
   await page.goto('./')
   test.skip(!(await page.evaluate(() => 'serviceWorker' in navigator)), 'This engine build has no service worker support')

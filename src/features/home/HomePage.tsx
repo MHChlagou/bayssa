@@ -21,6 +21,9 @@ import { ProgressRing } from '../../ui/ProgressRing.tsx'
 
 const SUGGESTED_BY_PERIOD: Record<DayPeriod, string> = { morning: 'morning', midday: 'general', evening: 'evening', night: 'sleep' }
 const DAILY_DUA_SALT = 7
+// The static shell reserves space only for cards this build can actually fill.
+const CAN_SUGGEST_WIRD = [...Object.values(SUGGESTED_BY_PERIOD), 'morning'].some((id) => getCollection(id) !== undefined)
+const HAS_DAILY_DHIKR = (getCollection('general')?.items.length ?? 0) > 0
 const MAX_RECENTS_SHOWN = 4
 
 function Reveal({ order, children, className }: { order: number; children: ReactNode; className?: string }): ReactElement {
@@ -78,7 +81,7 @@ function Hero({ suggested, completed }: { suggested: Collection | undefined; com
         <h1 className="mt-3 font-scripture text-[2rem] leading-[1.7] sm:text-[2.4rem]">{t.home.greeting}</h1>
         <p className="min-h-[1.7em] text-[0.95rem] text-[#fdfaf1]/75">{!isStaticShell && t.home.periods[dayPeriod(now)]}</p>
 
-        {isStaticShell && <div className="mt-6 h-[88px] rounded-[24px] bg-[#fdfaf1]/10 ring-1 ring-[#fdfaf1]/15" />}
+        {isStaticShell && CAN_SUGGEST_WIRD && <div className="mt-6 h-[88px] rounded-[24px] bg-[#fdfaf1]/10 ring-1 ring-[#fdfaf1]/15" />}
         {!isStaticShell && suggested && (
           <Link
             to={collectionPath(suggested)}
@@ -173,7 +176,7 @@ export function HomePage(): ReactElement {
       </Reveal>
 
       <Reveal order={3} className="grid gap-3 md:grid-cols-2">
-        {isStaticShell && <DailyCardPlaceholder label={t.home.dailyDhikr} />}
+        {isStaticShell && HAS_DAILY_DHIKR && <DailyCardPlaceholder label={t.home.dailyDhikr} />}
         {isStaticShell && <DailyCardPlaceholder label={t.home.dailyDua} />}
         {!isStaticShell && dailyDhikrEntry && <DailyCard label={t.home.dailyDhikr} entry={dailyDhikrEntry} />}
         {!isStaticShell && dailyDua && <DailyCard label={t.home.dailyDua} entry={dailyDua} />}
