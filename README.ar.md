@@ -66,15 +66,15 @@
 </div>
 
 ```
-git clone https://github.com/MHChlagou/bayssa.git
-cd bayssa
+git clone https://github.com/MHChlagou/nafissa.git
+cd nafissa
 npm install
 npm run dev
 ```
 
 <div dir="rtl">
 
-يعمل التطبيق على العنوان `http://localhost:5173/bayssa/`.
+يعمل التطبيق على العنوان `http://localhost:5173/nafissa/`.
 
 | الأمر | وظيفته |
 |---|---|
@@ -103,14 +103,14 @@ npm run preview
 
 ## النشر على GitHub Pages
 
-1. أنشئ مستودعاً باسم `bayssa`. إن اخترت اسماً آخر فغيّر `BASE_PATH` في `vite.config.ts`.
+1. أنشئ مستودعاً باسم `nafissa`. إن اخترت اسماً آخر فغيّر `BASE_PATH` في `vite.config.ts`.
 2. في إعدادات المستودع، قسم Pages، اجعل المصدر «GitHub Actions».
 3. في الإعدادات، قسم Secrets and variables ثم Actions ثم Variables، أضف متغيراً باسم `DEPLOY_PAGES` قيمته `true`.
 4. ادفع إلى الفرع `main`. يتولى الملف `.github/workflows/ci.yml` التحقق من المحتوى وتشغيل كل الاختبارات والبناء والنشر.
 
 النشر معطّل افتراضياً. دون هذا المتغير، أو في مستودع خاص، يكتفي سير العمل بالتحقق والبناء ولا ينشر شيئاً.
 
-يُنشر الموقع على `https://mhchlagou.github.io/bayssa/`.
+يُنشر الموقع على `https://mhchlagou.github.io/nafissa/`.
 
 ## العمل دون اتصال
 

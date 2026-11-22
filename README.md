@@ -62,13 +62,13 @@ Firefox is not supported for now and is not part of the automated tests. During 
 Requires Node 24 or later.
 
 ```
-git clone https://github.com/MHChlagou/bayssa.git
-cd bayssa
+git clone https://github.com/MHChlagou/nafissa.git
+cd nafissa
 npm install
 npm run dev
 ```
 
-The app is served at `http://localhost:5173/bayssa/`.
+The app is served at `http://localhost:5173/nafissa/`.
 
 | Command | What it does |
 |---|---|
@@ -93,14 +93,14 @@ The build validates the content, type-checks, prerenders the home screen to stat
 
 ## Deployment to GitHub Pages
 
-1. Create a repository named `bayssa`. For another name, change `BASE_PATH` in `vite.config.ts`.
+1. Create a repository named `nafissa`. For another name, change `BASE_PATH` in `vite.config.ts`.
 2. In the repository settings, under Pages, set the source to "GitHub Actions".
 3. Under Settings, Secrets and variables, Actions, Variables, add a repository variable `DEPLOY_PAGES` with the value `true`.
 4. Push to `main`. The workflow in `.github/workflows/ci.yml` validates the content, runs every test, builds and deploys.
 
 Deployment is off by default. Without that variable, or in a private repository, the workflow only verifies and builds, and publishes nothing.
 
-The site is published at `https://mhchlagou.github.io/bayssa/`. The workflow passes that address to the build so link previews use absolute URLs.
+The site is published at `https://mhchlagou.github.io/nafissa/`. The workflow passes that address to the build so link previews use absolute URLs.
 
 ## PWA and offline
 

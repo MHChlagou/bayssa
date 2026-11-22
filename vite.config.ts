@@ -5,8 +5,8 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { createServer, type HtmlTagDescriptor, type Plugin } from 'vite'
 import { defineConfig } from 'vitest/config'
 
-// GitHub Pages serves the site from https://<user>.github.io/bayssa/
-const BASE_PATH = '/bayssa/'
+// GitHub Pages serves the site from https://<user>.github.io/nafissa/
+const BASE_PATH = '/nafissa/'
 
 // The first screen is Arabic text in these two fonts, so they are fetched
 // alongside the HTML instead of after the stylesheet is parsed.
@@ -32,7 +32,7 @@ function preloadFonts(): Plugin {
 
 /**
  * Public address of the deployed site, with a trailing slash, for example
- * https://example.github.io/bayssa/. Link previews on other sites need
+ * https://example.github.io/nafissa/. Link previews on other sites need
  * absolute URLs. The deploy workflow sets it. Local builds leave it unset.
  */
 function readSiteUrl(): URL | undefined {

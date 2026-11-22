@@ -382,7 +382,7 @@ test.describe('sharing and copying', () => {
 test.describe('installation', () => {
   test('the page declares its icons, manifest and iOS launch images', async ({ page, request }) => {
     await page.goto('./')
-    await expect(page.locator('link[rel="manifest"]')).toHaveAttribute('href', '/bayssa/manifest.webmanifest')
+    await expect(page.locator('link[rel="manifest"]')).toHaveAttribute('href', '/nafissa/manifest.webmanifest')
     await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveCount(1)
     await expect(page.locator('meta[name="apple-mobile-web-app-capable"]')).toHaveAttribute('content', 'yes')
     const launchImages = page.locator('link[rel="apple-touch-startup-image"]')
@@ -390,15 +390,15 @@ test.describe('installation', () => {
     for (const href of await launchImages.evaluateAll((links) => links.slice(0, 3).map((link) => link.getAttribute('href') ?? ''))) {
       expect((await request.get(href)).ok(), href).toBe(true)
     }
-    expect((await request.get('/bayssa/apple-touch-icon-180x180.png')).ok()).toBe(true)
-    expect((await request.get('/bayssa/og-image.png')).ok()).toBe(true)
+    expect((await request.get('/nafissa/apple-touch-icon-180x180.png')).ok()).toBe(true)
+    expect((await request.get('/nafissa/og-image.png')).ok()).toBe(true)
   })
 
   test('ships the licence texts of the bundled software and fonts', async ({ page, request }) => {
     await page.goto('./#/settings')
     const link = page.getByRole('link', { name: 'تراخيص البرمجيات والخطوط المستعملة' })
-    await expect(link).toHaveAttribute('href', '/bayssa/licenses.txt')
-    const text = await (await request.get('/bayssa/licenses.txt')).text()
+    await expect(link).toHaveAttribute('href', '/nafissa/licenses.txt')
+    const text = await (await request.get('/nafissa/licenses.txt')).text()
     for (const expected of ['SIL OPEN FONT LICENSE', 'MIT License', 'ISC License', 'react-router', 'The Amiri Project Authors', 'does not concern the religious content']) {
       expect(text, expected).toContain(expected)
     }
@@ -422,7 +422,7 @@ test.describe('service worker updates', () => {
   test('a new version waits for the user, then takes over', async ({ page, request, browserName }, testInfo) => {
     test.skip(['android-chrome', 'mobile-safari'].includes(testInfo.project.name), 'Covered by the desktop project of the same engine, which shares its update server')
     const origin = `http://localhost:${UPDATE_SERVER_PORTS[browserName]}`
-    const base = `${origin}/bayssa/`
+    const base = `${origin}/nafissa/`
     await request.get(`${origin}/__use/current`)
     await page.goto(base)
     test.skip(!(await hasServiceWorkers(page)), 'This engine build has no service worker support')

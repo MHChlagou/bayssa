@@ -1,6 +1,6 @@
 # Performance optimization report
 
-Measured on 2026-11-22 with Lighthouse 13.6.0 against the production build served locally under `/bayssa/`, headless Chromium 159, default simulated throttling (slow 4G, 4x CPU slowdown). These are lab numbers from one machine, not field data.
+Measured on 2026-11-22 with Lighthouse 13.6.0 against the production build served locally under `/nafissa/`, headless Chromium 159, default simulated throttling (slow 4G, 4x CPU slowdown). These are lab numbers from one machine, not field data.
 
 ## Result
 

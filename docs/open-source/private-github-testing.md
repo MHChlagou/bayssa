@@ -21,7 +21,7 @@ It cannot prove the Pages deployment step, the live address, or link previews.
 
 ## Important: the repository you named is public
 
-`github.com/MHChlagou/bayssa` exists, is public and is empty (checked on 2026-11-22). Do not push the current history to it: that would publish the dataset and the reports that quote it. Use a separate private repository for the steps below, and keep `MHChlagou/bayssa` for the clean-history public export.
+`github.com/MHChlagou/nafissa` exists, is public and is empty (checked on 2026-11-22). Do not push the current history to it: that would publish the dataset and the reports that quote it. Use a separate private repository for the steps below, and keep `MHChlagou/nafissa` for the clean-history public export.
 
 ## Step 1. The deployment gate (implemented)
 
@@ -39,12 +39,12 @@ The workflow has not run on GitHub yet, so the gate is untested there. On the fi
 
 ## Step 2. Create the private repository
 
-On github.com: New repository, name `bayssa-private`, visibility Private, no README, no licence, no .gitignore.
+On github.com: New repository, name `nafissa-private`, visibility Private, no README, no licence, no .gitignore.
 
 Or with the GitHub CLI:
 
 ```
-gh repo create bayssa-private --private --disable-wiki
+gh repo create nafissa-private --private --disable-wiki
 ```
 
 Before pushing, check these settings:
@@ -58,7 +58,7 @@ Before pushing, check these settings:
 
 ```
 cd /app/products/houda-douaa
-git remote add private git@github.com:MHChlagou/bayssa-private.git
+git remote add private git@github.com:MHChlagou/nafissa-private.git
 git push private main
 ```
 
@@ -83,14 +83,14 @@ Private repositories use your Actions minutes allowance. A run of this size is s
 Download the `site` artifact from the run, unzip it, and serve it under the same path Pages would use:
 
 ```
-mkdir -p /tmp/pages-test/bayssa
-unzip site.zip -d /tmp/pages-test/bayssa
+mkdir -p /tmp/pages-test/nafissa
+unzip site.zip -d /tmp/pages-test/nafissa
 npx serve /tmp/pages-test -l 4000
 ```
 
-Open `http://localhost:4000/bayssa/` and check: the home screen appears, a deep link such as `#/adhkar/morning` opens, the service worker installs, and the app reloads with the network off.
+Open `http://localhost:4000/nafissa/` and check: the home screen appears, a deep link such as `#/adhkar/morning` opens, the service worker installs, and the app reloads with the network off.
 
-This proves the artifact is a working site under the `/bayssa/` path. It does not prove GitHub's own serving, HTTPS, or the live address.
+This proves the artifact is a working site under the `/nafissa/` path. It does not prove GitHub's own serving, HTTPS, or the live address.
 
 ## Step 6. What to leave for the public repository
 

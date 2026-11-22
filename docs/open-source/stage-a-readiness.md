@@ -156,11 +156,11 @@ For the day you decide to publish. Nothing here has been done.
 
 1. Make the release export from a committed state: `node scripts/export-public.ts <empty directory>`. Run the commands of section 5 inside it.
 2. In that directory only: `git init -b main`, add everything, one commit.
-3. Add `github.com/MHChlagou/bayssa` as the remote of that directory and push. Never add it as a remote of the private repository.
+3. Add `github.com/MHChlagou/nafissa` as the remote of that directory and push. Never add it as a remote of the private repository.
 4. On GitHub, Settings, Pages: set the source to "GitHub Actions".
 5. Settings, Secrets and variables, Actions, Variables: add `DEPLOY_PAGES` with the value `true`.
 6. Run the workflow from the Actions tab, or push again. It verifies, builds and deploys.
-7. The site appears at `https://mhchlagou.github.io/bayssa/`. The path `/bayssa/` is already set in the build.
+7. The site appears at `https://mhchlagou.github.io/nafissa/`. The path `/nafissa/` is already set in the build.
 8. Then follow section 8 of `docs/pre-release/launch-checklist.md` for post-deployment checks.
 
 The workflow has never run on GitHub. Expect to fix something on the first run.
@@ -189,4 +189,4 @@ Product direction, new today:
 2. The export includes the complete Quran text as reference files. The app does not show it, but if "no full Quran text" should hold for the repository too, the reference can be reduced to the 62 ayahs in use.
 3. The tribute banner is not in this build.
 
-These are taken up in `docs/product/bayssa-identity-and-focus-plan.md`.
+These are taken up in `docs/product/nafissa-identity-and-focus-plan.md`.

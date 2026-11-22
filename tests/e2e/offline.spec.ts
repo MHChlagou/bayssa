@@ -105,10 +105,10 @@ test('the app makes no third-party requests', async ({ page }) => {
 test('the manifest makes the app installable from the GitHub Pages path', async ({ page, request }) => {
   await page.goto('./')
   const href = await page.locator('link[rel="manifest"]').getAttribute('href')
-  expect(href).toBe('/bayssa/manifest.webmanifest')
+  expect(href).toBe('/nafissa/manifest.webmanifest')
   const manifest = await (await request.get(href ?? '')).json()
-  expect(manifest).toMatchObject({ lang: 'ar', dir: 'rtl', display: 'standalone', start_url: '/bayssa/', scope: '/bayssa/' })
+  expect(manifest).toMatchObject({ lang: 'ar', dir: 'rtl', display: 'standalone', start_url: '/nafissa/', scope: '/nafissa/' })
   for (const icon of manifest.icons as { src: string }[]) {
-    expect((await request.get(`/bayssa/${icon.src}`)).ok(), icon.src).toBe(true)
+    expect((await request.get(`/nafissa/${icon.src}`)).ok(), icon.src).toBe(true)
   }
 })

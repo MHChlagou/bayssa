@@ -86,16 +86,16 @@ test('is installable: manifest, icons and, in Chrome, no installability errors',
   await page.goto('./')
   const href = await page.locator('link[rel="manifest"]').getAttribute('href')
   const manifest = await (await request.get(href ?? '')).json()
-  expect(manifest).toMatchObject({ name: 'نفيسة · أذكار وأدعية', short_name: 'نفيسة', lang: 'ar', dir: 'rtl', display: 'standalone', start_url: '/bayssa/', scope: '/bayssa/' })
+  expect(manifest).toMatchObject({ name: 'نفيسة · أذكار وأدعية', short_name: 'نفيسة', lang: 'ar', dir: 'rtl', display: 'standalone', start_url: '/nafissa/', scope: '/nafissa/' })
   // The manifest and the page describe only what this build contains.
   expect(manifest.description).not.toContain('أذكار')
-  expect((manifest.shortcuts as { url: string }[]).map((shortcut) => shortcut.url)).toEqual(['/bayssa/#/duas', '/bayssa/#/tasbih'])
+  expect((manifest.shortcuts as { url: string }[]).map((shortcut) => shortcut.url)).toEqual(['/nafissa/#/duas', '/nafissa/#/tasbih'])
   for (const selector of ['meta[name="description"]', 'meta[property="og:description"]']) {
     expect(await page.locator(selector).getAttribute('content')).toContain('أدعية من القرآن الكريم')
   }
-  for (const icon of manifest.icons as { src: string }[]) expect((await request.get(`/bayssa/${icon.src}`)).ok(), icon.src).toBe(true)
+  for (const icon of manifest.icons as { src: string }[]) expect((await request.get(`/nafissa/${icon.src}`)).ok(), icon.src).toBe(true)
   expect(await page.locator('link[rel="apple-touch-startup-image"]').count()).toBeGreaterThanOrEqual(15)
-  const licences = await (await request.get('/bayssa/licenses.txt')).text()
+  const licences = await (await request.get('/nafissa/licenses.txt')).text()
   expect(licences).toContain('SIL OPEN FONT LICENSE')
 
   test.skip(browserName !== 'chromium', 'The installability report is a Chrome DevTools feature')

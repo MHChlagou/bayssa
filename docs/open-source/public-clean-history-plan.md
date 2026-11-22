@@ -115,7 +115,7 @@ Stages A, B and C need no separate switch. The public build follows the registry
 
 ## The public repository that already exists
 
-`github.com/MHChlagou/bayssa` is public and empty. It suits the role of the public repository in this plan. Nothing has been pushed to it and it has not been added as a remote. The first push to it must be the export described above, never the private history.
+`github.com/MHChlagou/nafissa` is public and empty. It suits the role of the public repository in this plan. Nothing has been pushed to it and it has not been added as a remote. The first push to it must be the export described above, never the private history.
 
 ## Risks
 

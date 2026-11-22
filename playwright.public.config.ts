@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test'
 
 // Not 4190: Firefox and WebKit refuse that port (it is reserved for another protocol).
 const PORT = 4178
-const BASE_URL = `http://localhost:${PORT}/bayssa/`
+const BASE_URL = `http://localhost:${PORT}/nafissa/`
 // The private repository builds the public variant into dist-public. A public checkout builds it into dist.
 const DIST = process.env.PUBLIC_DIST ?? 'dist-public'
 
