@@ -87,6 +87,12 @@ test('is installable: manifest, icons and, in Chrome, no installability errors',
   const href = await page.locator('link[rel="manifest"]').getAttribute('href')
   const manifest = await (await request.get(href ?? '')).json()
   expect(manifest).toMatchObject({ name: 'Bayssa · أذكار وأدعية', short_name: 'Bayssa', lang: 'ar', dir: 'rtl', display: 'standalone', start_url: '/bayssa/', scope: '/bayssa/' })
+  // The manifest and the page describe only what this build contains.
+  expect(manifest.description).not.toContain('أذكار')
+  expect((manifest.shortcuts as { url: string }[]).map((shortcut) => shortcut.url)).toEqual(['/bayssa/#/duas', '/bayssa/#/tasbih'])
+  for (const selector of ['meta[name="description"]', 'meta[property="og:description"]']) {
+    expect(await page.locator(selector).getAttribute('content')).toContain('أدعية من القرآن الكريم')
+  }
   for (const icon of manifest.icons as { src: string }[]) expect((await request.get(`/bayssa/${icon.src}`)).ok(), icon.src).toBe(true)
   expect(await page.locator('link[rel="apple-touch-startup-image"]').count()).toBeGreaterThanOrEqual(15)
   const licences = await (await request.get('/bayssa/licenses.txt')).text()

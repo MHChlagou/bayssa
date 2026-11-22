@@ -42,6 +42,41 @@ function readSiteUrl(): URL | undefined {
   return new URL(raw)
 }
 
+/** The collections in the bundle being built, so that the page and the manifest describe only what it contains. */
+function readBundleCollectionIds(): ReadonlySet<string> {
+  const path = new URL('./src/content/generated/content.json', import.meta.url)
+  if (!existsSync(path)) throw new Error('src/content/generated/content.json is missing: run "npm run content:build"')
+  const bundle: unknown = JSON.parse(readFileSync(path, 'utf8'))
+  const collections = typeof bundle === 'object' && bundle !== null && 'collections' in bundle ? bundle.collections : undefined
+  if (!Array.isArray(collections)) throw new Error('src/content/generated/content.json is malformed: run "npm run content:build"')
+  return new Set(collections.map((collection: unknown) =>
+    typeof collection === 'object' && collection !== null && 'id' in collection ? String(collection.id) : ''))
+}
+
+const bundleCollectionIds = readBundleCollectionIds()
+// A build without the daily adhkar, such as the public variant today, must not advertise them.
+const hasDailyAdhkar = bundleCollectionIds.has('morning') && bundleCollectionIds.has('evening')
+const SITE_TEXT = hasDailyAdhkar
+  ? {
+      pageDescription: 'أذكار الصباح والمساء وأدعية اليوم والليلة مع ذكر مصادرها، ومسبحة إلكترونية. تطبيق مجاني يعمل دون اتصال بالإنترنت.',
+      previewDescription: 'أذكار وأدعية اليوم والليلة مع ذكر مصادرها، ومسبحة إلكترونية. يعمل دون اتصال.',
+      manifestDescription: 'أذكار الصباح والمساء وأدعية اليوم والليلة، ومسبحة إلكترونية. يعمل دون اتصال.',
+      shortcuts: [
+        { name: 'أذكار الصباح', url: `${BASE_PATH}#/adhkar/morning` },
+        { name: 'أذكار المساء', url: `${BASE_PATH}#/adhkar/evening` },
+        { name: 'المسبحة', url: `${BASE_PATH}#/tasbih` },
+      ],
+    }
+  : {
+      pageDescription: 'أدعية من القرآن الكريم مع ذكر السورة والآية، ومسبحة إلكترونية. تطبيق مجاني يعمل دون اتصال بالإنترنت.',
+      previewDescription: 'أدعية من القرآن الكريم مع ذكر السورة والآية، ومسبحة إلكترونية. يعمل دون اتصال.',
+      manifestDescription: 'أدعية من القرآن الكريم مع ذكر السورة والآية، ومسبحة إلكترونية. يعمل دون اتصال.',
+      shortcuts: [
+        { name: 'الأدعية', url: `${BASE_PATH}#/duas` },
+        { name: 'المسبحة', url: `${BASE_PATH}#/tasbih` },
+      ],
+    }
+
 function siteMeta(): Plugin {
   const siteUrl = readSiteUrl()
   return {
@@ -49,6 +84,8 @@ function siteMeta(): Plugin {
     transformIndexHtml(): HtmlTagDescriptor[] {
       const image = siteUrl ? new URL('og-image.png', siteUrl).href : `${BASE_PATH}og-image.png`
       const tags: HtmlTagDescriptor[] = [
+        { tag: 'meta', attrs: { name: 'description', content: SITE_TEXT.pageDescription }, injectTo: 'head' },
+        { tag: 'meta', attrs: { property: 'og:description', content: SITE_TEXT.previewDescription }, injectTo: 'head' },
         { tag: 'meta', attrs: { property: 'og:image', content: image }, injectTo: 'head' },
         { tag: 'meta', attrs: { property: 'og:image:width', content: '1200' }, injectTo: 'head' },
         { tag: 'meta', attrs: { property: 'og:image:height', content: '630' }, injectTo: 'head' },
@@ -213,7 +250,7 @@ export default defineConfig(({ mode }) => ({
         id: BASE_PATH,
         name: 'Bayssa · أذكار وأدعية',
         short_name: 'Bayssa',
-        description: 'أذكار الصباح والمساء وأدعية اليوم والليلة، ومسبحة إلكترونية. يعمل دون اتصال.',
+        description: SITE_TEXT.manifestDescription,
         lang: 'ar',
         dir: 'rtl',
         start_url: BASE_PATH,
@@ -229,11 +266,7 @@ export default defineConfig(({ mode }) => ({
           { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
           { src: 'maskable-icon-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
-        shortcuts: [
-          { name: 'أذكار الصباح', url: `${BASE_PATH}#/adhkar/morning` },
-          { name: 'أذكار المساء', url: `${BASE_PATH}#/adhkar/evening` },
-          { name: 'المسبحة', url: `${BASE_PATH}#/tasbih` },
-        ],
+        shortcuts: SITE_TEXT.shortcuts,
       },
       workbox: {
         // Everything is precached: the app makes no network request after install.
