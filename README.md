@@ -51,6 +51,12 @@ To use the app, open the deployed site and add it to your home screen:
 
 After the first visit the app opens and works without a connection.
 
+### Browser support
+
+Bayssa is tested in Chrome on Android and desktop, and in Safari on iPhone and desktop (through the WebKit engine).
+
+Firefox is not supported for now and is not part of the automated tests. During testing, Firefox's page process crashed intermittently on the settings screen while the accessibility scanner was running: a segmentation fault inside Firefox, seen on two machines, whose cause was not found. The app may well work in Firefox, but nothing checks that it does.
+
 ## Local development
 
 Requires Node 24 or later.
@@ -70,7 +76,7 @@ The app is served at `http://localhost:5173/bayssa/`.
 | `npm run lint` | ESLint |
 | `npm run typecheck` | TypeScript, strict |
 | `npm test` | Unit tests |
-| `npm run test:e2e` | End-to-end tests against the production build in Chromium, Firefox and WebKit. Run `npx playwright install chromium firefox webkit` once first. |
+| `npm run test:e2e` | End-to-end tests against the production build in Chromium and WebKit. Run `npx playwright install chromium webkit` once first. Firefox is not tested: see Browser support. |
 | `npm run content:validate` | Checks the content dataset, including the Quran text character for character |
 | `npm run content:audit` | Regenerates the content audit reports (needs `npm run content:fetch` first) |
 | `npm run build:public` | Builds to `dist-public/` with only the content whose redistribution rights are documented, then scans the result for anything else |

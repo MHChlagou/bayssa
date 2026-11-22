@@ -44,7 +44,7 @@ jobs:
       - run: npm test
       # The complete application, built and tested. It is never deployed.
       - run: npm run build
-      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npx playwright install --with-deps chromium webkit
       - run: npm run test:e2e
       # A failed test is retried once. This step says which tests needed the retry, so a
       # pass on the second attempt is never shown as a clean run. A test that fails both

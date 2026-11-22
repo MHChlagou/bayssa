@@ -16,7 +16,7 @@ export default defineConfig({
   use: { baseURL: BASE_URL, locale: 'ar-EG', trace: 'retain-on-failure' },
   projects: [
     { name: 'android-chrome', use: { ...devices['Pixel 7'] } },
-    { name: 'desktop-firefox', use: { ...devices['Desktop Firefox'] } },
+    { name: 'desktop-chrome', use: { ...devices['Desktop Chrome'] } },
     { name: 'mobile-safari', use: { ...devices['iPhone 14'] } },
   ],
   webServer: {

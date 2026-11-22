@@ -7,6 +7,7 @@ export const UPDATE_SERVER_PORTS = { chromium: 4180, firefox: 4181, webkit: 4182
 
 // End-to-end tests run against the production build, served the way GitHub
 // Pages serves it (under /bayssa/), with the real service worker.
+// Firefox is not tested: see "Browser support" in the README.
 // These are engine tests on a desktop machine: "mobile-safari" and
 // "android-chrome" emulate the screen and user agent, not the real devices.
 export default defineConfig({
@@ -21,7 +22,6 @@ export default defineConfig({
   projects: [
     { name: 'android-chrome', use: { ...devices['Pixel 7'] } },
     { name: 'desktop-chrome', use: { ...devices['Desktop Chrome'], viewport: { width: 1366, height: 860 } } },
-    { name: 'desktop-firefox', use: { ...devices['Desktop Firefox'], viewport: { width: 1366, height: 860 } } },
     { name: 'desktop-safari', use: { ...devices['Desktop Safari'], viewport: { width: 1366, height: 860 } } },
     { name: 'mobile-safari', use: { ...devices['iPhone 14'] } },
   ],
