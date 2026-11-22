@@ -1,6 +1,5 @@
 import { BookOpen } from 'lucide-react'
-import { motion } from 'motion/react'
-import type { ReactElement } from 'react'
+import type { CSSProperties, ReactElement } from 'react'
 import { useSearchParams } from 'react-router'
 import { completedItemCount, useTodayProgress } from '../../app/progress.ts'
 import { collectionsInSection } from '../../content/index.ts'
@@ -11,7 +10,6 @@ import { EmptyState } from '../../ui/EmptyState.tsx'
 import { PageHeader } from '../../ui/PageHeader.tsx'
 import { Segmented } from '../../ui/Segmented.tsx'
 
-const STAGGER_SECONDS = 0.035
 
 function CollectionGrid({ collections, isTracked }: { collections: Collection[]; isTracked: boolean }): ReactElement {
   const { progress, day } = useTodayProgress()
@@ -20,14 +18,9 @@ function CollectionGrid({ collections, isTracked }: { collections: Collection[];
   return (
     <ul className="grid gap-3 sm:grid-cols-2">
       {collections.map((collection, index) => (
-        <motion.li
-          key={collection.id}
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, delay: index * STAGGER_SECONDS, ease: [0.22, 1, 0.36, 1] }}
-        >
+        <li key={collection.id} className="rise-in" style={{ '--rise-order': index } as CSSProperties}>
           <CollectionCard collection={collection} completedItems={isTracked ? completedItemCount(collection, progress, day) : 0} />
-        </motion.li>
+        </li>
       ))}
     </ul>
   )

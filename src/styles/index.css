@@ -181,6 +181,12 @@ button {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  /* Entrances start from transparent. Without them the content is there from the first paint. */
+  .rise-in,
+  .page-enter,
+  .toast-enter {
+    animation: none !important;
+  }
 }
 
 @keyframes dialog-in {
