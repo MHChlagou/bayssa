@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -111,6 +111,16 @@ function packageNameOf(moduleId: string): string | undefined {
   return /node_modules\/((?:@[^/]+\/)?[^/]+)\/(?!.*node_modules\/)/.exec(moduleId)?.[1]
 }
 
+/** Tanzil's own notice, copied from the text file it ships with, as its terms of use require. */
+function tanzilNotice(): string {
+  const directory = new URL('./content-sources/quran/', import.meta.url)
+  const file = ['tanzil-uthmani.txt', 'tanzil-uthmani-extract.txt'].find((name) => existsSync(new URL(name, directory)))
+  if (file === undefined) throw new Error('third-party-licenses: the Tanzil text file is missing')
+  const notice = readFileSync(new URL(file, directory), 'utf8').split('\n').map((line) => line.replace(/\r$/, '')).filter((line) => line.startsWith('#'))
+  if (!notice.some((line) => line.includes('Tanzil Project'))) throw new Error(`third-party-licenses: ${file} has lost its Tanzil notice`)
+  return `${'-'.repeat(72)}\nQuran text\n${'-'.repeat(72)}\n\n${notice.join('\n')}\n`
+}
+
 function thirdPartyLicenses(): Plugin {
   return {
     name: 'third-party-licenses',
@@ -140,7 +150,7 @@ function thirdPartyLicenses(): Plugin {
         const text = readFileSync(new URL(licenseFile, directory), 'utf8').trim()
         return `${'-'.repeat(72)}\n${name} ${field('version')} (${field('license')})\n${'-'.repeat(72)}\n\n${text}\n`
       })
-      this.emitFile({ type: 'asset', fileName: 'licenses.txt', source: `${LICENSES_HEADER}\n${sections.join('\n')}` })
+      this.emitFile({ type: 'asset', fileName: 'licenses.txt', source: `${LICENSES_HEADER}\n${sections.join('\n')}\n${tanzilNotice()}` })
     },
   }
 }

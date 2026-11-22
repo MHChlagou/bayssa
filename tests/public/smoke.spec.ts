@@ -74,6 +74,9 @@ test('search and favorites work on the Quranic content', async ({ page }) => {
 test('the sources screen names only the sources this build uses', async ({ page }) => {
   await page.goto('./#/settings')
   await expect(page.getByRole('link', { name: 'tanzil.net' })).toHaveAttribute('href', 'https://tanzil.net')
+  const licences = await (await page.request.get('./licenses.txt')).text()
+  expect(licences).toContain('Tanzil Quran Text (Uthmani, Version 1.1)')
+  expect(licences).toContain('License: Creative Commons Attribution 3.0')
   await expect(page.getByText('حصن المسلم')).toHaveCount(0)
   await expect(page.getByText('التفسير الميسر')).toHaveCount(0)
   await expect(page.getByRole('note')).toContainText('لم يراجع هذا المحتوى عالمٌ مختص حتى الآن')
