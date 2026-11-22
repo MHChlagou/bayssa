@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
 
-const ROUTES = ['', '#/adhkar', '#/adhkar/morning', '#/duas?tab=quranic', '#/duas/q-forgiveness', '#/tasbih', '#/favorites', '#/search?q=الله', '#/settings']
+const ROUTES = ['', '#/adhkar', '#/adhkar/morning', '#/duas?tab=quranic', '#/duas/q-forgiveness', '#/tasbih', '#/favorites', '#/search?q=الله', '#/settings', '#/about']
 
 for (const theme of ['light', 'dark'] as const) {
   for (const route of ROUTES) {

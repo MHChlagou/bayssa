@@ -1,5 +1,7 @@
 import { Minus, Plus } from 'lucide-react'
 import type { ReactElement, ReactNode } from 'react'
+import { Link } from 'react-router'
+import { ABOUT_TEXT } from '../../app/about-text.ts'
 import { DEDICATION_SUPPLICATION } from '../../app/dedication.ts'
 import { isApproximateMatch } from '../../content/describe.ts'
 import { allEntries, basmala, contentSources } from '../../content/index.ts'
@@ -51,6 +53,9 @@ export function SettingsPage(): ReactElement {
       <section aria-label={t.settings.dedication} className="relative overflow-hidden rounded-[26px] bg-linear-to-bl from-[#14705a] via-[#0d4a3a] to-[#072a20] px-6 py-7 text-center shadow-card">
         <p className="text-xs font-medium tracking-wide text-[#e6cf98]">{t.settings.dedication}</p>
         <p className="scripture mt-2 text-[#fdfaf1]">{DEDICATION_SUPPLICATION}</p>
+        <Link to="/about" className="mt-3 inline-block rounded-full border border-[#e6cf98]/50 px-4 py-1.5 text-sm text-[#e6cf98] transition-colors duration-200 hover:bg-[#e6cf98]/10">
+          {ABOUT_TEXT.title}
+        </Link>
       </section>
 
       <Group title={t.settings.appearance}>

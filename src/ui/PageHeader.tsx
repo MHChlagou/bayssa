@@ -1,6 +1,7 @@
-import { ArrowRight, Search, Settings } from 'lucide-react'
+import { ArrowRight, HandHeart, Search, Settings } from 'lucide-react'
 import type { ReactElement, ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router'
+import { ABOUT_TEXT } from '../app/about-text.ts'
 import { t } from '../i18n/t.ts'
 import { IconButton } from './IconButton.tsx'
 
@@ -17,6 +18,9 @@ const linkClass = 'grid size-11 place-items-center rounded-full text-muted trans
 export function HeaderLinks(): ReactElement {
   return (
     <>
+      <Link to="/about" aria-label={ABOUT_TEXT.title} title={ABOUT_TEXT.title} className={`${linkClass} lg:hidden`}>
+        <HandHeart className="size-5" strokeWidth={1.75} aria-hidden="true" />
+      </Link>
       <Link to="/search" aria-label={t.actions.search} title={t.actions.search} className={linkClass}>
         <Search className="size-5" strokeWidth={1.75} aria-hidden="true" />
       </Link>

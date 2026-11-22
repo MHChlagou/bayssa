@@ -1,11 +1,12 @@
-import { Search, Settings } from 'lucide-react'
+import { HandHeart, Search, Settings } from 'lucide-react'
 import type { CSSProperties, ReactElement } from 'react'
-import { NavLink, useLocation } from 'react-router'
+import { Link, NavLink, useLocation } from 'react-router'
 import { formatHijriDate } from '../../domain/hijri/hijri.ts'
 import { DIRECTION, t } from '../../i18n/t.ts'
 import { prefsStore } from '../../storage/stores.ts'
 import { usePersistentState } from '../../storage/usePersistentState.ts'
 import { cn } from '../../ui/cn.ts'
+import { ABOUT_TEXT } from '../about-text.ts'
 import { useIsStaticShell } from '../boot.ts'
 import { NAV_ITEMS } from '../registry.ts'
 
@@ -59,13 +60,13 @@ export function BottomNav(): ReactElement {
 
 function Brand(): ReactElement {
   return (
-    <div className="flex items-center gap-3 px-3">
+    <Link to="/" className="flex items-center gap-3 rounded-2xl px-3 py-1 transition-colors duration-200 hover:bg-surface-alt/70">
       <img src={`${import.meta.env.BASE_URL}pwa-192x192.png`} alt="" width={44} height={44} className="size-11 rounded-full" />
-      <div>
-        <p className="text-base font-semibold leading-tight text-ink">{t.appName}</p>
-        <p className="text-xs text-muted">{t.tagline}</p>
-      </div>
-    </div>
+      <span>
+        <span className="block text-base font-semibold leading-tight text-ink">{t.appName}</span>
+        <span className="block text-xs text-muted">{t.tagline}</span>
+      </span>
+    </Link>
   )
 }
 
@@ -114,6 +115,12 @@ export function Sidebar(): ReactElement {
         </ul>
         <div className="my-5 h-px bg-line" />
         <ul className="space-y-1">
+          <li>
+            <NavLink to="/about" className={sideLinkClass}>
+              <HandHeart className="size-5" strokeWidth={1.6} aria-hidden="true" />
+              {ABOUT_TEXT.title}
+            </NavLink>
+          </li>
           <li>
             <NavLink to="/search" className={sideLinkClass}>
               <Search className="size-5" strokeWidth={1.6} aria-hidden="true" />

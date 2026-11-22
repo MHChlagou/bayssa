@@ -29,6 +29,7 @@ export const router = createHashRouter([
       { path: 'tasbih', lazy: page(async () => (await import('../features/tasbih/TasbihPage.tsx')).TasbihPage) },
       { path: 'favorites', lazy: page(async () => (await import('../features/favorites/FavoritesPage.tsx')).FavoritesPage) },
       { path: 'search', lazy: page(async () => (await import('../features/search/SearchPage.tsx')).SearchPage) },
+      { path: 'about', lazy: page(async () => (await import('../features/about/AboutPage.tsx')).AboutPage) },
       { path: 'settings', lazy: page(async () => (await import('../features/settings/SettingsPage.tsx')).SettingsPage) },
       { path: '*', element: <NotFoundPage /> },
     ],

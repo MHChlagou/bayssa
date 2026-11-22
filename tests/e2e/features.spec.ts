@@ -1,3 +1,4 @@
+import { ABOUT_TEXT } from '../../src/app/about-text.ts'
 import { expect, test } from '@playwright/test'
 
 test.describe('favorites', () => {
@@ -154,4 +155,42 @@ test('the page is right-to-left Arabic and an unknown route recovers', async ({ 
   await expect(page.locator('html')).toHaveAttribute('lang', 'ar')
   await page.getByRole('link', { name: 'العودة إلى الرئيسية' }).click()
   await expect(page.getByRole('heading', { level: 1, name: 'السلام عليكم ورحمة الله' })).toBeVisible()
+})
+
+test.describe('the page about Nafissa', () => {
+  test('is reached from the navigation and shows the owner\'s text', async ({ page }, testInfo) => {
+    await page.goto('./')
+    // The desktop layout lists it in the sidebar. Smaller screens offer it in the page header.
+    const isDesktop = testInfo.project.name.startsWith('desktop')
+    const link = isDesktop
+      ? page.getByRole('complementary').getByRole('link', { name: ABOUT_TEXT.title })
+      : page.getByRole('main').getByRole('link', { name: ABOUT_TEXT.title })
+    await link.click()
+    await expect(page).toHaveURL(/#\/about$/)
+    await expect(page.getByRole('heading', { level: 1, name: ABOUT_TEXT.title })).toBeVisible()
+    await expect(page.getByRole('heading', { level: 2, name: ABOUT_TEXT.heading })).toBeVisible()
+    for (const text of [ABOUT_TEXT.subtitle, ...ABOUT_TEXT.body, ...ABOUT_TEXT.supplications]) {
+      await expect(page.getByText(text, { exact: true })).toBeVisible()
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0)
+  })
+
+  test('is also offered from the dedication card in settings, and is not part of the collections', async ({ page }) => {
+    await page.goto('./#/settings')
+    await page.getByRole('region', { name: 'إهداء' }).getByRole('link', { name: ABOUT_TEXT.title }).click()
+    await expect(page.getByRole('heading', { level: 1, name: ABOUT_TEXT.title })).toBeVisible()
+    // It holds no supplication card, counter or favorite button.
+    await expect(page.locator('article')).toHaveCount(0)
+  })
+})
+
+test('the app name leads back to the home screen', async ({ page }, testInfo) => {
+  const isDesktop = testInfo.project.name.startsWith('desktop')
+  // The sidebar carries the name on every screen. On small screens it heads the home screen.
+  await page.goto(isDesktop ? './#/settings' : './')
+  const brand = isDesktop ? page.getByRole('complementary').getByRole('link', { name: /أذكار وأدعية/ }) : page.getByRole('main').getByRole('link', { name: /أذكار وأدعية/ })
+  await expect(brand).toBeVisible()
+  await brand.click()
+  await expect(page).toHaveURL(/#\/$/)
+  await expect(page.locator('main').getByText(/هـ/).first()).toBeVisible()
 })
