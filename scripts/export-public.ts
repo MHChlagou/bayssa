@@ -17,9 +17,9 @@ const ROOT = resolve(import.meta.dirname, '..')
 
 const ALLOWED_FILES = new Set([
   'index.html', 'package.json', 'package-lock.json', 'tsconfig.json', 'vite.config.ts', 'eslint.config.js',
-  'pwa-assets.config.ts', 'playwright.public.config.ts', '.gitignore',
+  'playwright.public.config.ts', '.gitignore',
   'README.md', 'README.ar.md', 'CONTRIBUTING.md', 'THIRD_PARTY_CONTENT.md',
-  'scripts/build-content.ts', 'scripts/import-content.ts', 'scripts/check-public-build.ts', 'scripts/generate-splash.ts',
+  'scripts/build-content.ts', 'scripts/import-content.ts', 'scripts/check-public-build.ts', 'scripts/generate-icons.ts', 'scripts/generate-splash.ts',
   'content-sources/README.md', 'content-sources/curation.ts', 'content-sources/sources.ts',
   // Surah names and numbering only. This file holds no Quran text.
   'content-sources/quran/tanzil-quran-data.js',

@@ -60,7 +60,7 @@ export function BottomNav(): ReactElement {
 function Brand(): ReactElement {
   return (
     <div className="flex items-center gap-3 px-3">
-      <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="" width={44} height={44} className="size-11 rounded-2xl" />
+      <img src={`${import.meta.env.BASE_URL}pwa-192x192.png`} alt="" width={44} height={44} className="size-11 rounded-full" />
       <div>
         <p className="text-base font-semibold leading-tight text-ink">{t.appName}</p>
         <p className="text-xs text-muted">{t.tagline}</p>

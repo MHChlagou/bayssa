@@ -198,7 +198,7 @@ export default defineConfig(({ mode }) => ({
     prerenderShell(),
     VitePWA({
       registerType: 'prompt',
-      includeAssets: ['favicon.ico', 'favicon.svg', 'apple-touch-icon-180x180.png'],
+      includeAssets: ['favicon.ico', 'apple-touch-icon-180x180.png'],
       manifest: {
         id: BASE_PATH,
         name: 'Bayssa · أذكار وأدعية',
