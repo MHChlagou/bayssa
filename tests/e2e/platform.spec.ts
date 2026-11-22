@@ -6,7 +6,6 @@ import { DEDICATION_SUPPLICATION, TRIBUTE_PHRASE } from '../../src/app/dedicatio
 
 declare global {
   interface Window {
-    __vibrations: unknown[]
     __shared: unknown[]
     __copied: string[]
   }
@@ -264,55 +263,6 @@ test.describe('right-to-left layout and Arabic fonts', () => {
   })
 })
 
-test.describe('haptic feedback', () => {
-  test('vibrates on each count and with a pattern on completion, where supported', async ({ page }) => {
-    await page.addInitScript(() => {
-      window.__vibrations = []
-      Object.defineProperty(Navigator.prototype, 'vibrate', {
-        configurable: true,
-        value: (pattern: unknown) => { window.__vibrations.push(pattern); return true },
-      })
-    })
-    await page.goto('./#/tasbih')
-    await page.getByLabel('هدف مخصص').fill('2')
-    const bead = page.getByRole('button', { name: /اضغط للتسبيح/ })
-    await bead.click()
-    await bead.click()
-    await expect(page.getByRole('dialog').getByText('ما شاء الله')).toBeVisible()
-    const vibrations = await page.evaluate(() => window.__vibrations)
-    expect(vibrations).toHaveLength(2)
-    expect(vibrations[0]).toBe(12)
-    expect(Array.isArray(vibrations[1])).toBe(true)
-  })
-
-  test('stays silent when the user turns it off', async ({ page }) => {
-    await page.addInitScript(() => {
-      window.__vibrations = []
-      Object.defineProperty(Navigator.prototype, 'vibrate', {
-        configurable: true,
-        value: (pattern: unknown) => { window.__vibrations.push(pattern); return true },
-      })
-    })
-    await page.goto('./#/tasbih')
-    await page.getByRole('switch', { name: 'الاهتزاز عند العدّ' }).uncheck()
-    await page.getByRole('button', { name: /اضغط للتسبيح/ }).click()
-    expect(await page.evaluate(() => window.__vibrations)).toEqual([])
-  })
-
-  test('counting works on browsers with no vibration support', async ({ page }) => {
-    const errors: string[] = []
-    page.on('pageerror', (error) => errors.push(error.message))
-    await page.addInitScript(() => {
-      Object.defineProperty(Navigator.prototype, 'vibrate', { configurable: true, value: undefined })
-    })
-    await page.goto('./#/tasbih')
-    const bead = page.getByRole('button', { name: /اضغط للتسبيح/ })
-    await bead.click()
-    await expect(bead).toHaveAccessibleName(/١ \//)
-    expect(errors).toEqual([])
-  })
-})
-
 test.describe('sharing and copying', () => {
   test('shares the text with its source through the system share sheet, where supported', async ({ page }) => {
     await page.addInitScript(() => {
@@ -444,5 +394,59 @@ test.describe('service worker updates', () => {
     await page.getByRole('button', { name: 'تحديث', exact: true }).click()
     await expect(page.getByText(/الإصدار \d+\.\d+\.\d+-next ·/)).toBeVisible()
     await request.get(`${origin}/__use/current`)
+  })
+})
+
+test.describe('offering installation', () => {
+  const NOTICE_KEY = 'md:v1:install-notice'
+
+  test('shows an install button when the browser says the app can be installed, and uses it', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name === 'mobile-safari', 'iPhone has no install prompt: it gets the instructions instead')
+    await page.addInitScript((key) => localStorage.removeItem(key), NOTICE_KEY)
+    await page.goto('./')
+    await expect(page.locator('main').getByText(/هـ/).first()).toBeVisible()
+    await expect(page.getByRole('region', { name: 'ثبّت التطبيق على جهازك' })).toHaveCount(0)
+
+    // What Chrome does on Android once the app is installable.
+    await page.evaluate(() => {
+      const event = Object.assign(new Event('beforeinstallprompt', { cancelable: true }), {
+        prompt: async () => { Object.assign(window, { __installPrompted: true }) },
+      })
+      window.dispatchEvent(event)
+    })
+    const notice = page.getByRole('region', { name: 'ثبّت التطبيق على جهازك' })
+    await expect(notice).toBeVisible()
+
+    await notice.getByRole('button', { name: 'تثبيت' }).click()
+
+    await expect(notice).toHaveCount(0)
+    expect(await page.evaluate(() => (window as unknown as { __installPrompted?: boolean }).__installPrompted)).toBe(true)
+  })
+
+  test('shows iPhone users the two steps to install, and stays closed once closed', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'mobile-safari', 'Only iPhone and iPad need the instructions')
+    await page.goto('./')
+    await page.evaluate((key) => localStorage.removeItem(key), NOTICE_KEY)
+    await page.reload()
+    const notice = page.getByRole('region', { name: 'ثبّت التطبيق على الآيفون' })
+    await expect(notice).toBeVisible()
+    await expect(notice.getByRole('listitem')).toHaveText(['اضغط زر المشاركة في أسفل المتصفح', 'ثم اختر «إضافة إلى الشاشة الرئيسية»'])
+
+    await notice.getByRole('button', { name: 'إغلاق' }).click()
+    await page.reload()
+
+    await expect(page.locator('main').getByText(/هـ/).first()).toBeVisible()
+    await expect(notice).toHaveCount(0)
+  })
+
+  test('does not offer installation inside the installed app', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'mobile-safari', 'The instructions exist only on iPhone and iPad')
+    await page.addInitScript((key) => {
+      localStorage.removeItem(key)
+      Object.defineProperty(Navigator.prototype, 'standalone', { configurable: true, get: () => true })
+    }, NOTICE_KEY)
+    await page.goto('./')
+    await expect(page.locator('main').getByText(/هـ/).first()).toBeVisible()
+    await expect(page.getByRole('region', { name: 'ثبّت التطبيق على الآيفون' })).toHaveCount(0)
   })
 })

@@ -39,7 +39,7 @@ export const ar = {
     title: 'المسبحة', freeCounter: 'عدّاد حر', choose: 'اختر الذكر', target: 'الهدف', customTarget: 'هدف مخصص', round: 'الجولة', rounds: 'جولات مكتملة',
     total: 'المجموع الكلي', tap: 'اضغط للتسبيح', completeTitle: 'ما شاء الله', completeBody: 'أتممت العدد المطلوب',
     nextRound: 'جولة أخرى', keepCounting: 'متابعة العدّ', resetConfirm: 'هل تريد تصفير العدّاد الحالي؟',
-    resetHint: 'سيُصفَّر عدّاد هذا الذكر وجولاته فقط.', haptics: 'الاهتزاز عند العدّ',
+    resetHint: 'سيُصفَّر عدّاد هذا الذكر وجولاته فقط.',
   },
   favorites: {
     title: 'المفضلة', subtitle: 'أدعيتك وأذكارك المحفوظة', emptyTitle: 'لا توجد عناصر محفوظة بعد',
@@ -106,7 +106,12 @@ export const ar = {
       unreadable: 'تعذّر فتح الملف. لم يتغير شيء.',
     },
   },
-  pwa: { updateReady: 'يتوفر تحديث جديد', reload: 'تحديث', offlineReady: 'التطبيق جاهز للعمل دون اتصال', dismiss: 'لاحقاً' },
+  pwa: {
+    updateReady: 'يتوفر تحديث جديد', reload: 'تحديث', offlineReady: 'التطبيق جاهز للعمل دون اتصال', dismiss: 'لاحقاً',
+    installTitle: 'ثبّت التطبيق على جهازك', installBody: 'يفتح مباشرة من الشاشة الرئيسية ويعمل دون اتصال.', install: 'تثبيت',
+    iosTitle: 'ثبّت التطبيق على الآيفون', iosStepShare: 'اضغط زر المشاركة في أسفل المتصفح', iosStepAdd: 'ثم اختر «إضافة إلى الشاشة الرئيسية»',
+    notNow: 'ليس الآن',
+  },
   errors: { notFoundTitle: 'الصفحة غير موجودة', notFoundBody: 'ربما تغيّر الرابط أو حُذف.', goHome: 'العودة إلى الرئيسية' },
 } as const
 

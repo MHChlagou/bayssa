@@ -1,7 +1,8 @@
 import { Suspense, useEffect, type ReactElement, type ReactNode } from 'react'
 import { Outlet, useLocation } from 'react-router'
 import { useEntranceAnimation } from '../boot.ts'
-import { AppFrame } from './AppFrame.tsx'
+import { AppFrame, NoticeStack } from './AppFrame.tsx'
+import { InstallPrompt } from './InstallPrompt.tsx'
 import { UpdatePrompt } from './UpdatePrompt.tsx'
 
 export function PageSkeleton(): ReactElement {
@@ -44,7 +45,10 @@ export function AppShell(): ReactElement {
           </Suspense>
         </PageTransition>
       </AppFrame>
-      <UpdatePrompt />
+      <NoticeStack>
+        <InstallPrompt />
+        <UpdatePrompt />
+      </NoticeStack>
     </>
   )
 }

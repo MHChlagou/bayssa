@@ -1,14 +1,13 @@
 import { Check, RotateCcw } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useId, useState, type CSSProperties, type ReactElement } from 'react'
-import { haptic, HAPTIC_COMPLETE_PATTERN_MS, HAPTIC_TAP_MS } from '../../app/hooks.ts'
 import { FREE_COUNTER, tasbihPresets } from '../../content/index.ts'
 import {
   createCounter, isTargetReached, justCompleted, MAX_TARGET, MIN_TARGET, roundProgress, tasbihReducer,
   type Counter, type TasbihAction, type TasbihState,
 } from '../../domain/tasbih/tasbih.ts'
 import { formatNumber, t } from '../../i18n/t.ts'
-import { prefsStore, tasbihStore } from '../../storage/stores.ts'
+import { tasbihStore } from '../../storage/stores.ts'
 import { usePersistentState } from '../../storage/usePersistentState.ts'
 import { cn } from '../../ui/cn.ts'
 import { Dialog } from '../../ui/Dialog.tsx'
@@ -46,7 +45,6 @@ function CompletionRays(): ReactElement {
 
 export function TasbihPage(): ReactElement {
   const [state, setState] = usePersistentState(tasbihStore)
-  const [prefs, setPrefs] = usePersistentState(prefsStore)
   const [isCelebrating, setIsCelebrating] = useState(false)
   const [isConfirmingReset, setIsConfirmingReset] = useState(false)
   const celebrationTitleId = useId()
@@ -67,7 +65,6 @@ export function TasbihPage(): ReactElement {
   const tap = (): void => {
     const next = reduce(state, { type: 'increment' }).counters[preset.id]
     const hasJustCompleted = next !== undefined && justCompleted(counter, next)
-    haptic(hasJustCompleted ? HAPTIC_COMPLETE_PATTERN_MS : HAPTIC_TAP_MS)
     dispatch({ type: 'increment' })
     if (hasJustCompleted) setIsCelebrating(true)
   }
@@ -207,16 +204,6 @@ export function TasbihPage(): ReactElement {
             className="h-10 w-28 rounded-full border border-line bg-surface px-4 text-center text-sm text-ink outline-none placeholder:text-muted/70 focus:border-primary/50"
           />
         </div>
-        <label className="mt-5 flex cursor-pointer items-center justify-between rounded-[22px] border border-line bg-surface px-5 py-3 text-sm text-ink">
-          {t.tasbih.haptics}
-          <input
-            type="checkbox"
-            role="switch"
-            checked={prefs.isHapticsEnabled}
-            onChange={(event) => setPrefs((current) => ({ ...current, isHapticsEnabled: event.target.checked }))}
-            className="size-5 accent-primary"
-          />
-        </label>
       </section>
 
       <Dialog isOpen={isCelebrating} onClose={() => setIsCelebrating(false)} labelledBy={celebrationTitleId}>

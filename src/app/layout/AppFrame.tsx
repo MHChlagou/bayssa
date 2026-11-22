@@ -20,3 +20,15 @@ export function AppFrame({ children }: { children: ReactNode }): ReactElement {
     </div>
   )
 }
+
+/**
+ * Where notices appear: above the bottom bar on small screens, in the corner on desktop.
+ * The build-time shell renders it empty, so the live app finds the same element in place.
+ */
+export function NoticeStack({ children }: { children?: ReactNode }): ReactElement {
+  return (
+    <div className="pointer-events-none fixed inset-x-3 bottom-28 z-50 mx-auto flex max-w-sm flex-col gap-2 *:pointer-events-auto lg:bottom-6 lg:start-auto lg:end-6 lg:mx-0 lg:w-96">
+      {children}
+    </div>
+  )
+}

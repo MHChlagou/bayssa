@@ -3,7 +3,7 @@ import { renderToString } from 'react-dom/server'
 import { MemoryRouter } from 'react-router'
 import { HomePage } from '../features/home/HomePage.tsx'
 import { StaticShellContext } from './boot.ts'
-import { AppFrame } from './layout/AppFrame.tsx'
+import { AppFrame, NoticeStack } from './layout/AppFrame.tsx'
 
 /**
  * HTML of the home screen without anything that depends on the day or on the
@@ -23,6 +23,7 @@ export function renderShell(): string {
             </Suspense>
           </div>
         </AppFrame>
+        <NoticeStack />
       </MemoryRouter>
     </StaticShellContext>,
   )

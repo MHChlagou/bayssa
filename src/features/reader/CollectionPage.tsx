@@ -2,7 +2,7 @@ import { BookOpen, RotateCcw } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, type ReactElement } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router'
-import { haptic, HAPTIC_COMPLETE_PATTERN_MS, HAPTIC_TAP_MS, useFavorites } from '../../app/hooks.ts'
+import { useFavorites } from '../../app/hooks.ts'
 import { completedItemCount, useTodayProgress } from '../../app/progress.ts'
 import { getCollection, getEntry } from '../../content/index.ts'
 import { clearCollection, countFor, progressKey, recordRepetition } from '../../domain/progress/progress.ts'
@@ -48,8 +48,6 @@ export function CollectionPage(): ReactElement {
 
   const count = (index: number, repeat: number): void => {
     const key = progressKey(collection.id, index)
-    const willFinishItem = countFor(progress, day, key) + 1 >= repeat
-    haptic(willFinishItem ? HAPTIC_COMPLETE_PATTERN_MS : HAPTIC_TAP_MS)
     setProgress((current) => recordRepetition(current, day, key, repeat))
   }
 

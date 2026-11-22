@@ -23,7 +23,9 @@ export default defineConfig({
     { name: 'android-chrome', use: { ...devices['Pixel 7'] } },
     { name: 'desktop-chrome', use: { ...devices['Desktop Chrome'], viewport: { width: 1366, height: 860 } } },
     { name: 'desktop-safari', use: { ...devices['Desktop Safari'], viewport: { width: 1366, height: 860 } } },
-    { name: 'mobile-safari', use: { ...devices['iPhone 14'] } },
+    // An iPhone is shown how to install the app on every screen until that notice is closed.
+    // It starts closed here so it does not cover what other tests press. Its own tests open it again.
+    { name: 'mobile-safari', use: { ...devices['iPhone 14'], storageState: { cookies: [], origins: [{ origin: `http://localhost:${PORT}`, localStorage: [{ name: 'md:v1:install-notice', value: '{"version":1,"data":{"isDismissed":true}}' }] }] } } },
   ],
   webServer: [
     { command: `npm run preview -- --port ${PORT} --strictPort`, url: BASE_URL, reuseExistingServer: !process.env.CI, timeout: 60_000 },

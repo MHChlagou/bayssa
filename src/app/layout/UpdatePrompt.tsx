@@ -35,7 +35,7 @@ export function UpdatePrompt(): ReactElement | null {
   return (
     <div
       role="status"
-      className="toast-enter fixed inset-x-3 bottom-28 z-50 mx-auto flex max-w-sm items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-3 shadow-float lg:bottom-6 lg:start-auto lg:end-6 lg:mx-0"
+      className="toast-enter flex items-center gap-3 rounded-2xl border border-line bg-surface px-4 py-3 shadow-float"
     >
       <p className="flex-1 text-sm text-ink">{isUpdateReady ? t.pwa.updateReady : t.pwa.offlineReady}</p>
       {isUpdateReady && (
