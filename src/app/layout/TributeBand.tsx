@@ -2,7 +2,8 @@ import { useState, type ReactElement } from 'react'
 import { t } from '../../i18n/t.ts'
 import { TRIBUTE_PHRASE } from '../dedication.ts'
 
-const REPETITIONS_PER_GROUP = 8
+// Enough copies for one group to be wider than a very wide screen, so the line has no gap.
+const REPETITIONS_PER_GROUP = 6
 
 function Crescent(): ReactElement {
   return (

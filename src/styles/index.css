@@ -268,7 +268,8 @@ button {
   display: flex;
   width: max-content;
   flex-shrink: 0;
-  animation: tribute-drift 72s linear infinite;
+  /* About 27px a second: slow, and still readable as a sentence. */
+  animation: tribute-drift 108s linear infinite;
   will-change: transform;
 }
 
@@ -332,5 +333,18 @@ button {
   }
   .tribute-still {
     display: flex;
+  }
+  /* Below the desktop layout the band is part of the page, so the sentence may take the lines it needs. */
+  @media (max-width: 63.999rem) {
+    .tribute-still {
+      height: auto;
+      min-height: var(--tribute-height);
+      padding: 0.2rem 0.9rem;
+    }
+    .tribute-still .tribute-phrase {
+      line-height: 1.75;
+      text-align: center;
+      white-space: normal;
+    }
   }
 }
