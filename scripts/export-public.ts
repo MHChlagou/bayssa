@@ -176,6 +176,7 @@ if (existsSync(join(target, '.git'))) throw new Error('the export must not conta
 // ---------------------------------------------------------------- Reports
 
 const reports = join(ROOT, 'docs', 'open-source')
+mkdirSync(reports, { recursive: true })
 const origin = (path: string): string =>
   GENERATED_FILES.includes(path) ? 'generated in the export' : path === 'package.json' ? 'copied, scripts adjusted' : 'copied'
 const sha = (path: string): string => createHash('sha256').update(readFileSync(join(target, path))).digest('hex').slice(0, 12)

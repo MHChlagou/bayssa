@@ -23,7 +23,7 @@ It is a static site with no server, built to be hosted on GitHub Pages.
 
 - Daily adhkar: morning, evening, after prayer, sleep, waking and general remembrance, with a repetition counter and daily progress for each.
 - Everyday duas grouped by situation and prophetic supplications, each with its collection, hadith number and attributed grading. Supplications from the Quran form one category among them, each shown as an individual supplication with its surah and ayah.
-- Tasbih counter with presets, custom targets, rounds, a completion animation and optional haptic feedback. A count is never cleared without being asked.
+- Tasbih counter with presets, custom targets, rounds, and a completion animation. A count is never cleared without being asked.
 - Favorites, saved on the device and grouped by section.
 - Export and import of favorites and counters to a file, with a preview before anything is applied. This is also how data moves between the browser and the installed app. See [`docs/product/backup-format.md`](docs/product/backup-format.md).
 - Arabic search that ignores vocalization and tolerates common spelling variants.
