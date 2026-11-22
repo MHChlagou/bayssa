@@ -46,6 +46,11 @@ jobs:
       - run: npm run build
       - run: npx playwright install --with-deps chromium firefox webkit
       - run: npm run test:e2e
+      # A failed test is retried once. This step says which tests needed the retry, so a
+      # pass on the second attempt is never shown as a clean run. A test that fails both
+      # attempts fails the step above, and with it the job and any deployment.
+      - if: ${{ !cancelled() }}
+        run: node scripts/report-test-attempts.ts test-reports/e2e.json "End-to-end tests"
       # The public variant is what gets deployed: only content whose redistribution
       # is documented in content-sources/sources.ts. The build fails if anything
       # else is found in its output, and it is tested before it is uploaded.
@@ -56,12 +61,18 @@ jobs:
         env:
           # Absolute address for link previews. Empty whenever nothing is deployed.
           SITE_URL: ${{ steps.pages.outputs.base_url && format('{0}/', steps.pages.outputs.base_url) || '' }}
+      # No retries here: one failure of the public build's tests stops the deployment.
       - run: npm run test:public
+      - if: ${{ !cancelled() }}
+        run: node scripts/report-test-attempts.ts test-reports/public.json "Public build smoke tests"
+      # Kept for every run, so the trace of a failed first attempt can be read even when the retry passed.
       - uses: actions/upload-artifact@v7
-        if: failure()
+        if: ${{ !cancelled() }}
         with:
           name: playwright-report
-          path: playwright-report
+          path: |
+            playwright-report
+            test-reports
           retention-days: 7
       # The public variant, for inspection.
       - uses: actions/upload-artifact@v7

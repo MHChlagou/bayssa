@@ -14,7 +14,9 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,
-  reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
+  // In CI every attempt is listed in the log, and the JSON report feeds scripts/report-test-attempts.ts,
+  // which states which tests passed only after a retry.
+  reporter: process.env.CI ? [['list'], ['github'], ['json', { outputFile: 'test-reports/e2e.json' }], ['html', { open: 'never' }]] : 'list',
   use: { baseURL: BASE_URL, locale: 'ar-EG', trace: 'retain-on-failure' },
   projects: [
     { name: 'android-chrome', use: { ...devices['Pixel 7'] } },

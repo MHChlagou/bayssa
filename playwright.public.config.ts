@@ -12,7 +12,7 @@ export default defineConfig({
   testDir: 'tests/public',
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
-  reporter: 'list',
+  reporter: process.env.CI ? [['list'], ['github'], ['json', { outputFile: 'test-reports/public.json' }]] : 'list',
   use: { baseURL: BASE_URL, locale: 'ar-EG', trace: 'retain-on-failure' },
   projects: [
     { name: 'android-chrome', use: { ...devices['Pixel 7'] } },

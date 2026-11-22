@@ -12,5 +12,6 @@ content-sources/quran/tanzil-ar-muyassar.txt
 src/content/generated
 test-results
 playwright-report
+test-reports
 *.local
 .DS_Store
