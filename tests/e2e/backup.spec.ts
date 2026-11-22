@@ -72,7 +72,8 @@ test.describe('export', () => {
     await page.waitForLoadState('networkidle')
     const requests: string[] = []
     page.on('request', (request) => {
-      if (!request.url().startsWith('blob:')) requests.push(request.url())
+      // The browser may re-check the service worker script at any moment. That is the app's own file, not the export.
+      if (!request.url().startsWith('blob:') && !request.url().endsWith('/sw.js')) requests.push(request.url())
     })
     const downloading = page.waitForEvent('download')
     await page.getByRole('button', { name: 'تصدير ملف' }).click()
