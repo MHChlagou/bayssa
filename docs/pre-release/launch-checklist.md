@@ -5,7 +5,9 @@ Status on 2026-11-22. "Done" means verified in this repository. Everything else 
 ## 1. Content and licensing
 
 - [ ] Blocking: written permission for the selection from حصن المسلم, or the wording re-sourced from a licensed dataset with your approval. See `licensing.md`.
-- [ ] Blocking: التفسير الميسر re-sourced from QuranEnc.com under its stated terms, or permission from the King Fahd Complex, or the "meaning" disclosure removed.
+- [x] التفسير الميسر: explanations removed from the product, which ends that licensing question.
+- [ ] Blocking: the origin of the hadith reference data (`hadith-api`) is undocumented. Clarify it, or take references and gradings from a source with stated terms.
+- [x] Dedication band and card in place. No personal detail about the name appears anywhere.
 - [ ] Decide what happens to `content-sources/hisn-footnotes/`, which is the whole book under a transcriber's MIT file.
 - [ ] Decide how the two existing commits are published, since they contain the unresolved material.
 - [ ] Choose the code licence and add `LICENSE` (and `NOTICE` if Apache-2.0).

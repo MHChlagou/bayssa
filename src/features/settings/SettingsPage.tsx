@@ -1,5 +1,6 @@
 import { Minus, Plus } from 'lucide-react'
 import type { ReactElement, ReactNode } from 'react'
+import { DEDICATION_SUPPLICATION } from '../../app/dedication.ts'
 import { isApproximateMatch } from '../../content/describe.ts'
 import { allEntries, basmala, contentSources } from '../../content/index.ts'
 import type { Entry } from '../../content/schema.ts'
@@ -45,6 +46,11 @@ export function SettingsPage(): ReactElement {
   return (
     <div className="mx-auto max-w-[720px] space-y-4">
       <PageHeader title={t.settings.title} backTo="/" actions={<span />} />
+
+      <section aria-label={t.settings.dedication} className="relative overflow-hidden rounded-[26px] bg-linear-to-bl from-[#14705a] via-[#0d4a3a] to-[#072a20] px-6 py-7 text-center shadow-card">
+        <p className="text-xs font-medium tracking-wide text-[#e6cf98]">{t.settings.dedication}</p>
+        <p className="scripture mt-2 text-[#fdfaf1]">{DEDICATION_SUPPLICATION}</p>
+      </section>
 
       <Group title={t.settings.appearance}>
         <div>

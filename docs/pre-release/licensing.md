@@ -8,10 +8,10 @@ Investigated on 2026-11-22. This is an engineer's reading of published statement
 |---|---|
 | Application source code | Yes, once you choose a licence. It is your own work. |
 | Quran text (Tanzil) | Yes, under Tanzil's stated terms, which the project meets. |
-| Hadith references and gradings | Yes. |
 | Fonts and code libraries | Yes. |
 | Supplication text taken from Hisn al-Muslim | Not established. The author's stated permission does not clearly cover what the project does. |
-| التفسير الميسر excerpts taken from Tanzil | Not established for a public repository. A source with explicit redistribution terms exists and is proposed below. |
+| التفسير الميسر excerpts | No longer applies. The explanations were removed from the product on 2026-11-22. Section 2 is kept as the record of the investigation. |
+| Hadith numbers and gradings from `hadith-api` | Not established. The dataset names no source for its edition. See `docs/product/hadith-source-comparison.md`. |
 
 The two existing commits contain both unresolved items (`content/dataset`, the audit reports that quote the text, and `content-sources/hisn-footnotes`). Pushing those commits publishes that material.
 
@@ -64,6 +64,8 @@ Two points limit how far the author's rights reach, and a lawyer should weigh th
 
 ## 2. التفسير الميسر
 
+Decision on 2026-11-22: tafsir explanations are removed from Bayssa, which is a duas and adhkar app and carries no commentary on the Quran. The dataset no longer contains them. What follows is the record of the investigation.
+
 ### Original source and publisher
 
 - Work: التفسير الميسر, written by a committee of scholars and published by the King Fahd Complex for the Printing of the Holy Quran, Madinah.
@@ -103,7 +105,7 @@ The alternative with no licensing question is to remove the optional "meaning" d
 |---|---|---|---|
 | Quran text, Uthmani and plain | Tanzil Project 1.1 | Creative Commons Attribution 3.0, with the project's terms: verbatim copies only, source clearly indicated with a link to tanzil.net, and the copyright notice kept in copies and reproduced in files that contain a substantial portion | The files keep their notice and the text is checked byte for byte. One gap: the app names Tanzil.net in its sources screen as text, not as a link. Making it a link is on the launch checklist. |
 | Surah names | Tanzil metadata | Creative Commons Attribution 3.0 | |
-| Hadith numbers and grading labels | `fawazahmed0/hadith-api` | The Unlicense | Only numbers and grading labels reach the app. |
+| Hadith numbers and grading labels | `fawazahmed0/hadith-api` | The Unlicense on the repository. Moved out of this table on 2026-11-22: the dataset documents no origin for its edition, so the rights are not established | Only numbers and grading labels reach the app. |
 | Fonts | Amiri, Readex Pro | SIL Open Font License 1.1 | Bundled by the build from npm packages. |
 | Libraries | React, React Router, Motion (MIT), Lucide (ISC) | Permissive | |
 

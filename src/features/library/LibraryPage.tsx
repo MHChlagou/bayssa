@@ -42,7 +42,8 @@ export function AdhkarPage(): ReactElement {
   )
 }
 
-const DUA_TABS = ['daily-duas', 'quranic', 'prophetic'] as const satisfies readonly SectionId[]
+// Everyday and prophetic supplications come first. Supplications from the Quran are one category among them.
+const DUA_TABS = ['daily-duas', 'prophetic', 'quranic'] as const satisfies readonly SectionId[]
 type DuaTab = (typeof DUA_TABS)[number]
 
 function isDuaTab(value: string | null): value is DuaTab {

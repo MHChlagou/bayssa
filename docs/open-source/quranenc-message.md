@@ -1,5 +1,7 @@
 # Message to QuranEnc.com
 
+Withdrawn on 2026-11-22: tafsir explanations were removed from the product. Do not send. Kept for the record.
+
 Draft for your review. Not sent. Bracketed parts are placeholders.
 
 Channel: the contact page linked as "تواصل معنا" on quranenc.com. I did not find a separate address for licensing questions.

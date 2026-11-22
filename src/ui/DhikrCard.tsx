@@ -101,16 +101,6 @@ export function DhikrCard({
         {note !== undefined && (
           <p className="mt-3 border-s-2 border-accent-soft/70 ps-3 text-[0.82rem] leading-relaxed text-muted">{note}</p>
         )}
-        {entry.kind === 'quran' && entry.meaning && (
-          <details className="group mt-4 rounded-2xl bg-surface-alt/60 px-4 py-2.5 text-sm">
-            <summary className="cursor-pointer list-none font-medium text-primary marker:hidden">
-              {t.reader.meaning}
-              <span className="ms-1.5 inline-block text-muted transition-transform duration-200 group-open:rotate-180" aria-hidden="true">⌄</span>
-            </summary>
-            <p className="mt-2 leading-loose text-ink/90">{entry.meaning.text}</p>
-            <p className="mt-2 text-xs text-muted">{entry.meaning.source}</p>
-          </details>
-        )}
       </div>
 
       <footer className="flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-line/70 px-5 py-3 text-xs text-muted sm:px-7">

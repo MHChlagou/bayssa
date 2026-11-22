@@ -1,5 +1,7 @@
 # التفسير الميسر: migration plan to the QuranEnc.com copy
 
+Withdrawn on 2026-11-22: tafsir explanations were removed from the product, so no migration will take place. Kept as the record of the investigation.
+
 Prepared on 2026-11-22. Nothing in the dataset or the app has been changed. This plan needs your approval of the exact change before any step that touches content.
 
 ## 1. Licensing evidence

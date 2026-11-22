@@ -225,3 +225,112 @@ button {
 .toast-enter {
   animation: rise-in 320ms var(--ease-out-soft) both;
 }
+
+/* ------------------------------------------------------------ Dedication band
+   The same emerald and gold in both themes: it is the one constant of the app. */
+:root {
+  --tribute-height: 34px;
+}
+@media (width >= 64rem) {
+  :root {
+    --tribute-height: 38px;
+  }
+}
+
+.tribute {
+  position: relative;
+  overflow: hidden;
+  padding-top: env(safe-area-inset-top);
+  background: linear-gradient(90deg, #06231b, #0d4a3a 50%, #06231b);
+  border-bottom: 1px solid rgb(217 189 127 / 0.32);
+  color: #fdfaf1;
+}
+
+.tribute-viewport,
+.tribute-still {
+  height: var(--tribute-height);
+  align-items: center;
+}
+
+.tribute-viewport {
+  display: flex;
+  /* The line fades in and out at the edges instead of being cut. */
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+}
+
+.tribute-still {
+  display: none;
+  justify-content: center;
+  gap: 0.9rem;
+}
+
+.tribute-track {
+  display: flex;
+  width: max-content;
+  flex-shrink: 0;
+  animation: tribute-drift 72s linear infinite;
+  will-change: transform;
+}
+
+.tribute-group,
+.tribute-item {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.tribute-phrase {
+  font-family: var(--font-scripture);
+  font-size: 1.06rem;
+  line-height: var(--tribute-height);
+  white-space: nowrap;
+  letter-spacing: 0;
+}
+
+.tribute-item {
+  gap: 1.5rem;
+  padding-inline-end: 1.5rem;
+}
+
+.tribute-crescent {
+  width: 0.72rem;
+  height: 0.72rem;
+  flex-shrink: 0;
+  color: #d9bd7f;
+  opacity: 0.9;
+}
+
+.tribute-control {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  cursor: default;
+}
+.tribute-control:focus-visible {
+  outline-offset: -3px;
+}
+
+.tribute:hover .tribute-track,
+.tribute[data-paused='true'] .tribute-track {
+  animation-play-state: paused;
+}
+
+/* Two identical groups: moving by half the track's width brings the second
+   group exactly where the first one started, so the line never jumps. */
+@keyframes tribute-drift {
+  to {
+    transform: translateX(50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tribute-viewport,
+  .tribute-control {
+    display: none;
+  }
+  .tribute-still {
+    display: flex;
+  }
+}

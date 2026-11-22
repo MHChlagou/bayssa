@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { expect, test, type Page } from '@playwright/test'
 import { UPDATE_SERVER_PORTS } from '../../playwright.config.ts'
+import { DEDICATION_SUPPLICATION, TRIBUTE_PHRASE } from '../../src/app/dedication.ts'
 
 declare global {
   interface Window {
@@ -69,6 +70,96 @@ test.describe('first load', () => {
     await expect(page.getByRole('heading', { level: 1, name: 'المسبحة' })).toBeVisible()
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
     expect(problems).toEqual([])
+  })
+})
+
+test.describe('dedication', () => {
+  const ROUTES = ['', '#/adhkar', '#/adhkar/morning', '#/duas', '#/tasbih', '#/favorites', '#/search', '#/settings']
+
+  test('the band is at the top of every screen and is announced once', async ({ page }) => {
+    for (const route of ROUTES) {
+      await page.goto(`./${route}`)
+      const band = page.getByRole('complementary', { name: 'إهداء' })
+      await expect(band, route).toBeVisible()
+      const box = await band.boundingBox()
+      expect(box?.y, route).toBe(0)
+      expect(box?.width, route).toBe(page.viewportSize()?.width)
+      // One copy for assistive technology. Every moving copy is hidden from it.
+      const exposed = await band.evaluate((element, phrase) => {
+        const holders = [...element.querySelectorAll('*')].filter((node) => node.children.length === 0 && node.textContent === phrase)
+        return holders.filter((node) => node.closest('[aria-hidden="true"]') === null).length
+      }, TRIBUTE_PHRASE)
+      expect(exposed, route).toBe(1)
+    }
+  })
+
+  test('the phrase reaches the page letter for letter, set in Amiri, right to left', async ({ page }) => {
+    await page.goto('./')
+    const phrase = page.locator('.tribute-viewport .tribute-phrase').first()
+    await expect(phrase).toHaveText(TRIBUTE_PHRASE)
+    const style = await phrase.evaluate((element) => {
+      const computed = getComputedStyle(element)
+      return { font: computed.fontFamily, direction: computed.direction }
+    })
+    expect(style.font).toMatch(/^"?Amiri/)
+    expect(style.direction).toBe('rtl')
+    expect(await page.evaluate(() => document.fonts.check('17px Amiri', document.querySelector('.tribute-phrase')?.textContent ?? ''))).toBe(true)
+  })
+
+  test('drifts slowly, and stops on hover and when its control is used', async ({ page }) => {
+    await page.goto('./#/tasbih')
+    const track = page.locator('.tribute-track')
+    const state = (): Promise<{ name: string; seconds: number; play: string }> =>
+      track.evaluate((element) => {
+        const computed = getComputedStyle(element)
+        return { name: computed.animationName, seconds: Number.parseFloat(computed.animationDuration), play: computed.animationPlayState }
+      })
+    await page.mouse.move(200, 400)
+    const running = await state()
+    expect(running.name).toBe('tribute-drift')
+    expect(running.seconds).toBeGreaterThanOrEqual(60)
+    expect(running.play).toBe('running')
+
+    const control = page.getByRole('button', { name: 'إيقاف حركة شريط الإهداء' })
+    await control.focus()
+    await page.keyboard.press('Enter')
+    await page.mouse.move(200, 400)
+    expect((await state()).play).toBe('paused')
+    await page.getByRole('button', { name: 'تشغيل حركة شريط الإهداء' }).press('Enter')
+    await page.mouse.move(200, 400)
+    expect((await state()).play).toBe('running')
+
+    await page.mouse.move(100, 10)
+    expect((await state()).play).toBe('paused')
+  })
+
+  test('stands still when the device asks for reduced motion', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto('./')
+    await expect(page.locator('.tribute-viewport')).toBeHidden()
+    await expect(page.locator('.tribute-still .tribute-phrase')).toHaveText(TRIBUTE_PHRASE)
+    await expect(page.locator('.tribute-still')).toBeVisible()
+    await expect(page.locator('.tribute-control')).toBeHidden()
+  })
+
+  test('the supplication is on a card in settings, and nowhere else', async ({ page }) => {
+    await page.goto('./#/settings')
+    await expect(page.getByRole('region', { name: 'إهداء' })).toContainText(DEDICATION_SUPPLICATION)
+    for (const route of ['', '#/adhkar', '#/tasbih']) {
+      await page.goto(`./${route}`)
+      await expect(page.locator('main h1, main h2').first()).toBeVisible()
+      await expect(page.getByText(DEDICATION_SUPPLICATION)).toHaveCount(0)
+    }
+  })
+
+  test('the band does not make the page wider or cover the content', async ({ page }) => {
+    await page.goto('./#/adhkar/morning')
+    await expect(page.locator('article').first()).toBeVisible()
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1)
+    const band = await page.locator('.tribute').boundingBox()
+    const heading = await page.getByRole('heading', { level: 1 }).boundingBox()
+    if (!band || !heading) throw new Error('layout boxes missing')
+    expect(heading.y).toBeGreaterThanOrEqual(band.y + band.height)
   })
 })
 

@@ -21,7 +21,7 @@ export type Verification = {
   note?: string
 }
 
-export type SourceId = 'tanzil-uthmani' | 'hisn-al-muslim' | 'tafsir-muyassar-tanzil' | 'hadith-api'
+export type SourceId = 'tanzil-uthmani' | 'hisn-al-muslim' | 'hadith-api'
 
 /** Whether the right to redistribute a source in a public repository and app is documented. */
 export type RedistributionStatus = 'cleared' | 'not-established'
@@ -51,14 +51,16 @@ export type ScholarlyReview =
   | { status: 'not-reviewed' }
   | { status: 'reviewed'; by: string; on: string }
 
-/** Where each part of an entry comes from. Rights are looked up in the source registry. */
+/**
+ * Where each part of an entry comes from. Bayssa shows supplications and their
+ * references only: it carries no explanation or commentary of the Quran.
+ * Rights are looked up in the source registry.
+ */
 export type Provenance = {
   /** Source of the recited wording. */
   text: SourceId
   /** Source of the collection name, hadith number and grading. */
   reference?: SourceId
-  /** Source of the explanation shown under a Quran passage. */
-  meaning?: SourceId
   scholarlyReview: ScholarlyReview
 }
 
@@ -106,7 +108,6 @@ export type QuranEntry = EntryBase & {
    * Uthmani spelling does not match what people type. Never displayed.
    */
   searchText: string
-  meaning?: { text: string; source: string }
 }
 
 export type HadithEntry = EntryBase & {

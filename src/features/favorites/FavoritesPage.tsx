@@ -11,7 +11,7 @@ import { DhikrCard } from '../../ui/DhikrCard.tsx'
 import { EmptyState } from '../../ui/EmptyState.tsx'
 import { PageHeader } from '../../ui/PageHeader.tsx'
 
-const SECTION_ORDER: readonly SectionId[] = ['adhkar', 'daily-duas', 'quranic', 'prophetic']
+const SECTION_ORDER: readonly SectionId[] = ['adhkar', 'daily-duas', 'prophetic', 'quranic']
 type Filter = SectionId | 'all'
 
 export function FavoritesPage(): ReactElement {

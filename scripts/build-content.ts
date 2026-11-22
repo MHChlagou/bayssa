@@ -25,11 +25,10 @@ const verification = z.strictObject({
   checkedOn: z.iso.date(),
   note: z.string().optional(),
 })
-const sourceId = z.enum(['tanzil-uthmani', 'hisn-al-muslim', 'tafsir-muyassar-tanzil', 'hadith-api'])
+const sourceId = z.enum(['tanzil-uthmani', 'hisn-al-muslim', 'hadith-api'])
 const provenance = z.strictObject({
   text: sourceId,
   reference: sourceId.optional(),
-  meaning: sourceId.optional(),
   scholarlyReview: z.discriminatedUnion('status', [
     z.strictObject({ status: z.literal('not-reviewed') }),
     z.strictObject({ status: z.literal('reviewed'), by: z.string().min(1), on: z.iso.date() }),
@@ -51,7 +50,6 @@ const entrySchema = z.discriminatedUnion('kind', [
     kind: z.literal('quran'),
     segments: z.array(quranSegment).min(1),
     searchText: z.string().min(1),
-    meaning: z.strictObject({ text: z.string().min(1), source: z.string().min(1) }).optional(),
     provenance,
     verification,
   }),
@@ -122,9 +120,6 @@ for (const entry of entries) {
     if (!isIntact) problems.push(`${entry.id}: text of ${segment.surah}:${segment.ayah} differs from the Tanzil Uthmani text`)
   }
   // Provenance must describe what the entry actually contains.
-  if (entry.kind === 'quran' && (entry.meaning !== undefined) !== (entry.provenance.meaning !== undefined)) {
-    problems.push(`${entry.id}: the explanation and its recorded source do not match`)
-  }
   if (entry.kind === 'hadith' && (entry.sources.length > 0) !== (entry.provenance.reference !== undefined)) {
     problems.push(`${entry.id}: the references and their recorded source do not match`)
   }
@@ -161,19 +156,6 @@ const isCleared = (id: SourceId | undefined): boolean => id === undefined || SOU
 const isInScope = (entry: Entry): boolean =>
   scope === 'full' || (isCleared(entry.provenance.text) && isCleared(entry.provenance.reference))
 
-/** Drops the parts of an entry that may not be redistributed, never the wording itself. */
-function forScope(entry: Entry): Entry {
-  if (scope === 'full' || entry.kind !== 'quran' || isCleared(entry.provenance.meaning)) return entry
-  return {
-    id: entry.id,
-    kind: 'quran',
-    segments: entry.segments,
-    searchText: entry.searchText,
-    provenance: { text: entry.provenance.text, scholarlyReview: entry.provenance.scholarlyReview },
-    verification: entry.verification,
-  }
-}
-
 const publishedCollections = collections
   .map((c) => ({
     ...c,
@@ -196,14 +178,14 @@ const bundle: ContentBundle = {
   basmala: meta.basmala,
   surahs: meta.surahs,
   // Editorial verification notes are for maintainers and stay out of the shipped bundle.
-  entries: entries.filter((e) => usedIds.has(e.id)).map((e) => ({ ...forScope(e), verification: { ...e.verification, note: undefined } })),
+  entries: entries.filter((e) => usedIds.has(e.id)).map((e) => ({ ...e, verification: { ...e.verification, note: undefined } })),
   collections: publishedCollections,
   tasbihPresets: publishedPresets,
 }
 
 const usedSources = new Set<SourceId>()
 for (const entry of bundle.entries) {
-  for (const id of [entry.provenance.text, entry.provenance.reference, entry.provenance.meaning]) {
+  for (const id of [entry.provenance.text, entry.provenance.reference]) {
     if (id !== undefined) usedSources.add(id)
   }
 }

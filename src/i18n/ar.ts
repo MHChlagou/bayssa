@@ -3,6 +3,7 @@
 export const ar = {
   appName: 'Bayssa',
   tagline: 'أذكار وأدعية',
+  tribute: { label: 'إهداء', pause: 'إيقاف حركة شريط الإهداء', resume: 'تشغيل حركة شريط الإهداء' },
   nav: { home: 'الرئيسية', adhkar: 'الأذكار', duas: 'الأدعية', tasbih: 'المسبحة', favorites: 'المفضلة', main: 'التنقل الرئيسي' },
   actions: {
     search: 'بحث', settings: 'الإعدادات', back: 'رجوع', close: 'إغلاق', copy: 'نسخ', copied: 'تم النسخ',
@@ -19,15 +20,15 @@ export const ar = {
   },
   library: {
     adhkarTitle: 'الأذكار', adhkarSubtitle: 'أذكار اليوم والليلة من حصن المسلم',
-    duasTitle: 'الأدعية', duasSubtitle: 'من القرآن الكريم وكتب السنة',
-    tabs: { 'daily-duas': 'يومية', quranic: 'قرآنية', prophetic: 'نبوية' },
+    duasTitle: 'الأدعية', duasSubtitle: 'أدعية اليوم والليلة مع ذكر مصادرها',
+    tabs: { 'daily-duas': 'يومية', prophetic: 'نبوية', quranic: 'من القرآن' },
     unavailableTitle: 'هذا القسم غير متاح في هذه النسخة', unavailableBody: 'يُضاف محتواه بعد استكمال الإذن بنشره من أصحاب الحقوق.',
     count: { one: 'ذكر واحد', two: 'ذكران', few: 'أذكار', many: 'ذكراً' },
   },
   reader: {
     repeat: 'التكرار', done: 'تم', tapToCount: 'اضغط للعدّ', completed: 'أتممت هذا الورد، تقبّل الله منك',
     restart: 'إعادة الورد', notFound: 'لم نجد هذا القسم', backToLibrary: 'العودة إلى القائمة',
-    source: 'المصدر', meaning: 'المعنى', progress: 'التقدم', partialAyah: 'جزء من الآية',
+    source: 'المصدر', progress: 'التقدم', partialAyah: 'جزء من الآية',
     approximate: 'مطابقة تقريبية', approximateHint: 'معظم ألفاظ هذا الدعاء موجودة في الحديث المذكور بترتيبها، مع اختلاف يسير في بعض الكلمات. انظر منهج التوثيق في الإعدادات.',
     ofAyah: 'الآية', ofAyahs: 'الآيات', surah: 'سورة', hisn: 'حصن المسلم',
     sharedFrom: 'من تطبيق Bayssa',
@@ -45,14 +46,14 @@ export const ar = {
     emptyBody: 'اضغط على رمز القلب في أي دعاء أو ذكر ليظهر هنا، ويبقى محفوظاً على جهازك دون اتصال.',
     browse: 'تصفح الأذكار', all: 'الكل',
   },
-  sections: { adhkar: 'الأذكار', 'daily-duas': 'أدعية يومية', quranic: 'أدعية قرآنية', prophetic: 'أدعية نبوية' },
+  sections: { adhkar: 'الأذكار', 'daily-duas': 'أدعية يومية', prophetic: 'أدعية نبوية', quranic: 'أدعية من القرآن' },
   search: {
     title: 'البحث', placeholder: 'ابحث في الأدعية والأذكار…', hint: 'اكتب كلمة أو أكثر، دون حاجة إلى التشكيل',
     noResultsTitle: 'لا توجد نتائج', noResultsBody: 'جرّب كلمة أخرى أو جزءاً من الدعاء.',
     results: 'النتائج', clear: 'مسح البحث',
   },
   settings: {
-    title: 'الإعدادات', appearance: 'المظهر', theme: 'السمة', themes: { system: 'تلقائي', light: 'فاتح', dark: 'داكن' },
+    title: 'الإعدادات', dedication: 'إهداء', appearance: 'المظهر', theme: 'السمة', themes: { system: 'تلقائي', light: 'فاتح', dark: 'داكن' },
     numerals: 'شكل الأرقام', numeralSamples: { arab: '١٢٣', latn: '123' },
     textSize: 'حجم خط الأدعية', textSizes: ['صغير', 'متوسط', 'كبير', 'أكبر'], preview: 'معاينة',
     hijri: 'التاريخ الهجري', hijriAdjust: 'تعديل التاريخ الهجري',
@@ -61,7 +62,6 @@ export const ar = {
     about: 'عن التطبيق', sources: 'المصادر',
     sourcesBody: [
       { source: 'tanzil-uthmani', text: 'نص القرآن الكريم بالرسم العثماني من مشروع تنزيل (Tanzil.net)، الإصدار 1.1، برخصة المشاع الإبداعي (نَسب المصنَّف 3.0)، ويُعرض كما هو دون أي تغيير.' },
-      { source: 'tafsir-muyassar-tanzil', text: 'معاني الآيات من «التفسير الميسر» الصادر عن مجمع الملك فهد لطباعة المصحف الشريف.' },
       { source: 'hisn-al-muslim', text: 'الأذكار والأدعية من كتاب «حصن المسلم» للشيخ سعيد بن علي بن وهف القحطاني رحمه الله.' },
       { source: 'hadith-api', text: 'لا يُعرض من الأدعية النبوية إلا ما وُجد لفظه في أحد الكتب الستة مع رقمه، وكان في الصحيحين أو نُقل تصحيحه أو تحسينه عن أحد أهل العلم المذكور اسمه مع الدعاء.' },
     ],

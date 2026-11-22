@@ -90,7 +90,7 @@ export function Sidebar(): ReactElement {
   const activeIndex = useActiveIndex()
   const isStaticShell = useIsStaticShell()
   return (
-    <aside className="fixed inset-y-0 start-0 z-30 hidden w-[272px] flex-col border-e border-line bg-surface/60 px-4 py-7 lg:flex">
+    <aside className="fixed bottom-0 start-0 top-(--tribute-height) z-30 hidden w-[272px] flex-col border-e border-line bg-surface/60 px-4 py-7 lg:flex">
       <Brand />
       <nav aria-label={t.nav.main} className="mt-9 flex-1">
         <ul className="relative space-y-1">

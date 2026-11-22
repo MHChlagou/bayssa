@@ -11,14 +11,14 @@ describe('published content', () => {
       if (entry.kind === 'quran') expect(entry.provenance.text).toBe('tanzil-uthmani')
     }
     expect(contentSources.map((source) => source.id).sort()).toEqual(
-      [...new Set(allEntries.flatMap((e) => [e.provenance.text, e.provenance.reference, e.provenance.meaning]).filter((id) => id !== undefined))].sort(),
+      [...new Set(allEntries.flatMap((e) => [e.provenance.text, e.provenance.reference]).filter((id) => id !== undefined))].sort(),
     )
   })
 
   it('a cleared build draws only on sources whose redistribution is documented', () => {
     if (contentScope !== 'cleared') return
     expect(contentSources.every((source) => source.redistribution === 'cleared')).toBe(true)
-    expect(allEntries.every((entry) => entry.kind === 'quran' && entry.meaning === undefined)).toBe(true)
+    expect(allEntries.every((entry) => entry.kind === 'quran')).toBe(true)
   })
 
   it('has every section the app needs', () => {
@@ -70,6 +70,10 @@ describe('published content', () => {
       expect(['combined', 'evening-wording', 'editor-reviewed'], entry.id).not.toContain(entry.verification.method)
       if (entry.kind === 'quran') expect(entry.verification.method).toBe('quran-exact')
     }
+  })
+
+  it('carries no explanation or commentary of the Quran', () => {
+    for (const entry of allEntries) expect(Object.keys(entry), entry.id).not.toContain('meaning')
   })
 
   it('never mixes Quran text into plain text segments of Quran entries', () => {

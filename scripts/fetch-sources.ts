@@ -31,7 +31,6 @@ async function download(url: string, relativePath: string): Promise<string> {
 
 await download(tanzil('uthmani'), 'quran/tanzil-uthmani.txt')
 await download(tanzil('simple-clean'), 'quran/tanzil-simple-clean.txt')
-await download('https://tanzil.net/trans/?transID=ar.muyassar&type=txt-2', 'quran/tanzil-ar-muyassar.txt')
 
 await download('https://www.hisnmuslim.com/api/ar/husn_ar.json', 'hisn/index.json')
 // The index is downloaded data: accept only positive whole-number chapter ids before using them in a URL or a path.

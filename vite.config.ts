@@ -203,7 +203,7 @@ export default defineConfig(({ mode }) => ({
         id: BASE_PATH,
         name: 'Bayssa · أذكار وأدعية',
         short_name: 'Bayssa',
-        description: 'أذكار الصباح والمساء، الأدعية القرآنية والنبوية، والمسبحة الإلكترونية. يعمل دون اتصال.',
+        description: 'أذكار الصباح والمساء وأدعية اليوم والليلة، ومسبحة إلكترونية. يعمل دون اتصال.',
         lang: 'ar',
         dir: 'rtl',
         start_url: BASE_PATH,

@@ -31,7 +31,6 @@ function loadTanzil(name: string): Map<AyahKey, string> {
 
 export const loadUthmani = (): Map<AyahKey, string> => loadTanzil('tanzil-uthmani')
 export const loadSimpleClean = (): Map<AyahKey, string> => loadTanzil('tanzil-simple-clean')
-export const loadMuyassar = (): Map<AyahKey, string> => loadTanzil('tanzil-ar-muyassar')
 
 /** Tanzil prefixes the basmala to ayah 1 of every surah except 1 and 9. */
 export function stripLeadingBasmala(text: string, basmala: string, surah: number, ayah: number): string {

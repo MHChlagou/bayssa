@@ -64,7 +64,7 @@ export function CollectionPage(): ReactElement {
         ) : <span />}
       />
 
-      <div className="sticky top-0 z-20 -mx-4 mb-4 bg-bg/85 px-4 py-2.5 backdrop-blur-lg sm:-mx-6 sm:px-6">
+      <div className="sticky top-0 z-20 -mx-4 mb-4 lg:top-(--tribute-height) bg-bg/85 px-4 py-2.5 backdrop-blur-lg sm:-mx-6 sm:px-6">
         <div className="flex items-center gap-3">
           <div
             role="progressbar"

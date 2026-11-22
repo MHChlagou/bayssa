@@ -117,7 +117,11 @@ export function HomePage(): ReactElement {
   const evening = getCollection('evening')
   const dailyDhikr = pickForDay(getCollection('general')?.items ?? [], now)
   const dailyDhikrEntry = dailyDhikr ? entriesInSection('adhkar').find((entry) => entry.id === dailyDhikr.entryId) : undefined
-  const dailyDua = pickForDay([...entriesInSection('quranic'), ...entriesInSection('prophetic')], now, DAILY_DUA_SALT)
+  const dailyDua = pickForDay(
+    [...entriesInSection('daily-duas'), ...entriesInSection('prophetic'), ...entriesInSection('quranic')],
+    now,
+    DAILY_DUA_SALT,
+  )
   const recentCollections = recents.flatMap((id) => getCollection(id) ?? []).slice(0, MAX_RECENTS_SHOWN)
 
   // In the static shell nothing saved on the device may show: it would not match the prerendered HTML.

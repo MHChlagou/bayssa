@@ -4,7 +4,7 @@
 
 # Bayssa
 
-An Arabic, offline-first web app for daily adhkar and duas, with a tasbih counter.
+An Arabic, offline-first web app for daily adhkar and duas, with a tasbih counter. It is not a Quran reader.
 
 [العربية](README.ar.md) · English
 
@@ -22,7 +22,7 @@ It is a static site with no server, built to be hosted on GitHub Pages.
 ## Features
 
 - Daily adhkar: morning, evening, after prayer, sleep, waking and general remembrance, with a repetition counter and daily progress for each.
-- Everyday duas grouped by situation, supplications from the Quran with surah and ayah, and prophetic supplications with collection, hadith number and attributed grading.
+- Everyday duas grouped by situation and prophetic supplications, each with its collection, hadith number and attributed grading. Supplications from the Quran form one category among them, each shown as an individual supplication with its surah and ayah.
 - Tasbih counter with presets, custom targets, rounds, a completion animation and optional haptic feedback. A count is never cleared without being asked.
 - Favorites, saved on the device and grouped by section.
 - Arabic search that ignores vocalization and tolerates common spelling variants.
@@ -140,15 +140,14 @@ The app has no accounts, no analytics, no advertising and no cookies. It sends n
 No licence is in force for this repository yet. The structure decided on keeps two things apart:
 
 - the application source code, to be released under the Apache License 2.0 once the licensing review is complete;
-- third-party content (Quran text, supplication text, tafsir excerpts, fonts), which stays under its own holders' terms and is not covered by the code licence. See [`THIRD_PARTY_CONTENT.md`](THIRD_PARTY_CONTENT.md).
+- third-party content (supplication text, Quran passages, fonts), which stays under its own holders' terms and is not covered by the code licence. See [`THIRD_PARTY_CONTENT.md`](THIRD_PARTY_CONTENT.md).
 
-Two content permissions are still being sought. See [`docs/pre-release/licensing.md`](docs/pre-release/licensing.md).
+One content permission is still being sought, and the origin of the reference data is being clarified. See [`docs/pre-release/licensing.md`](docs/pre-release/licensing.md).
 
 ## Credits
 
 - [Tanzil Project](https://tanzil.net) for the verified Quran text.
 - Shaykh Sa'id ibn Ali ibn Wahf al-Qahtani, may Allah have mercy on him, author of حصن المسلم.
-- King Fahd Complex for the Printing of the Holy Quran, publisher of التفسير الميسر.
 - [fawazahmed0/hadith-api](https://github.com/fawazahmed0/hadith-api) for the open hadith dataset used for references and gradings.
 - Khaled Hosny and the Amiri project, and the Readex Pro authors, for the fonts.
 - The authors of the open-source libraries listed above.

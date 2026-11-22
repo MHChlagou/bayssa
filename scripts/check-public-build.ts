@@ -3,7 +3,7 @@
 //   node scripts/check-public-build.ts <directory>
 // It looks for every piece of text in the dataset that comes from a source
 // not marked `cleared` in content-sources/sources.ts: supplication wording,
-// notes, placement notes and explanations. Where the full dataset is absent,
+// notes and placement notes, and the book they come from. Where the full dataset is absent,
 // as in a public checkout, there is nothing restricted to look for and the
 // check only confirms the bundle's own declared scope.
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
@@ -43,9 +43,6 @@ if (existsSync(datasetPath)) {
         if (segment.type === 'quran' || EDITOR_NOTES.includes(segment.text)) continue
         restricted.push({ label: `${entry.id} ${segment.type}`, text: segment.text })
       }
-    }
-    if (entry.kind === 'quran' && entry.meaning && !isCleared(entry.provenance.meaning)) {
-      restricted.push({ label: `${entry.id} meaning`, text: entry.meaning.text })
     }
   }
   const collections = JSON.parse(readFileSync(join(ROOT, 'content', 'dataset', 'collections.json'), 'utf8')) as Collection[]

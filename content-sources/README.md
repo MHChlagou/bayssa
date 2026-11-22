@@ -11,7 +11,6 @@ one of the sources below by `scripts/import-content.ts`.
 | Quran text (Uthmani) | Tanzil Project, version 1.1, https://tanzil.net | `quran/tanzil-uthmani.txt` | Creative Commons Attribution 3.0. Verbatim copies only, changing the text is not allowed, and the copyright notice in the file must stay with it. The app credits Tanzil in its settings screen. |
 | Quran text (simple, unvocalized) | Tanzil Project | `quran/tanzil-simple-clean.txt` | Same terms. Used only to build the search index and to cross-check quotations. Never displayed. |
 | Surah names | Tanzil Project metadata | `quran/tanzil-quran-data.js` | Creative Commons Attribution 3.0. |
-| Meaning of ayahs | التفسير الميسر, King Fahd Quran Complex, distributed by Tanzil (`ar.muyassar`) | `quran/tanzil-ar-muyassar.txt` | Distributed by Tanzil for non-commercial use with attribution. Confirm the terms on https://tanzil.net/trans/ before any commercial use. |
 | Adhkar and supplications | حصن المسلم by Sa'id ibn Ali ibn Wahf al-Qahtani, as published by the hisnmuslim.com API | `hisn/` | The API publishes the book freely but states no licence. Confirm redistribution rights with the publisher before a public launch. |
 | Hadith collections (wording, numbers, gradings) | `fawazahmed0/hadith-api` on GitHub, Arabic editions of the six books | `cache/hadith/` (not committed, about 40 MB) | Released into the public domain (Unlicense). |
 
@@ -67,7 +66,7 @@ left out of the shipped bundle. Preview hidden entries locally with
 
 ## What is committed
 
-The Tanzil Quran files, the footnoted transcription (MIT) and the curated dataset in `content/dataset` are in the repository. The raw hisnmuslim.com download (`hisn/`) and the tafsir file are not, because their redistribution terms are not confirmed: `npm run content:fetch` downloads them. The curated dataset still contains supplication text from Hisn al-Muslim and tafsir excerpts, since the app cannot be built without them, so the open licensing items apply to the repository as well as to the app.
+The Tanzil Quran files, the footnoted transcription (MIT) and the curated dataset in `content/dataset` are in the repository. The raw hisnmuslim.com download (`hisn/`) is not, because its redistribution terms are not confirmed: `npm run content:fetch` downloads it. A tafsir file from an earlier stage may remain on disk. It is ignored by git and no longer used. The curated dataset still contains supplication text from Hisn al-Muslim and tafsir excerpts, since the app cannot be built without them, so the open licensing items apply to the repository as well as to the app.
 
 ## Limits
 

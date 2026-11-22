@@ -26,6 +26,9 @@ export function renderShell(): string {
       </MemoryRouter>
     </StaticShellContext>,
   )
-  // The app uses hash routes: rewrite links so a tap before the app starts still lands on the right screen.
-  return html.replaceAll('href="/', 'href="#/')
+  return html
+    // The app uses hash routes: rewrite page links so a tap before the app starts still lands on the right screen.
+    .replace(/(<a\b[^>]*?\shref=")\//g, '$1#/')
+    // React adds a preload hint for the sidebar logo, which phones never show.
+    .replace(/<link rel="preload" as="image"[^>]*>/g, '')
 }

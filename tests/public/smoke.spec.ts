@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
+import { DEDICATION_SUPPLICATION, TRIBUTE_PHRASE } from '../../src/app/dedication.ts'
 
 test('the home screen starts without errors and offers only what the build contains', async ({ page }) => {
   const problems: string[] = []
@@ -13,6 +14,16 @@ test('the home screen starts without errors and offers only what the build conta
   await expect(page.locator('main').getByRole('link', { name: /المسبحة/ })).toBeVisible()
   await expect(page.locator('main').getByRole('link', { name: /أذكار الصباح/ })).toHaveCount(0)
   expect(problems).toEqual([])
+})
+
+test('carries the dedication band on every screen and the supplication in settings', async ({ page }) => {
+  for (const route of ['', '#/duas', '#/tasbih', '#/settings']) {
+    await page.goto(`./${route}`)
+    const band = page.getByRole('complementary', { name: 'إهداء' })
+    await expect(band, route).toBeVisible()
+    await expect(band.locator('.tribute-viewport .tribute-phrase').first()).toHaveText(TRIBUTE_PHRASE)
+  }
+  await expect(page.getByRole('region', { name: 'إهداء' })).toContainText(DEDICATION_SUPPLICATION)
 })
 
 test('the duas screen lists the Quranic collections only', async ({ page }) => {

@@ -17,7 +17,7 @@ import {
   hisnMatchKeywords,
   hisnQuranRefs, hisnRawAsText, hisnReviewedMatches, tasbihPresetSpecs, type QuranSpec,
 } from '../content-sources/curation.ts'
-import { excerptAyah, loadMuyassar, loadSimpleClean, loadUthmani, stripLeadingBasmala, type AyahKey } from './lib/quran.ts'
+import { excerptAyah, loadSimpleClean, loadUthmani, stripLeadingBasmala, type AyahKey } from './lib/quran.ts'
 import { BRACKETED_ADDITION_NOTE, COMBINED_NARRATIONS_NOTE } from './lib/editor-notes.ts'
 import { must } from './lib/must.ts'
 import { lcsLength, skeleton, skeletonWords } from './lib/skeleton.ts'
@@ -25,8 +25,7 @@ import { lcsLength, skeleton, skeletonWords } from './lib/skeleton.ts'
 const ROOT = join(import.meta.dirname, '..')
 const SOURCES = join(ROOT, 'content-sources')
 // `--quran-only` builds the part of the dataset that needs nothing but the
-// committed Tanzil files and the curation list: the Quranic collections,
-// without explanations. It is how the dataset is regenerated where the Hisn
+// Tanzil text and the curation list: the supplications from the Quran. It is how the dataset is regenerated where the Hisn
 // al-Muslim download and the hadith collections are not available.
 const isQuranOnly = process.argv.includes('--quran-only')
 const outArgument = process.argv.find((argument) => argument.startsWith('--out='))
@@ -37,7 +36,6 @@ const NEAR_MATCH_MIN_RATIO = 0.9
 const CANDIDATE_MIN_COVERAGE = 0.75
 const MIN_WORDS_FOR_UNAIDED_MATCH = 4
 const QURAN_QUOTE_MIN_RATIO = 0.85
-const MAX_AYAHS_WITH_MEANING = 5
 const REVIEWED_MIN_COVERAGE = 0.85
 const BRACKETED = /\[[^\]]*\]/g
 
@@ -45,7 +43,6 @@ const BRACKETED = /\[[^\]]*\]/g
 
 const uthmani = loadUthmani()
 const simpleClean = loadSimpleClean()
-const muyassar = isQuranOnly ? undefined : loadMuyassar()
 const basmala = must(uthmani.get('1:1'), 'Uthmani 1:1')
 const simpleBasmala = must(simpleClean.get('1:1'), 'simple 1:1')
 
@@ -104,23 +101,13 @@ function quranEntry(specs: QuranSpec[]): QuranEntry {
   )
   const plain = specs.flatMap((spec) => sliceSpec(spec, simpleClean, simpleBasmala).map((a) => a.text))
   const surahNames = [...new Set(segments.map((s) => must(surahs[s.surah - 1], `surah ${s.surah}`).name))]
-  const hasMeaning = muyassar !== undefined && segments.length <= MAX_AYAHS_WITH_MEANING
   const entry: QuranEntry = {
     id,
     kind: 'quran',
     segments,
     searchText: [...plain, ...surahNames].join(' '),
-    ...(hasMeaning
-      ? {
-          meaning: {
-            text: segments.map((s) => must(muyassar?.get(`${s.surah}:${s.ayah}`), `tafsir ${s.surah}:${s.ayah}`)).join(' '),
-            source: 'التفسير الميسر · مجمع الملك فهد لطباعة المصحف الشريف',
-          },
-        }
-      : {}),
     provenance: {
       text: 'tanzil-uthmani',
-      ...(hasMeaning ? { meaning: 'tafsir-muyassar-tanzil' as const } : {}),
       scholarlyReview: { status: 'not-reviewed' },
     },
     verification: { status: 'verified', method: 'quran-exact', checkedAgainst: ['tanzil-uthmani-1.1'], checkedOn: TODAY },
