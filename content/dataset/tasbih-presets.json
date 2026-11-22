@@ -1,0 +1,62 @@
+[
+  {
+    "id": "subhan-allah",
+    "text": "سُبْحَانَ اللَّهِ",
+    "entryId": "h-257",
+    "defaultTarget": 33
+  },
+  {
+    "id": "alhamdulillah",
+    "text": "الْحَمْدُ لِلَّهِ",
+    "entryId": "h-188",
+    "defaultTarget": 33
+  },
+  {
+    "id": "allahu-akbar",
+    "text": "اللَّهُ أَكْبَرُ",
+    "entryId": "h-207",
+    "defaultTarget": 33
+  },
+  {
+    "id": "la-ilaha-illa-allah",
+    "text": "لاَ إِلَهَ إِلاَّ اللَّهُ",
+    "entryId": "h-93",
+    "defaultTarget": 100
+  },
+  {
+    "id": "subhan-allah-wa-bihamdih",
+    "text": "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
+    "entryId": "h-91",
+    "defaultTarget": 100
+  },
+  {
+    "id": "subhan-allah-al-azim",
+    "text": "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحانَ اللَّهِ الْعَظِيمِ",
+    "entryId": "h-256",
+    "defaultTarget": 100
+  },
+  {
+    "id": "astaghfirullah",
+    "text": "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ",
+    "entryId": "h-96",
+    "defaultTarget": 100
+  },
+  {
+    "id": "hawqala",
+    "text": "لاَ حَوْلَ وَلاَ قُوَّةَ إِلاَّ بِاللَّهِ",
+    "entryId": "h-260",
+    "defaultTarget": 33
+  },
+  {
+    "id": "baqiyat",
+    "text": "سُبْحَانَ اللَّهِ، وَالْحَمْدُ لِلَّهِ، وَلاَ إِلَهَ إِلاَّ اللَّهُ، وَاللَّهُ أَكْبَرُ",
+    "entryId": "h-257",
+    "defaultTarget": 33
+  },
+  {
+    "id": "tahlil",
+    "text": "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+    "entryId": "h-92",
+    "defaultTarget": 100
+  }
+]

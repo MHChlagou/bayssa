@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>المسلم اليومي · أذكار وأدعية</title>
+    <meta name="description" content="أذكار الصباح والمساء، الأدعية القرآنية والنبوية مع ذكر مصادرها، والمسبحة الإلكترونية. تطبيق مجاني يعمل دون اتصال بالإنترنت." />
+    <meta name="theme-color" content="#0B3D2E" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="المسلم اليومي" />
+    <link rel="icon" href="favicon.ico" sizes="48x48" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="apple-touch-icon-180x180.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ar_AR" />
+    <meta property="og:title" content="المسلم اليومي · أذكار وأدعية" />
+    <meta property="og:description" content="أذكار وأدعية من القرآن الكريم والسنة النبوية مع ذكر مصادرها، ومسبحة إلكترونية. يعمل دون اتصال." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      // The prerendered shell is the home screen. On any other route keep it out of
+      // sight, so a deep link never shows the home screen for a moment first.
+      if (location.hash !== '' && location.hash !== '#/') document.documentElement.dataset.skipShell = ''
+      // Apply the saved theme before first paint so the page never flashes.
+      try {
+        var saved = JSON.parse(localStorage.getItem('md:v1:prefs') || 'null')
+        var theme = saved && saved.data && saved.data.theme
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        document.documentElement.dataset.theme = theme
+      } catch (error) {
+        document.documentElement.dataset.theme = 'light'
+        console.warn('theme preference could not be read', error)
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>يحتاج هذا التطبيق إلى تفعيل JavaScript.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

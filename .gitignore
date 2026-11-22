@@ -1,0 +1,15 @@
+node_modules
+dist
+dist-next
+dev-dist
+dist-next
+content-sources/cache
+# Raw third-party text whose redistribution terms are not confirmed yet.
+# `npm run content:fetch` downloads both again. See docs/pre-release/licensing.md.
+content-sources/hisn/
+content-sources/quran/tanzil-ar-muyassar.txt
+src/content/generated
+test-results
+playwright-report
+*.local
+.DS_Store
