@@ -42,8 +42,14 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
-      # The complete application, built and tested. It is never deployed.
+      # The complete application. This is what gets deployed, by the owner's decision of 2026-11-22.
+      - id: pages
+        if: env.SHOULD_DEPLOY == 'true'
+        uses: actions/configure-pages@v6
       - run: npm run build
+        env:
+          # Absolute address for link previews. Empty whenever nothing is deployed.
+          SITE_URL: ${{ steps.pages.outputs.base_url && format('{0}/', steps.pages.outputs.base_url) || '' }}
       - run: npx playwright install --with-deps chromium webkit
       - run: npm run test:e2e
       # A failed test is retried once. This step says which tests needed the retry, so a
@@ -51,17 +57,11 @@ jobs:
       # attempts fails the step above, and with it the job and any deployment.
       - if: ${{ !cancelled() }}
         run: node scripts/report-test-attempts.ts test-reports/e2e.json "End-to-end tests"
-      # The public variant is what gets deployed: only content whose redistribution
-      # is documented in content-sources/sources.ts. The build fails if anything
-      # else is found in its output, and it is tested before it is uploaded.
-      - id: pages
-        if: env.SHOULD_DEPLOY == 'true'
-        uses: actions/configure-pages@v6
+      # The variant limited to content whose redistribution is documented in
+      # content-sources/sources.ts is still built, scanned and tested on every run,
+      # so that it stays ready. It is not what is deployed.
       - run: npm run build:public
-        env:
-          # Absolute address for link previews. Empty whenever nothing is deployed.
-          SITE_URL: ${{ steps.pages.outputs.base_url && format('{0}/', steps.pages.outputs.base_url) || '' }}
-      # No retries here: one failure of the public build's tests stops the deployment.
+      # No retries here: one failure stops the job, and with it any deployment.
       - run: npm run test:public
       - if: ${{ !cancelled() }}
         run: node scripts/report-test-attempts.ts test-reports/public.json "Public build smoke tests"
@@ -74,16 +74,16 @@ jobs:
             playwright-report
             test-reports
           retention-days: 7
-      # The public variant, for inspection.
+      # The deployed site, for inspection.
       - uses: actions/upload-artifact@v7
         with:
           name: site
-          path: dist-public
+          path: dist
           retention-days: 3
       - uses: actions/upload-pages-artifact@v5
         if: env.SHOULD_DEPLOY == 'true'
         with:
-          path: dist-public
+          path: dist
 
   deploy:
     needs: verify
