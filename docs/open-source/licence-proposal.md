@@ -11,7 +11,7 @@ Prepared on 2026-11-22 for review. The two files are in `docs/open-source/propos
 
 ## Copyright attribution
 
-Not finalised. By your decision on 2026-11-22 the copyright holder is not to be recorded as "Bayssa contributors" until ownership is clarified. The proposed `NOTICE` carries the placeholder "[copyright holder to be confirmed]".
+Not finalised. By your decision on 2026-11-22 the copyright holder is not to be recorded as "Nafissa contributors" until ownership is clarified. The proposed `NOTICE` carries the placeholder "[copyright holder to be confirmed]".
 
 What has to be clarified:
 

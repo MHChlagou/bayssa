@@ -12,7 +12,7 @@ Assalamu alaykum wa rahmatullah,
 
 Thank you for the Encyclopedia of Translated Prophetic Hadiths and for making it freely available.
 
-I am [full name], and I am working on Bayssa, a free web app in Arabic for daily adhkar and duas. It has no advertising, no accounts and no tracking, and it works offline. It shows individual supplications, each with its source.
+I am [full name], and I am working on Nafissa, a free web app in Arabic for daily adhkar and duas. It has no advertising, no accounts and no tracking, and it works offline. It shows individual supplications, each with its source.
 
 We are considering your Arabic content as the source of the wording and grading of prophetic supplications in the app. We have read the Terms and Policies on your site and want to be sure our use is within them before we use anything. Nothing from your site is in the app today.
 
@@ -71,7 +71,7 @@ Jazakum Allahu khayran.
 
 جزاكم الله خيراً على «موسوعة الأحاديث النبوية» وعلى إتاحتها للناس.
 
-أنا [الاسم الكامل]، أعمل على تطبيق ويب عربي مجاني اسمه «Bayssa» للأذكار والأدعية اليومية. لا إعلانات فيه ولا حسابات ولا تتبّع، ويعمل دون اتصال بالإنترنت. يعرض التطبيق أدعية مفردة، مع مصدر كل دعاء.
+أنا [الاسم الكامل]، أعمل على تطبيق ويب عربي مجاني اسمه «Nafissa» للأذكار والأدعية اليومية. لا إعلانات فيه ولا حسابات ولا تتبّع، ويعمل دون اتصال بالإنترنت. يعرض التطبيق أدعية مفردة، مع مصدر كل دعاء.
 
 نفكر في أن يكون محتواكم العربي مصدر ألفاظ الأدعية النبوية ودرجاتها في التطبيق. قرأنا «الشروط والسياسات» في موقعكم، ونريد التأكد من أن استعمالنا داخل فيها قبل أن نستعمل شيئاً. وليس في التطبيق اليوم شيء من موقعكم.
 

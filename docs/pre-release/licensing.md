@@ -64,7 +64,7 @@ Two points limit how far the author's rights reach, and a lawyer should weigh th
 
 ## 2. التفسير الميسر
 
-Decision on 2026-11-22: tafsir explanations are removed from Bayssa, which is a duas and adhkar app and carries no commentary on the Quran. The dataset no longer contains them. What follows is the record of the investigation.
+Decision on 2026-11-22: tafsir explanations are removed from Nafissa, which is a duas and adhkar app and carries no commentary on the Quran. The dataset no longer contains them. What follows is the record of the investigation.
 
 ### Original source and publisher
 

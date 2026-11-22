@@ -103,7 +103,7 @@ From the WebKit blog post that introduced the cap (March 2020), the cap applies 
 
 From the WebKit blog post "Updates to Storage Policy" (2023): data can also be evicted when storage is under pressure or the overall quota is exceeded, least recently used first. By default every origin is in "best-effort" mode, and "an origin can request persistent mode using the Storage API".
 
-What follows for Bayssa:
+What follows for Nafissa:
 
 1. The seven days are days on which Safari is used, not calendar days, and the clock restarts whenever the person interacts with the site. A daily user in Safari is not affected. Someone who stops for more than a week of Safari use can lose everything stored, including the offline copy of the app.
 2. An app added to the Home Screen is exempt from that cap.

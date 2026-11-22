@@ -14,7 +14,7 @@ Channel: the contact page linked as "تواصل معنا" on quranenc.com. I did
 
 القائمين على موسوعة القرآن الكريم (QuranEnc.com)، جزاكم الله خيراً على هذا العمل.
 
-أنا [الاسم الكامل]، أعمل على تطبيق ويب مجاني اسمه «Bayssa» للأذكار والأدعية. لا إعلانات فيه ولا حسابات ولا غرض تجاري. يعرض التطبيق أدعية من القرآن الكريم، ونود أن نعرض تحت كل آية معناها من «التفسير الميسر» كما هو منشور في موقعكم (اللغة العربية · التفسير الميسر، المعرّف `arabic_moyassar`)، وأن يكون ملف البيانات في مستودع عام على GitHub.
+أنا [الاسم الكامل]، أعمل على تطبيق ويب مجاني اسمه «Nafissa» للأذكار والأدعية. لا إعلانات فيه ولا حسابات ولا غرض تجاري. يعرض التطبيق أدعية من القرآن الكريم، ونود أن نعرض تحت كل آية معناها من «التفسير الميسر» كما هو منشور في موقعكم (اللغة العربية · التفسير الميسر، المعرّف `arabic_moyassar`)، وأن يكون ملف البيانات في مستودع عام على GitHub.
 
 قرأنا «الشروط والسياسات» المنشورة في موقعكم ونلتزم بها. وعندنا أربعة استفسارات قبل أن نبدأ:
 
@@ -37,7 +37,7 @@ Channel: the contact page linked as "تواصل معنا" on quranenc.com. I did
 
 Assalamu alaykum,
 
-I am [full name], working on Bayssa, a free web app for adhkar and duas. It has no advertising, no accounts and no commercial purpose. It shows supplications from the Quran, and we would like to show under each ayah its explanation from At-Tafsir Al-Muyassar as published on your site (Arabic, key `arabic_moyassar`), and to keep the data file in a public GitHub repository.
+I am [full name], working on Nafissa, a free web app for adhkar and duas. It has no advertising, no accounts and no commercial purpose. It shows supplications from the Quran, and we would like to show under each ayah its explanation from At-Tafsir Al-Muyassar as published on your site (Arabic, key `arabic_moyassar`), and to keep the data file in a public GitHub repository.
 
 We have read your Terms and Policies and intend to follow them. We have four questions first:
 

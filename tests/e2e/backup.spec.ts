@@ -18,8 +18,8 @@ const PREFS = { theme: 'light', numerals: 'arab', textScaleIndex: 1, hijriOffset
 const EMPTY: FileData = { favorites: [], tasbih: { activeId: '', counters: {}, lifetimeTotal: 0 }, progress: { day: '', counts: {} }, prefs: PREFS }
 
 function backupFile(data: Partial<FileData>, overrides: Record<string, unknown> = {}): { name: string; mimeType: string; buffer: Buffer } {
-  const file = { format: 'bayssa-backup', version: 1, exportedAt: '2026-11-22T10:00:00.000Z', appVersion: '0.1.0', data: { ...EMPTY, ...data }, ...overrides }
-  return { name: 'bayssa-backup.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(file)) }
+  const file = { format: 'nafissa-backup', version: 1, exportedAt: '2026-11-22T10:00:00.000Z', appVersion: '0.1.0', data: { ...EMPTY, ...data }, ...overrides }
+  return { name: 'nafissa-backup.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(file)) }
 }
 
 async function chooseFile(page: Page, file: { name: string; mimeType: string; buffer: Buffer }): Promise<void> {
@@ -52,9 +52,9 @@ test.describe('export', () => {
     const downloading = page.waitForEvent('download')
     await page.getByRole('button', { name: 'تصدير ملف' }).click()
     const download = await downloading
-    expect(download.suggestedFilename()).toMatch(/^bayssa-backup-\d{4}-\d{2}-\d{2}\.json$/)
+    expect(download.suggestedFilename()).toMatch(/^nafissa-backup-\d{4}-\d{2}-\d{2}\.json$/)
     const file = JSON.parse(await readFile(await download.path(), 'utf8')) as { format: string; version: number; exportedAt: string; data: FileData }
-    expect(file.format).toBe('bayssa-backup')
+    expect(file.format).toBe('nafissa-backup')
     expect(file.version).toBe(1)
     expect(Number.isNaN(Date.parse(file.exportedAt))).toBe(false)
     expect(file.data.favorites).toHaveLength(1)
@@ -98,7 +98,7 @@ test.describe('moving data between two separate storage areas', () => {
     const page = await second.newPage()
     await page.goto('./#/settings')
     expect((await savedState(page)).favorites).toBe(0)
-    await chooseFile(page, { name: 'bayssa-backup.json', mimeType: 'application/json', buffer: exported })
+    await chooseFile(page, { name: 'nafissa-backup.json', mimeType: 'application/json', buffer: exported })
 
     const dialog = page.getByRole('dialog')
     await expect(dialog.getByRole('heading', { name: 'معاينة قبل الاستيراد' })).toBeVisible()
@@ -130,7 +130,7 @@ test.describe('moving data between two separate storage areas', () => {
     await page.getByRole('button', { name: 'نسخ البيانات' }).click()
     await expect(page.getByRole('status').filter({ hasText: 'نُسخت البيانات' })).toBeVisible()
     const copied = await page.evaluate(() => window.__copied[0] ?? '')
-    expect(JSON.parse(copied)).toMatchObject({ format: 'bayssa-backup', version: 1 })
+    expect(JSON.parse(copied)).toMatchObject({ format: 'nafissa-backup', version: 1 })
 
     await page.evaluate(() => localStorage.clear())
     await page.reload()
@@ -144,14 +144,14 @@ test.describe('moving data between two separate storage areas', () => {
 
   test('says which environment is in use and how to move data', async ({ page }) => {
     await page.goto('./#/settings')
-    await expect(page.getByText('أنت تستعمل Bayssa الآن في المتصفح')).toBeVisible()
+    await expect(page.getByText('أنت تستعمل نفيسة الآن في المتصفح')).toBeVisible()
     await page.emulateMedia({ media: 'screen' })
     await page.addInitScript(() => {
       const original = window.matchMedia.bind(window)
       window.matchMedia = (query: string) => (query.includes('display-mode: standalone') ? { ...original(query), matches: true } as MediaQueryList : original(query))
     })
     await page.reload()
-    await expect(page.getByText('أنت تستعمل Bayssa الآن تطبيقاً مثبّتاً')).toBeVisible()
+    await expect(page.getByText('أنت تستعمل نفيسة الآن تطبيقاً مثبّتاً')).toBeVisible()
   })
 })
 
@@ -159,7 +159,7 @@ test.describe('files that must be refused', () => {
   const CASES: { name: string; file: () => { name: string; mimeType: string; buffer: Buffer }; message: string }[] = [
     { name: 'text that is not JSON', file: () => ({ name: 'notes.json', mimeType: 'application/json', buffer: Buffer.from('this is not a backup') }), message: 'تعذّرت قراءة الملف' },
     { name: 'an empty file', file: () => ({ name: 'empty.json', mimeType: 'application/json', buffer: Buffer.from('') }), message: 'تعذّرت قراءة الملف' },
-    { name: 'JSON from another program', file: () => ({ name: 'other.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify({ favorites: ['a'] })) }), message: 'ليس نسخة من بيانات Bayssa' },
+    { name: 'JSON from another program', file: () => ({ name: 'other.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify({ favorites: ['a'] })) }), message: 'ليس نسخة من بيانات نفيسة' },
     { name: 'a newer format version', file: () => backupFile({}, { version: 2 }), message: 'بإصدار لا يدعمه هذا التطبيق' },
     { name: 'a negative counter', file: () => backupFile({ tasbih: { activeId: 'a', counters: { a: { count: -5, target: 33, completedRounds: 0 } }, lifetimeTotal: 0 } }), message: 'بيانات غير سليمة' },
     { name: 'a favorite without an id', file: () => backupFile({ favorites: [{ id: '', addedAt: 1 }] }), message: 'بيانات غير سليمة' },
@@ -261,5 +261,5 @@ test('export and import work with no network', async ({ page, context }) => {
   await expect(page.getByRole('status').filter({ hasText: 'تم الاستيراد' })).toBeVisible()
   const downloading = page.waitForEvent('download')
   await page.getByRole('button', { name: 'تصدير ملف' }).click()
-  expect((await downloading).suggestedFilename()).toMatch(/^bayssa-backup-/)
+  expect((await downloading).suggestedFilename()).toMatch(/^nafissa-backup-/)
 })

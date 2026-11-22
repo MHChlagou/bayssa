@@ -2,7 +2,7 @@
 
 <img src="public/pwa-192x192.png" alt="" width="96" height="96">
 
-# Bayssa
+# Nafissa
 
 An Arabic, offline-first web app for daily adhkar and duas, with a tasbih counter. It is not a Quran reader.
 
@@ -15,7 +15,7 @@ An Arabic, offline-first web app for daily adhkar and duas, with a tasbih counte
 
 ## Overview
 
-Bayssa is a progressive web app, in Arabic and laid out right to left, that puts the daily remembrances and supplications a Muslim uses most in one calm, fast place. It installs to a phone's home screen, works with no connection, and keeps everything on the device. There are no accounts, no ads and no tracking.
+Nafissa is a progressive web app, in Arabic and laid out right to left, that puts the daily remembrances and supplications a Muslim uses most in one calm, fast place. It installs to a phone's home screen, works with no connection, and keeps everything on the device. There are no accounts, no ads and no tracking.
 
 It is a static site with no server, built to be hosted on GitHub Pages.
 
@@ -53,7 +53,7 @@ After the first visit the app opens and works without a connection.
 
 ### Browser support
 
-Bayssa is tested in Chrome on Android and desktop, and in Safari on iPhone and desktop (through the WebKit engine).
+Nafissa is tested in Chrome on Android and desktop, and in Safari on iPhone and desktop (through the WebKit engine).
 
 Firefox is not supported for now and is not part of the automated tests. During testing, Firefox's page process crashed intermittently on the settings screen while the accessibility scanner was running: a segmentation fault inside Firefox, seen on two machines, whose cause was not found. The app may well work in Firefox, but nothing checks that it does.
 

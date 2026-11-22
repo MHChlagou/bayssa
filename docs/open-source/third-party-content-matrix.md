@@ -10,7 +10,7 @@ The redistribution status of each source is recorded once, in `content-sources/s
 
 | Material | Rights holder | Terms found | Commercial use | Modification | Attribution | Public repository | Status | Decision |
 |---|---|---|---|---|---|---|---|---|
-| Application code, artwork, documentation | Bayssa contributors | Apache-2.0 (approved, not yet activated) | Yes | Yes | Keep notices | Yes | Clear | Apache-2.0 |
+| Application code, artwork, documentation | Nafissa contributors | Apache-2.0 (approved, not yet activated) | Yes | Yes | Keep notices | Yes | Clear | Apache-2.0 |
 | Quran text, Uthmani and plain, and surah names | Tanzil Project | Creative Commons Attribution 3.0 plus Tanzil's terms | Not restricted for the Quran text | No: verbatim only | Required, with a link to tanzil.net and the notice kept in the files | Yes | Clear, with one gap: the in-app credit is text, not a link | Keep |
 | Supplication wording, notes and arrangement from حصن المسلم | Sa'id ibn Ali ibn Wahf al-Qahtani and his heirs | Rights reserved. Free distribution of the complete, unaltered book with the notice "وقف لله تعالى" | No | No | By keeping the work intact, plus the waqf notice | Not addressed | Not established for a selection | Request written permission. Private until granted. |
 | Full transcription of حصن المسلم with footnotes (`content-sources/hisn-footnotes/`) | Same author. Transcription by Abdellah Sellam, MIT for the transcription only | Same as above for the text | No | No | As above | Not addressed | Not established | Keep private. Exclude from any public history. |

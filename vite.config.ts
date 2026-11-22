@@ -132,7 +132,7 @@ const BUNDLED_PACKAGES = [
   'lucide-react', 'workbox-window', '@fontsource/amiri', '@fontsource-variable/readex-pro',
 ] as const
 
-const LICENSES_HEADER = `Bayssa: third-party software and font licences
+const LICENSES_HEADER = `Nafissa: third-party software and font licences
 ====================================================
 
 This file lists the open-source software and fonts included in this
@@ -248,8 +248,8 @@ export default defineConfig(({ mode }) => ({
       includeAssets: ['favicon.ico', 'apple-touch-icon-180x180.png'],
       manifest: {
         id: BASE_PATH,
-        name: 'Bayssa · أذكار وأدعية',
-        short_name: 'Bayssa',
+        name: 'نفيسة · أذكار وأدعية',
+        short_name: 'نفيسة',
         description: SITE_TEXT.manifestDescription,
         lang: 'ar',
         dir: 'rtl',

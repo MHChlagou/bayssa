@@ -1,6 +1,6 @@
 # Backup file format
 
-Bayssa can save what a person has stored on a device to a file, and read such a file back. Everything happens on the device: nothing is uploaded, and the feature works offline.
+Nafissa can save what a person has stored on a device to a file, and read such a file back. Everything happens on the device: nothing is uploaded, and the feature works offline.
 
 This is a manual backup and restore. It is not synchronization: nothing moves between devices unless a person exports a file on one and imports it on the other, and two devices do not stay in step afterwards.
 
@@ -12,11 +12,11 @@ This is a manual backup and restore. It is not synchronization: nothing moves be
 
 ## Format, version 1
 
-A UTF-8 JSON file named `bayssa-backup-YYYY-MM-DD.json`.
+A UTF-8 JSON file named `nafissa-backup-YYYY-MM-DD.json`.
 
 ```json
 {
-  "format": "bayssa-backup",
+  "format": "nafissa-backup",
   "version": 1,
   "exportedAt": "2026-11-22T10:00:00.000Z",
   "appVersion": "0.1.0",
@@ -35,7 +35,7 @@ A UTF-8 JSON file named `bayssa-backup-YYYY-MM-DD.json`.
 
 | Field | Meaning |
 |---|---|
-| `format` | Always `bayssa-backup`. A file without it is not a backup |
+| `format` | Always `nafissa-backup`. A file without it is not a backup |
 | `version` | The format version, a whole number. This document describes 1 |
 | `exportedAt` | When the file was made, ISO 8601 |
 | `appVersion` | The app version that made it. Informational |
@@ -52,7 +52,7 @@ A file is refused, with nothing changed on the device, when:
 
 - it is larger than 1,000,000 characters;
 - it is not JSON;
-- it is JSON but not a Bayssa backup;
+- it is JSON but not a Nafissa backup;
 - its version is not one this app supports, whether older or newer;
 - any section is missing or of the wrong type, or any single value is invalid, such as a negative count, a fractional count, an empty id or an unknown theme.
 

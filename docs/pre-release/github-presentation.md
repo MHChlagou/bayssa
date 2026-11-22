@@ -6,11 +6,11 @@ Prepared on 2026-11-22. Nothing here has been applied: no repository exists yet.
 
 English (fits GitHub's 350-character limit):
 
-> Bayssa: an Arabic, offline-first PWA for daily adhkar and duas with a tasbih counter. Every supplication is shown with its source. No accounts, no tracking.
+> Nafissa: an Arabic, offline-first PWA for daily adhkar and duas with a tasbih counter. Every supplication is shown with its source. No accounts, no tracking.
 
 Arabic alternative:
 
-> Bayssa: تطبيق ويب عربي للأذكار والأدعية اليومية مع مسبحة إلكترونية. يعمل دون اتصال، بلا حسابات ولا تتبّع، مع ذكر مصدر كل دعاء.
+> Nafissa: تطبيق ويب عربي للأذكار والأدعية اليومية مع مسبحة إلكترونية. يعمل دون اتصال، بلا حسابات ولا تتبّع، مع ذكر مصدر كل دعاء.
 
 Website field: the GitHub Pages address once deployed.
 

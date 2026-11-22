@@ -11,7 +11,7 @@ import { MAX_TARGET, MIN_TARGET, type Counter, type TasbihState } from '../domai
 import { MAX_HIJRI_OFFSET_DAYS } from '../domain/hijri/hijri.ts'
 import { NUMERALS, TEXT_SCALES, THEMES, type Prefs } from './stores.ts'
 
-export const BACKUP_FORMAT = 'bayssa-backup'
+export const BACKUP_FORMAT = 'nafissa-backup'
 export const BACKUP_VERSION = 1
 export const MAX_BACKUP_BYTES = 1_000_000
 const MAX_FAVORITES = 5000
@@ -49,7 +49,7 @@ export function serializeBackup(backup: Backup): string {
 
 export function backupFileName(now: Date): string {
   const day = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
-  return `bayssa-backup-${day}.json`
+  return `nafissa-backup-${day}.json`
 }
 
 // ---------------------------------------------------------------- Validation

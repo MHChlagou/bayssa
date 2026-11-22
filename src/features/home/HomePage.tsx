@@ -134,10 +134,10 @@ export function HomePage(): ReactElement {
   return (
     <div className="space-y-6">
       <header className="flex items-center justify-between pt-1 lg:hidden">
-        <div>
-          <p className="text-lg font-semibold leading-tight text-ink">{t.appName}</p>
-          <p className="text-xs text-muted">{t.tagline}</p>
-        </div>
+        <Link to="/" className="rounded-xl">
+          <span className="block text-lg font-semibold leading-tight text-ink">{t.appName}</span>
+          <span className="block text-xs text-muted">{t.tagline}</span>
+        </Link>
         <div className="-me-2 flex"><HeaderLinks /></div>
       </header>
 

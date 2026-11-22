@@ -86,7 +86,7 @@ test('is installable: manifest, icons and, in Chrome, no installability errors',
   await page.goto('./')
   const href = await page.locator('link[rel="manifest"]').getAttribute('href')
   const manifest = await (await request.get(href ?? '')).json()
-  expect(manifest).toMatchObject({ name: 'Bayssa · أذكار وأدعية', short_name: 'Bayssa', lang: 'ar', dir: 'rtl', display: 'standalone', start_url: '/bayssa/', scope: '/bayssa/' })
+  expect(manifest).toMatchObject({ name: 'نفيسة · أذكار وأدعية', short_name: 'نفيسة', lang: 'ar', dir: 'rtl', display: 'standalone', start_url: '/bayssa/', scope: '/bayssa/' })
   // The manifest and the page describe only what this build contains.
   expect(manifest.description).not.toContain('أذكار')
   expect((manifest.shortcuts as { url: string }[]).map((shortcut) => shortcut.url)).toEqual(['/bayssa/#/duas', '/bayssa/#/tasbih'])

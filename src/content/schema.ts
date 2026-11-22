@@ -52,7 +52,7 @@ export type ScholarlyReview =
   | { status: 'reviewed'; by: string; on: string }
 
 /**
- * Where each part of an entry comes from. Bayssa shows supplications and their
+ * Where each part of an entry comes from. Nafissa shows supplications and their
  * references only: it carries no explanation or commentary of the Quran.
  * Rights are looked up in the source registry.
  */

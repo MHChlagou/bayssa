@@ -2,7 +2,7 @@
 
 Prepared on 2026-11-22. Stage A is the public build that carries only content with documented redistribution rights: supplications from the Quran, and the tasbih as a plain counter.
 
-Read this together with the product decision you sent the same day: Bayssa is a duas and adhkar app, not a Quran reader. Section 8 says what that means for Stage A.
+Read this together with the product decision you sent the same day: Nafissa is a duas and adhkar app, not a Quran reader. Section 8 says what that means for Stage A.
 
 ## Update, later the same day
 
@@ -18,13 +18,13 @@ After this report was written you set the product focus and approved several cha
 
 The numbers in sections 3 to 5 below are from the first rehearsal. `stage-a-inventory.md` and `stage-a-contents.md` were regenerated and are current.
 
-You have also said that Bayssa is a duas and adhkar app and must not look like a Quran reader. Stage A contains only the Quranic category, so whether to publish it in this form remains your decision.
+You have also said that Nafissa is a duas and adhkar app and must not look like a Quran reader. Stage A contains only the Quranic category, so whether to publish it in this form remains your decision.
 
 ## Verdict
 
 Technically, Stage A is ready: a rehearsal export was built, tested and scanned from nothing but its own files, and passed every check.
 
-It is not ready to publish. Four things block it, in section 8: no code licence is in force because the copyright holder is not settled, several documents in the export still describe the full application, the content has had no review by anyone qualified, and a public app containing only Quran passages may not be what you want Bayssa to look like.
+It is not ready to publish. Four things block it, in section 8: no code licence is in force because the copyright holder is not settled, several documents in the export still describe the full application, the content has had no review by anyone qualified, and a public app containing only Quran passages may not be what you want Nafissa to look like.
 
 Nothing was published. No repository was created, nothing was pushed, and the rehearsal export is a plain directory in the session scratch folder with no git history.
 
@@ -185,7 +185,7 @@ Technical:
 
 Product direction, new today:
 
-1. You have said Bayssa must not be a Quran reader, and that supplications from the Quran are one category among duas and adhkar. Stage A contains only that one category. It shows them as individual supplications with references, which matches what you described, but a visitor would see an app made entirely of Quran passages. Whether Stage A should be published at all in that form is now your call.
+1. You have said Nafissa must not be a Quran reader, and that supplications from the Quran are one category among duas and adhkar. Stage A contains only that one category. It shows them as individual supplications with references, which matches what you described, but a visitor would see an app made entirely of Quran passages. Whether Stage A should be published at all in that form is now your call.
 2. The export includes the complete Quran text as reference files. The app does not show it, but if "no full Quran text" should hold for the repository too, the reference can be reduced to the 62 ayahs in use.
 3. The tribute banner is not in this build.
 

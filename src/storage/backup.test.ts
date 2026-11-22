@@ -34,7 +34,7 @@ describe('backup file', () => {
   })
 
   it('names the file after the app and the day', () => {
-    expect(backupFileName(new Date(2026, 10, 22, 9))).toBe('bayssa-backup-2026-11-22.json')
+    expect(backupFileName(new Date(2026, 10, 22, 9))).toBe('nafissa-backup-2026-11-22.json')
   })
 })
 
@@ -55,7 +55,7 @@ describe('rejecting files', () => {
     expect(error('<html></html>')).toBe('not-json')
   })
 
-  it('rejects JSON that is not a Bayssa backup', () => {
+  it('rejects JSON that is not a Nafissa backup', () => {
     expect(error('[]')).toBe('not-a-backup')
     expect(error('null')).toBe('not-a-backup')
     expect(error('"text"')).toBe('not-a-backup')

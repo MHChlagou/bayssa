@@ -1,4 +1,4 @@
-# Bayssa: identity, product focus and tracking
+# Nafissa: identity, product focus and tracking
 
 Implementation plan, prepared on 2026-11-22.
 
@@ -6,7 +6,7 @@ Status, same day: sections 1 and 2 were approved and are implemented in the priv
 
 ## 1. The tribute
 
-Bayssa is the name of your late grandmother, and the app is dedicated to her. The plan treats the tribute as part of the app's frame, present before any content, and never styled like a notice or an advertisement.
+Nafissa is the name of your late grandmother, and the app is dedicated to her. The plan treats the tribute as part of the app's frame, present before any content, and never styled like a notice or an advertisement.
 
 ### What will be built
 
@@ -49,13 +49,13 @@ It is included in the prerendered home screen, so it is there from the first pai
 
 1. Crescent only, or crescent and heart?
 2. The secondary line: dedication card and occasional appearance in the band, as recommended?
-3. Should the app say whose name Bayssa is? For example a line on the dedication card: "Bayssa اسم جدتي رحمها الله". It is personal, so nothing of the kind will be written in the app, the README or the repository description unless you ask for it.
+3. Should the app say whose name Nafissa is? For example a line on the dedication card: "Nafissa اسم جدتي رحمها الله". It is personal, so nothing of the kind will be written in the app, the README or the repository description unless you ask for it.
 
 ## 2. Product focus: duas and adhkar, not a Quran reader
 
 ### Review of the current application
 
-There is no Quran reader in Bayssa today. There is no page that shows a surah, no surah list, no reading position, no memorisation feature. What exists that involves the Quran:
+There is no Quran reader in Nafissa today. There is no page that shows a surah, no surah list, no reading position, no memorisation feature. What exists that involves the Quran:
 
 | What | Where | Fits the focus? |
 |---|---|---|
@@ -98,7 +98,7 @@ No supplication, ayah or reference changes in any of these.
 
 Stage A exists because of rights, not design: the Tanzil Quran text is the only religious text in the project with documented redistribution rights. Everything in your primary list (adhkar, daily and prophetic duas) currently comes from Hisn al-Muslim, whose permission has not been requested yet. The public build follows `content-sources/sources.ts`: it includes a source when that file marks it cleared.
 
-So a public Bayssa that matches your focus needs cleared adhkar and duas. A public app with only the Quranic category would be the opposite of the product you describe.
+So a public Nafissa that matches your focus needs cleared adhkar and duas. A public app with only the Quranic category would be the opposite of the product you describe.
 
 ### Recommendation
 

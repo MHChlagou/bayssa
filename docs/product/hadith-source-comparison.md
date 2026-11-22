@@ -4,7 +4,7 @@ Prepared on 2026-11-22 for your approval. Nothing has been migrated. No Arabic w
 
 ## Why this matters
 
-Every supplication and dhikr in Bayssa currently takes its wording from حصن المسلم, whose redistribution for this use is not established. A public duas and adhkar app needs wording from a source that may be redistributed. This document compares the candidates. It does not propose a migration.
+Every supplication and dhikr in Nafissa currently takes its wording from حصن المسلم, whose redistribution for this use is not established. A public duas and adhkar app needs wording from a source that may be redistributed. This document compares the candidates. It does not propose a migration.
 
 A caution that runs through the whole document: the words of a hadith are not anyone's property, but a particular edition is more than the words. Its vocalization, punctuation, numbering, section headings, gradings, explanations and the database as a compiled work can each carry rights of their own. A repository's licence file covers what its author had the right to license, and no more.
 
@@ -40,7 +40,7 @@ References. The takhrij names collections but usually gives no hadith number in 
 Open questions about its terms, which only HadeethEnc can answer:
 
 - The terms speak of "translations". Whether they cover the Arabic text and the gradings is implied by their place on the Arabic download, not stated.
-- Condition 1 forbids modification, addition and deletion. Bayssa would show only the supplication inside a hadith, without the narrator's introduction and without the explanation. Whether cutting out the supplication counts as deletion is the same question as for QuranEnc, and it matters more here because the cut is inside a record, not between records.
+- Condition 1 forbids modification, addition and deletion. Nafissa would show only the supplication inside a hadith, without the narrator's introduction and without the explanation. Whether cutting out the supplication counts as deletion is the same question as for QuranEnc, and it matters more here because the cut is inside a record, not between records.
 - The terms do not mention commercial use.
 
 ## 2. `fawazahmed0/hadith-api`
@@ -57,7 +57,7 @@ Attribution. None required by the Unlicense.
 
 What a record contains. The full narration with its chain of narrators, vocalized. Two numbers per hadith. Gradings attributed to named scholars for the four Sunan (al-Albani, Shu'ayb al-Arna'ut, Zubair Ali Za'i and others), none for al-Bukhari and Muslim. No explanations.
 
-Its role in Bayssa today. It is the source of every collection name, hadith number and grading the app shows. The registry had marked it "cleared" on the strength of the Unlicense. In light of this finding I have changed that status to "not established". Nothing in the public build depends on it, since the public build contains no hadith.
+Its role in Nafissa today. It is the source of every collection name, hadith number and grading the app shows. The registry had marked it "cleared" on the strength of the Unlicense. In light of this finding I have changed that status to "not established". Nothing in the public build depends on it, since the public build contains no hadith.
 
 ## 3. `AhmedBaset/hadith-json`
 
@@ -70,7 +70,7 @@ Origin: stated in its README as scraped from sunnah.com, 50,884 hadiths from 17 
 
 ## 5. Differences in Arabic wording and vocalization
 
-Measured against the wording Bayssa shows today. "Letters" means the consonants and long vowels. "Marks" means the vocalization.
+Measured against the wording Nafissa shows today. "Letters" means the consonants and long vowels. "Marks" means the vocalization.
 
 ### Coverage
 
