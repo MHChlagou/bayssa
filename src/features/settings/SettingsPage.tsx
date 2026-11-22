@@ -10,6 +10,7 @@ import { NUMERALS, prefsStore, TEXT_SCALES, THEMES } from '../../storage/stores.
 import { usePersistentState } from '../../storage/usePersistentState.ts'
 import { IconButton } from '../../ui/IconButton.tsx'
 import { PageHeader } from '../../ui/PageHeader.tsx'
+import { BackupSection } from './BackupSection.tsx'
 import { Segmented } from '../../ui/Segmented.tsx'
 
 function Group({ title, children }: { title: string; children: ReactNode }): ReactElement {
@@ -104,6 +105,8 @@ export function SettingsPage(): ReactElement {
           </>
         )}
       </Group>
+
+      <BackupSection />
 
       <Group title={t.settings.sources}>
         <ul className="list-disc space-y-2 ps-5 text-sm leading-relaxed text-ink/90 marker:text-accent-soft">

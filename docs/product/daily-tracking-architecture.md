@@ -143,7 +143,7 @@ Unchanged: nothing leaves the device. The export file is created on the device a
 
 About the size of the favorites and tasbih features together. A sensible order:
 
-1. Export and import of what exists today (favorites, tasbih, preferences). It is useful on its own, and it answers the Safari findings above.
+1. Export and import of what exists today (favorites, tasbih, preferences). Done on 2026-11-22: see `backup-format.md`. Tracking's history would join the same file under a new format version.
 2. The history store, the rollover and the domain functions, with tests, and no screen.
 3. The home screen additions.
 4. The calendar screen and the wird setting.
