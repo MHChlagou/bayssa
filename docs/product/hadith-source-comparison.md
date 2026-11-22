@@ -122,7 +122,7 @@ The notes are what makes a list of supplications usable as daily adhkar: which w
 
 ## 7. Questions before any migration is proposed
 
-1. Shall I draft a message to HadeethEnc, asking whether its terms cover the Arabic text and gradings, whether showing the supplication from within a hadith with full attribution is permitted, and whether commercial reuse by others is allowed?
+1. Drafted on 2026-11-22 in `hadeethenc-message.md`, in English and Arabic, for you to send. Original question: shall I draft a message to HadeethEnc, asking whether its terms cover the Arabic text and gradings, whether showing the supplication from within a hadith with full attribution is permitted, and whether commercial reuse by others is allowed?
 2. Do you want sunnah.com asked directly about its terms for references and gradings, since the app's reference data most likely traces back to it?
 3. If HadeethEnc's answer is favourable, would you accept entries shown as the narration (narrator's introduction and the Prophet's words), with the supplication highlighted, in place of the bare supplication?
 

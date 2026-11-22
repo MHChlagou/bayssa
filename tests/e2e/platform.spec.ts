@@ -114,9 +114,11 @@ test.describe('dedication', () => {
         const computed = getComputedStyle(element)
         return { name: computed.animationName, seconds: Number.parseFloat(computed.animationDuration), play: computed.animationPlayState }
       })
+    await expect(page.getByRole('heading', { level: 1, name: 'المسبحة' })).toBeVisible()
     await page.mouse.move(200, 400)
+    // The stylesheet may still be applying on a slow start.
+    await expect.poll(async () => (await state()).name).toBe('tribute-drift')
     const running = await state()
-    expect(running.name).toBe('tribute-drift')
     expect(running.seconds).toBeGreaterThanOrEqual(60)
     expect(running.play).toBe('running')
 
@@ -150,6 +152,44 @@ test.describe('dedication', () => {
       await expect(page.locator('main h1, main h2').first()).toBeVisible()
       await expect(page.getByText(DEDICATION_SUPPLICATION)).toHaveCount(0)
     }
+  })
+
+  test('stays in place on desktop while the page scrolls, without covering the sidebar or the content', async ({ page }, testInfo) => {
+    test.skip(!testInfo.project.name.startsWith('desktop'), 'The band is pinned on desktop layouts only')
+    await page.goto('./#/adhkar/morning')
+    await expect(page.locator('article').first()).toBeVisible()
+    const band = page.locator('.tribute')
+    const height = (await band.boundingBox())?.height ?? 0
+    expect(height).toBeGreaterThan(30)
+
+    // The sidebar and the page both start below the band.
+    const sidebar = await page.getByRole('complementary').filter({ has: page.getByRole('navigation', { name: 'التنقل الرئيسي' }) }).boundingBox()
+    expect(sidebar?.y).toBeGreaterThanOrEqual(height - 1)
+    const heading = await page.getByRole('heading', { level: 1 }).boundingBox()
+    expect(heading?.y).toBeGreaterThanOrEqual(height)
+
+    await page.mouse.wheel(0, 1500)
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(500)
+    expect((await band.boundingBox())?.y).toBe(0)
+    // The sticky progress bar of the reader rests under the band, not behind it.
+    const progress = await page.getByRole('progressbar', { name: 'التقدم' }).boundingBox()
+    expect(progress?.y).toBeGreaterThanOrEqual(height)
+  })
+
+  test('causes no layout shift while the page loads', async ({ page, browserName }) => {
+    test.skip(browserName !== 'chromium', 'Layout shift entries are a Chromium feature')
+    await page.addInitScript(() => {
+      ;(window as unknown as { __shift: number }).__shift = 0
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries() as unknown as { value: number; hadRecentInput: boolean }[]) {
+          if (!entry.hadRecentInput) (window as unknown as { __shift: number }).__shift += entry.value
+        }
+      }).observe({ type: 'layout-shift', buffered: true })
+    })
+    await page.goto('./')
+    await expect(page.locator('main').getByText(/هـ/).first()).toBeVisible()
+    await page.waitForTimeout(1500)
+    expect(await page.evaluate(() => (window as unknown as { __shift: number }).__shift)).toBeLessThan(0.01)
   })
 
   test('the band does not make the page wider or cover the content', async ({ page }) => {
