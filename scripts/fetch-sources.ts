@@ -1,7 +1,7 @@
 // Downloads the reference texts used to build and verify the content dataset.
 // Nothing here is shipped to users directly: see content-sources/README.md.
-import { mkdir, writeFile, access } from 'node:fs/promises'
-import { dirname, join } from 'node:path'
+import { access, mkdir, readFile, writeFile } from 'node:fs/promises'
+import { dirname, join, resolve, sep } from 'node:path'
 
 const ROOT = join(import.meta.dirname, '..', 'content-sources')
 const FETCH_TIMEOUT_MS = 120_000
@@ -16,7 +16,9 @@ async function exists(path: string): Promise<boolean> {
 }
 
 async function download(url: string, relativePath: string): Promise<string> {
-  const target = join(ROOT, relativePath)
+  // Some paths are built from downloaded data, so refuse anything that leaves the sources folder.
+  const target = resolve(ROOT, relativePath)
+  if (!target.startsWith(resolve(ROOT) + sep)) throw new Error(`refusing to write outside ${ROOT}: ${relativePath}`)
   if (!force && (await exists(target))) return target
   const response = await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) })
   if (!response.ok) throw new Error(`GET ${url} failed with ${response.status}`)
@@ -32,12 +34,14 @@ await download(tanzil('simple-clean'), 'quran/tanzil-simple-clean.txt')
 await download('https://tanzil.net/trans/?transID=ar.muyassar&type=txt-2', 'quran/tanzil-ar-muyassar.txt')
 
 await download('https://www.hisnmuslim.com/api/ar/husn_ar.json', 'hisn/index.json')
-const { readFile } = await import('node:fs/promises')
-const index = JSON.parse(await readFile(join(ROOT, 'hisn/index.json'), 'utf8')) as {
-  العربية: { ID: number }[]
-}
-for (const chapter of index['العربية']) {
-  await download(`https://www.hisnmuslim.com/api/ar/${chapter.ID}.json`, `hisn/chapters/${chapter.ID}.json`)
+// The index is downloaded data: accept only positive whole-number chapter ids before using them in a URL or a path.
+const index: unknown = JSON.parse(await readFile(join(ROOT, 'hisn/index.json'), 'utf8'))
+const chapters: unknown = typeof index === 'object' && index !== null ? Object.values(index)[0] : undefined
+if (!Array.isArray(chapters) || chapters.length === 0) throw new Error('hisn/index.json has no chapter list')
+for (const chapter of chapters as unknown[]) {
+  const id: unknown = typeof chapter === 'object' && chapter !== null && 'ID' in chapter ? chapter.ID : undefined
+  if (typeof id !== 'number' || !Number.isInteger(id) || id <= 0) throw new Error(`hisn/index.json has an invalid chapter id: ${JSON.stringify(id)}`)
+  await download(`https://www.hisnmuslim.com/api/ar/${id}.json`, `hisn/chapters/${id}.json`)
 }
 
 // A second transcription of Hisn al-Muslim that keeps the author's footnotes (MIT licence).
