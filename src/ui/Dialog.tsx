@@ -10,19 +10,28 @@ type DialogProps = {
 /** Native modal dialog: focus trapping, Escape and the inert background come from the platform. */
 export function Dialog({ isOpen, onClose, labelledBy, children }: DialogProps): ReactElement {
   const ref = useRef<HTMLDialogElement>(null)
+  // The browser reports a close a moment after it happens. When this component closed the
+  // dialog itself, that late report must not reach the owner, which may have reopened it since.
+  const isClosedFromProp = useRef(false)
 
   useEffect(() => {
     const dialog = ref.current
     if (!dialog) return
     if (isOpen && !dialog.open) dialog.showModal()
-    if (!isOpen && dialog.open) dialog.close()
+    if (!isOpen && dialog.open) {
+      isClosedFromProp.current = true
+      dialog.close()
+    }
   }, [isOpen])
 
   return (
     <dialog
       ref={ref}
       aria-labelledby={labelledBy}
-      onClose={onClose}
+      onClose={() => {
+        if (isClosedFromProp.current) isClosedFromProp.current = false
+        else onClose()
+      }}
       onClick={(event) => {
         if (event.target === ref.current) onClose()
       }}
