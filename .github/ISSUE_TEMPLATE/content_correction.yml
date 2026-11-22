@@ -1,0 +1,62 @@
+name: Content correction · تصحيح محتوى
+description: A mistake in a supplication, a Quran passage, a reference, a grading or a repetition count · خطأ في نص أو مرجع أو حكم أو عدد
+labels: [content]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Content accuracy is the first priority of this project.
+
+        Corrections are checked against the source before anything changes. No text is edited by hand: every word in the app is cut from a reference source by a script. Please name the source you rely on.
+
+        جزاك الله خيراً. لا يُعدَّل أي نص يدوياً، وتُراجَع كل ملاحظة على مصدرها قبل أي تغيير، فنرجو ذكر المصدر الذي تعتمد عليه.
+  - type: input
+    id: where
+    attributes:
+      label: Where it appears · موضع الخطأ
+      description: The section and the first words of the entry · القسم وأول كلمات الدعاء
+      placeholder: أذكار الصباح · اللهم بك أصبحنا
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of mistake · نوع الخطأ
+      options:
+        - Wording or vocalization · اللفظ أو التشكيل
+        - Quran text · نص قرآني
+        - Reference (collection or number) · المرجع (الكتاب أو الرقم)
+        - Grading · درجة الحديث
+        - Repetition count · عدد التكرار
+        - Occasion or placement · المناسبة أو موضع الذكر
+        - Other · غير ذلك
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: What the app shows · ما يعرضه التطبيق
+    validations:
+      required: true
+  - type: textarea
+    id: correct
+    attributes:
+      label: What it should be · الصواب
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Your source · المصدر
+      description: Book, edition, volume and page or hadith number, or a link to a reliable site · الكتاب والطبعة والجزء والصفحة أو رقم الحديث
+    validations:
+      required: true
+  - type: dropdown
+    id: reviewer
+    attributes:
+      label: Your background · خلفيتك
+      description: Optional. It helps us weigh the report, and every report is checked either way.
+      options:
+        - Reader · قارئ
+        - Student of Islamic sciences · طالب علم
+        - Qualified in hadith or Quranic sciences · مختص في الحديث أو علوم القرآن

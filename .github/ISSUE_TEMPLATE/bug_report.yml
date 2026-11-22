@@ -1,0 +1,67 @@
+name: Bug report · بلاغ عن خلل
+description: Something in the app does not work as it should · خلل في عمل التطبيق
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For a mistake in a supplication, a reference or a grading, please use the content correction form instead.
+        لتصحيح نص دعاء أو مرجع أو حكم، استعمل نموذج تصحيح المحتوى.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened · ماذا حدث
+      description: What you did, what you expected, and what you saw.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce · خطوات إعادة الخلل
+      placeholder: |
+        1. Open ...
+        2. Tap ...
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device and system · الجهاز والنظام
+      placeholder: iPhone 14, iOS 18.1
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version · المتصفح وإصداره
+      placeholder: Safari 18.1
+    validations:
+      required: true
+  - type: dropdown
+    id: installed
+    attributes:
+      label: How the app was opened · طريقة فتح التطبيق
+      options:
+        - In the browser · في المتصفح
+        - Installed on the home screen · مثبّت على الشاشة الرئيسية
+    validations:
+      required: true
+  - type: dropdown
+    id: offline
+    attributes:
+      label: Connection · الاتصال
+      options:
+        - Online · متصل
+        - Offline · غير متصل
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: App version · إصدار التطبيق
+      description: Shown at the bottom of the settings screen · يظهر أسفل صفحة الإعدادات
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots · لقطات الشاشة
+      description: Please do not include personal information.
