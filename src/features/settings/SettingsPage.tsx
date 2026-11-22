@@ -1,7 +1,7 @@
 import { Minus, Plus } from 'lucide-react'
 import type { ReactElement, ReactNode } from 'react'
 import { isApproximateMatch } from '../../content/describe.ts'
-import { allEntries, basmala } from '../../content/index.ts'
+import { allEntries, basmala, contentSources } from '../../content/index.ts'
 import type { Entry } from '../../content/schema.ts'
 import { clampHijriOffset, formatHijriDate, MAX_HIJRI_OFFSET_DAYS } from '../../domain/hijri/hijri.ts'
 import { formatNumber, t } from '../../i18n/t.ts'
@@ -101,7 +101,21 @@ export function SettingsPage(): ReactElement {
 
       <Group title={t.settings.sources}>
         <ul className="list-disc space-y-2 ps-5 text-sm leading-relaxed text-ink/90 marker:text-accent-soft">
-          {t.settings.sourcesBody.map((line) => <li key={line}>{line}</li>)}
+          {t.settings.sourcesBody
+            .filter((line) => contentSources.some((source) => source.id === line.source))
+            .map((line) => (
+              <li key={line.source}>
+                {line.text}
+                {line.source === 'tanzil-uthmani' && (
+                  <>
+                    {' '}
+                    <a href="https://tanzil.net" target="_blank" rel="noreferrer" dir="ltr" className="font-medium text-primary underline underline-offset-4">
+                      {t.settings.tanzilLink}
+                    </a>
+                  </>
+                )}
+              </li>
+            ))}
         </ul>
       </Group>
 
@@ -113,8 +127,8 @@ export function SettingsPage(): ReactElement {
         <ul className="list-disc space-y-2 ps-5 text-sm leading-relaxed text-ink/90 marker:text-accent-soft">
           {t.settings.methodBody.map((line) => <li key={line}>{line}</li>)}
         </ul>
-        <dl className="grid grid-cols-3 gap-2 text-center">
-          {MATCH_GROUPS.map((group) => (
+        <dl className="grid grid-flow-col auto-cols-fr gap-2 text-center">
+          {MATCH_GROUPS.filter((group) => matchCounts[group] > 0).map((group) => (
             <div key={group} className="rounded-2xl bg-surface-alt/60 px-2 py-3">
               <dd className="text-xl font-medium tabular-nums text-ink">{formatNumber(matchCounts[group])}</dd>
               <dt className="text-xs leading-snug text-muted">{t.settings.matchStats[group]}</dt>
@@ -125,6 +139,9 @@ export function SettingsPage(): ReactElement {
 
       <Group title={t.settings.privacy}>
         <p className="text-sm leading-relaxed text-ink/90">{t.settings.privacyBody}</p>
+        <a href={`${import.meta.env.BASE_URL}licenses.txt`} className="inline-block text-sm font-medium text-primary underline underline-offset-4">
+          {t.settings.softwareLicenses}
+        </a>
       </Group>
 
       <p className="pb-2 text-center text-xs text-muted">

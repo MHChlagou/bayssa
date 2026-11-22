@@ -8,7 +8,7 @@ import { createReadStream, existsSync, statSync } from 'node:fs'
 import { createServer } from 'node:http'
 import { extname, join, normalize } from 'node:path'
 
-const BASE = '/muslim-daily/'
+const BASE = '/bayssa/'
 const ROOT = join(import.meta.dirname, '..', '..')
 const BUILDS: Record<string, string> = { current: join(ROOT, 'dist'), next: join(ROOT, 'dist-next') }
 const TYPES: Record<string, string> = {

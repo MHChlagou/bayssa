@@ -4,13 +4,18 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { z } from 'zod'
-import type { Collection, ContentBundle, Entry, Surah, TasbihPreset } from '../src/content/schema.ts'
+import { SOURCES } from '../content-sources/sources.ts'
+import type { BundleScope, Collection, ContentBundle, Entry, SourceId, Surah, TasbihPreset } from '../src/content/schema.ts'
 import { isContiguousWordRun, loadUthmani, stripLeadingBasmala } from './lib/quran.ts'
 
 const ROOT = join(import.meta.dirname, '..')
 const DATASET = join(ROOT, 'content', 'dataset')
 const includeUnverified = process.argv.includes('--include-unverified')
 const checkOnly = process.argv.includes('--check')
+// `--rights=cleared`, or CONTENT_RIGHTS=cleared, writes the public bundle: only
+// material whose redistribution is documented in content-sources/sources.ts.
+const scope: BundleScope = process.argv.includes('--rights=cleared') || process.env.CONTENT_RIGHTS === 'cleared' ? 'cleared' : 'full'
+if (scope === 'cleared' && includeUnverified) throw new Error('--include-unverified cannot be combined with the cleared scope')
 
 const verification = z.strictObject({
   status: z.enum(['verified', 'needs-review']),
@@ -18,6 +23,16 @@ const verification = z.strictObject({
   checkedAgainst: z.array(z.string()).min(1),
   checkedOn: z.iso.date(),
   note: z.string().optional(),
+})
+const sourceId = z.enum(['tanzil-uthmani', 'hisn-al-muslim', 'tafsir-muyassar-tanzil', 'hadith-api'])
+const provenance = z.strictObject({
+  text: sourceId,
+  reference: sourceId.optional(),
+  meaning: sourceId.optional(),
+  scholarlyReview: z.discriminatedUnion('status', [
+    z.strictObject({ status: z.literal('not-reviewed') }),
+    z.strictObject({ status: z.literal('reviewed'), by: z.string().min(1), on: z.iso.date() }),
+  ]),
 })
 const quranSegment = z.strictObject({
   type: z.literal('quran'),
@@ -36,6 +51,7 @@ const entrySchema = z.discriminatedUnion('kind', [
     segments: z.array(quranSegment).min(1),
     searchText: z.string().min(1),
     meaning: z.strictObject({ text: z.string().min(1), source: z.string().min(1) }).optional(),
+    provenance,
     verification,
   }),
   z.strictObject({
@@ -52,6 +68,7 @@ const entrySchema = z.discriminatedUnion('kind', [
         by: z.string().optional(),
       }).optional(),
     })),
+    provenance,
     verification,
   }),
 ])
@@ -103,6 +120,13 @@ for (const entry of entries) {
     const isIntact = segment.isPartial ? isContiguousWordRun(segment.text, ayah) : segment.text === ayah
     if (!isIntact) problems.push(`${entry.id}: text of ${segment.surah}:${segment.ayah} differs from the Tanzil Uthmani text`)
   }
+  // Provenance must describe what the entry actually contains.
+  if (entry.kind === 'quran' && (entry.meaning !== undefined) !== (entry.provenance.meaning !== undefined)) {
+    problems.push(`${entry.id}: the explanation and its recorded source do not match`)
+  }
+  if (entry.kind === 'hadith' && (entry.sources.length > 0) !== (entry.provenance.reference !== undefined)) {
+    problems.push(`${entry.id}: the references and their recorded source do not match`)
+  }
   if (entry.kind === 'hadith' && entry.verification.status === 'verified' && entry.sources.length === 0) {
     problems.push(`${entry.id}: marked verified without a source`)
   }
@@ -130,25 +154,66 @@ if (problems.length > 0) {
   process.exit(1)
 }
 
+const isCleared = (id: SourceId | undefined): boolean => id === undefined || SOURCES[id].redistribution === 'cleared'
+
+/** In the cleared scope an entry is kept only if its wording and its references may be redistributed. */
+const isInScope = (entry: Entry): boolean =>
+  scope === 'full' || (isCleared(entry.provenance.text) && isCleared(entry.provenance.reference))
+
+/** Drops the parts of an entry that may not be redistributed, never the wording itself. */
+function forScope(entry: Entry): Entry {
+  if (scope === 'full' || entry.kind !== 'quran' || isCleared(entry.provenance.meaning)) return entry
+  return {
+    id: entry.id,
+    kind: 'quran',
+    segments: entry.segments,
+    searchText: entry.searchText,
+    provenance: { text: entry.provenance.text, scholarlyReview: entry.provenance.scholarlyReview },
+    verification: entry.verification,
+  }
+}
+
 const publishedCollections = collections
-  .map((c) => ({ ...c, items: c.items.filter((item) => { const e = byId.get(item.entryId); return e !== undefined && isPublished(e) }) }))
+  .map((c) => ({
+    ...c,
+    items: c.items.filter((item) => {
+      const e = byId.get(item.entryId)
+      // A placement taken from Hisn al-Muslim (its count and its note) follows that book's rights.
+      const isPlacementInScope = scope === 'full' || item.hisn === undefined
+      return e !== undefined && isPublished(e) && isInScope(e) && isPlacementInScope
+    }),
+  }))
   .filter((c) => c.items.length > 0)
 const usedIds = new Set(publishedCollections.flatMap((c) => c.items.map((item) => item.entryId)))
-const publishedPresets = presets.filter((p) => { const e = byId.get(p.entryId); return e !== undefined && isPublished(e) })
+const publishedPresets = presets.filter((p) => { const e = byId.get(p.entryId); return e !== undefined && isPublished(e) && isInScope(e) })
 for (const preset of publishedPresets) usedIds.add(preset.entryId)
 
 const bundle: ContentBundle = {
   generatedOn: new Date().toISOString().slice(0, 10),
+  scope,
+  sources: [],
   basmala: meta.basmala,
   surahs: meta.surahs,
   // Editorial verification notes are for maintainers and stay out of the shipped bundle.
-  entries: entries.filter((e) => usedIds.has(e.id)).map((e) => ({ ...e, verification: { ...e.verification, note: undefined } })),
+  entries: entries.filter((e) => usedIds.has(e.id)).map((e) => ({ ...forScope(e), verification: { ...e.verification, note: undefined } })),
   collections: publishedCollections,
   tasbihPresets: publishedPresets,
 }
 
+const usedSources = new Set<SourceId>()
+for (const entry of bundle.entries) {
+  for (const id of [entry.provenance.text, entry.provenance.reference, entry.provenance.meaning]) {
+    if (id !== undefined) usedSources.add(id)
+  }
+}
+bundle.sources = Object.values(SOURCES).filter((source) => usedSources.has(source.id))
+if (scope === 'cleared') {
+  const leaked = bundle.sources.filter((source) => source.redistribution !== 'cleared')
+  if (leaked.length > 0) throw new Error(`cleared bundle still draws on: ${leaked.map((source) => source.id).join(', ')}`)
+}
+
 const hidden = entries.length - bundle.entries.length
-console.log(`content: ${bundle.entries.length} entries in ${bundle.collections.length} collections, ${bundle.tasbihPresets.length} tasbih presets, ${hidden} hidden`)
+console.log(`content (${scope}): ${bundle.entries.length} entries in ${bundle.collections.length} collections, ${bundle.tasbihPresets.length} tasbih presets, ${hidden} hidden`)
 if (!checkOnly) {
   const out = join(ROOT, 'src', 'content', 'generated')
   mkdirSync(out, { recursive: true })

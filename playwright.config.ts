@@ -1,12 +1,12 @@
 import { defineConfig, devices } from '@playwright/test'
 
 const PORT = 4173
-const BASE_URL = `http://localhost:${PORT}/muslim-daily/`
+const BASE_URL = `http://localhost:${PORT}/bayssa/`
 /** One swappable server per engine, so the update tests cannot disturb each other. */
 export const UPDATE_SERVER_PORTS = { chromium: 4180, firefox: 4181, webkit: 4182 } as const
 
 // End-to-end tests run against the production build, served the way GitHub
-// Pages serves it (under /muslim-daily/), with the real service worker.
+// Pages serves it (under /bayssa/), with the real service worker.
 // These are engine tests on a desktop machine: "mobile-safari" and
 // "android-chrome" emulate the screen and user agent, not the real devices.
 export default defineConfig({
@@ -27,7 +27,7 @@ export default defineConfig({
     { command: `npm run preview -- --port ${PORT} --strictPort`, url: BASE_URL, reuseExistingServer: !process.env.CI, timeout: 60_000 },
     ...Object.values(UPDATE_SERVER_PORTS).map((port) => ({
       command: `node tests/support/versioned-server.ts ${port}`,
-      url: `http://localhost:${port}/muslim-daily/`,
+      url: `http://localhost:${port}/bayssa/`,
       reuseExistingServer: !process.env.CI,
       timeout: 60_000,
     })),

@@ -5,7 +5,7 @@ import { useEntranceAnimation, useIsStaticShell } from '../../app/boot.ts'
 import { useFavorites } from '../../app/hooks.ts'
 import { completedItemCount, useTodayProgress } from '../../app/progress.ts'
 import { previewText, sourceLine } from '../../content/describe.ts'
-import { collectionPath, collectionsContaining, entriesInSection, getCollection, tasbihPresets } from '../../content/index.ts'
+import { collectionPath, collectionsContaining, entriesInSection, FREE_COUNTER, getCollection, tasbihPresets } from '../../content/index.ts'
 import type { Collection, Entry } from '../../content/schema.ts'
 import { dayPeriod, pickForDay, type DayPeriod } from '../../domain/daily/daily.ts'
 import { formatGregorianDate, formatHijriDate } from '../../domain/hijri/hijri.ts'
@@ -119,7 +119,7 @@ export function HomePage(): ReactElement {
 
   // In the static shell nothing saved on the device may show: it would not match the prerendered HTML.
   const savedPreset = isStaticShell ? undefined : tasbihPresets.find((candidate) => candidate.id === tasbih.activeId)
-  const preset = savedPreset ?? tasbihPresets[0]
+  const preset = savedPreset ?? tasbihPresets[0] ?? FREE_COUNTER
   const savedCounter = isStaticShell || !preset ? undefined : tasbih.counters[preset.id]
   const counter = preset ? (savedCounter ?? createCounter(preset.defaultTarget)) : undefined
   const completedToday = (collection: Collection): number => (isStaticShell ? 0 : completedItemCount(collection, progress, day))
@@ -153,7 +153,9 @@ export function HomePage(): ReactElement {
             </ProgressRing>
             <span className="min-w-0 flex-1">
               <span className="block text-[1.02rem] font-medium text-ink">{t.home.quickTasbih}</span>
-              <span className="block truncate font-scripture text-[0.95rem] leading-[1.9] text-muted">{preset.text}</span>
+              {preset.text === ""
+                ? <span className="block truncate text-xs text-muted">{t.home.tasbihHint}</span>
+                : <span className="block truncate font-scripture text-[0.95rem] leading-[1.9] text-muted">{preset.text}</span>}
             </span>
             <span className="text-sm tabular-nums text-muted">{!isStaticShell && `${formatNumber(counter.count)} / ${formatNumber(counter.target)}`}</span>
           </Link>

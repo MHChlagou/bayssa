@@ -23,7 +23,13 @@ import { lcsLength, skeleton, skeletonWords } from './lib/skeleton.ts'
 
 const ROOT = join(import.meta.dirname, '..')
 const SOURCES = join(ROOT, 'content-sources')
-const OUT = join(ROOT, 'content', 'dataset')
+// `--quran-only` builds the part of the dataset that needs nothing but the
+// committed Tanzil files and the curation list: the Quranic collections,
+// without explanations. It is how the dataset is regenerated where the Hisn
+// al-Muslim download and the hadith collections are not available.
+const isQuranOnly = process.argv.includes('--quran-only')
+const outArgument = process.argv.find((argument) => argument.startsWith('--out='))
+const OUT = outArgument ? join(process.cwd(), outArgument.slice('--out='.length)) : join(ROOT, 'content', 'dataset')
 const TODAY = new Date().toISOString().slice(0, 10)
 
 const NEAR_MATCH_MIN_RATIO = 0.9
@@ -38,7 +44,7 @@ const BRACKETED = /\[[^\]]*\]/g
 
 const uthmani = loadUthmani()
 const simpleClean = loadSimpleClean()
-const muyassar = loadMuyassar()
+const muyassar = isQuranOnly ? undefined : loadMuyassar()
 const basmala = must(uthmani.get('1:1'), 'Uthmani 1:1')
 const simpleBasmala = must(simpleClean.get('1:1'), 'simple 1:1')
 
@@ -97,19 +103,25 @@ function quranEntry(specs: QuranSpec[]): QuranEntry {
   )
   const plain = specs.flatMap((spec) => sliceSpec(spec, simpleClean, simpleBasmala).map((a) => a.text))
   const surahNames = [...new Set(segments.map((s) => must(surahs[s.surah - 1], `surah ${s.surah}`).name))]
+  const hasMeaning = muyassar !== undefined && segments.length <= MAX_AYAHS_WITH_MEANING
   const entry: QuranEntry = {
     id,
     kind: 'quran',
     segments,
     searchText: [...plain, ...surahNames].join(' '),
-    ...(segments.length <= MAX_AYAHS_WITH_MEANING
+    ...(hasMeaning
       ? {
           meaning: {
-            text: segments.map((s) => must(muyassar.get(`${s.surah}:${s.ayah}`), `tafsir ${s.surah}:${s.ayah}`)).join(' '),
+            text: segments.map((s) => must(muyassar?.get(`${s.surah}:${s.ayah}`), `tafsir ${s.surah}:${s.ayah}`)).join(' '),
             source: 'التفسير الميسر · مجمع الملك فهد لطباعة المصحف الشريف',
           },
         }
       : {}),
+    provenance: {
+      text: 'tanzil-uthmani',
+      ...(hasMeaning ? { meaning: 'tafsir-muyassar-tanzil' as const } : {}),
+      scholarlyReview: { status: 'not-reviewed' },
+    },
     verification: { status: 'verified', method: 'quran-exact', checkedAgainst: ['tanzil-uthmani-1.1'], checkedOn: TODAY },
   }
   entries.set(id, entry)
@@ -129,7 +141,7 @@ type IndexedHadith = {
 }
 
 const bookIndex = new Map<HadithCollectionId, IndexedHadith[]>()
-for (const book of BOOKS) {
+for (const book of isQuranOnly ? [] : BOOKS) {
   const raw = JSON.parse(readFileSync(join(SOURCES, 'cache/hadith', `${book}.json`), 'utf8')) as {
     hadiths: { arabicnumber?: number | string; text: string; grades: { name: string; grade: string }[] }[]
   }
@@ -420,6 +432,11 @@ function importHisnItem(chapter: number, raw: { ID: number; ARABIC_TEXT: string;
       segments: visibleSegments,
       hisn,
       sources,
+      provenance: {
+        text: 'hisn-al-muslim',
+        ...(sources.length > 0 ? { reference: 'hadith-api' as const } : {}),
+        scholarlyReview: { status: 'not-reviewed' },
+      },
       verification: {
         status: flags.length === 0 ? 'verified' : 'needs-review',
         ...(method ? { method } : {}),
@@ -441,7 +458,7 @@ function importHisnItem(chapter: number, raw: { ID: number; ARABIC_TEXT: string;
 
 type HisnChapter = { title: string; items: { ID: number; ARABIC_TEXT: string; REPEAT: number }[] }
 const chapters = new Map<number, HisnChapter>()
-for (const file of readdirSync(join(SOURCES, 'hisn/chapters'))) {
+for (const file of isQuranOnly ? [] : readdirSync(join(SOURCES, 'hisn/chapters'))) {
   const data = JSON.parse(readFileSync(join(SOURCES, 'hisn/chapters', file), 'utf8')) as Record<string, HisnChapter['items']>
   const [title, items] = must(Object.entries(data)[0], `chapter in ${file}`)
   chapters.set(Number(file.replace('.json', '')), { title, items })
@@ -449,7 +466,8 @@ for (const file of readdirSync(join(SOURCES, 'hisn/chapters'))) {
 
 // ---------------------------------------------------------------- Collections
 
-const collections: Collection[] = collectionSpecs.map((spec) => {
+const includedSpecs = isQuranOnly ? collectionSpecs.filter((spec) => spec.chapters === undefined) : collectionSpecs
+const collections: Collection[] = includedSpecs.map((spec) => {
   const items: CollectionItem[] = []
   for (const source of spec.chapters ?? []) {
     const chapter = chapters.get(source.chapter)
@@ -472,7 +490,7 @@ const collections: Collection[] = collectionSpecs.map((spec) => {
 
 const EDGE_PUNCTUATION = /^[\s،.؛:()[\]]+|[\s،.؛:()[\]]+$/g
 
-const tasbihPresets: TasbihPreset[] = tasbihPresetSpecs.map((spec) => {
+const tasbihPresets: TasbihPreset[] = (isQuranOnly ? [] : tasbihPresetSpecs).map((spec) => {
   const entry = entries.get(`h-${spec.hisnItem}`)
   if (!entry) throw new Error(`tasbih preset ${spec.id}: Hisn item ${spec.hisnItem} was not imported`)
   const phrase = skeletonWords(spec.phrase)

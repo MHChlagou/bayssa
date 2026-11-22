@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for your interest in Muslim Daily. Contributions are welcome, within a few rules that protect the accuracy of the content.
+Thank you for your interest in Bayssa. Contributions are welcome, within a few rules that protect the accuracy of the content.
 
 نرحب بالمساهمات، مع قواعد قليلة تحفظ دقة المحتوى. يمكنك الكتابة بالعربية أو بالإنجليزية.
 

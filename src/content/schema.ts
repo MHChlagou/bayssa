@@ -21,6 +21,47 @@ export type Verification = {
   note?: string
 }
 
+export type SourceId = 'tanzil-uthmani' | 'hisn-al-muslim' | 'tafsir-muyassar-tanzil' | 'hadith-api'
+
+/** Whether the right to redistribute a source in a public repository and app is documented. */
+export type RedistributionStatus = 'cleared' | 'not-established'
+
+export type UsePermission = 'permitted' | 'not-permitted' | 'needs-permission' | 'unknown'
+
+export type ContentSource = {
+  id: SourceId
+  title: string
+  rightsHolder: string
+  obtainedFrom: string
+  terms: string
+  redistribution: RedistributionStatus
+  commercialUse: UsePermission
+  modification: UsePermission
+  attribution: string
+  /** Where the statements behind this record are quoted. */
+  evidence: string
+  pendingAction?: string
+}
+
+/**
+ * Scholarly review is separate from every mechanical check. It changes only
+ * when a named, qualified person has read the entry.
+ */
+export type ScholarlyReview =
+  | { status: 'not-reviewed' }
+  | { status: 'reviewed'; by: string; on: string }
+
+/** Where each part of an entry comes from. Rights are looked up in the source registry. */
+export type Provenance = {
+  /** Source of the recited wording. */
+  text: SourceId
+  /** Source of the collection name, hadith number and grading. */
+  reference?: SourceId
+  /** Source of the explanation shown under a Quran passage. */
+  meaning?: SourceId
+  scholarlyReview: ScholarlyReview
+}
+
 export type QuranSegment = {
   type: 'quran'
   surah: number
@@ -53,6 +94,7 @@ export type HisnRef = { chapter: number; item: number }
 type EntryBase = {
   id: string
   segments: Segment[]
+  provenance: Provenance
   verification: Verification
 }
 
@@ -104,8 +146,13 @@ export type TasbihPreset = {
 
 export type Surah = { number: number; name: string }
 
+/** `full` holds everything verified. `cleared` holds only what may be redistributed publicly. */
+export type BundleScope = 'full' | 'cleared'
+
 export type ContentBundle = {
   generatedOn: string
+  scope: BundleScope
+  sources: ContentSource[]
   basmala: string
   surahs: Surah[]
   entries: Entry[]

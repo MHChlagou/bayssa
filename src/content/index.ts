@@ -1,5 +1,5 @@
 import bundleJson from './generated/content.json'
-import type { Collection, ContentBundle, Entry, SectionId, TasbihPreset } from './schema.ts'
+import type { BundleScope, Collection, ContentBundle, ContentSource, Entry, SectionId, TasbihPreset } from './schema.ts'
 
 // The bundle is produced and schema-checked by scripts/build-content.ts, so the
 // shape is guaranteed at build time. The inferred JSON type is too wide to use.
@@ -12,6 +12,12 @@ export const basmala: string = bundle.basmala
 export const allEntries: readonly Entry[] = bundle.entries
 export const allCollections: readonly Collection[] = bundle.collections
 export const tasbihPresets: readonly TasbihPreset[] = bundle.tasbihPresets
+/** `cleared` means this build holds only content that may be redistributed publicly. */
+export const contentScope: BundleScope = bundle.scope
+export const contentSources: readonly ContentSource[] = bundle.sources
+
+/** A plain counter with no dhikr text, used when the build carries no presets. */
+export const FREE_COUNTER: TasbihPreset = { id: 'free-counter', text: '', entryId: '', defaultTarget: 33 }
 
 export function getEntry(id: string): Entry | undefined {
   return entriesById.get(id)

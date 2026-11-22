@@ -1,0 +1,82 @@
+name: CI and deploy
+
+# Every push and pull request is verified. Nothing is published unless the
+# repository opts in: see the "deploy" job.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Deployment is off by default. It runs only when ALL of these hold:
+  #   1. the repository variable DEPLOY_PAGES is set to the exact string "true"
+  #      (Settings, Secrets and variables, Actions, Variables);
+  #   2. the repository is public, because a GitHub Pages site is public on the
+  #      internet even when its repository is private;
+  #   3. the run is a push or a manual run on main, never a pull request.
+  SHOULD_DEPLOY: ${{ vars.DEPLOY_PAGES == 'true' && github.event.repository.private == false && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ env.SHOULD_DEPLOY }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run content:validate
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - id: pages
+        if: env.SHOULD_DEPLOY == 'true'
+        uses: actions/configure-pages@v6
+      - run: npm run build
+        env:
+          # Absolute address for link previews. Empty whenever nothing is deployed.
+          SITE_URL: ${{ steps.pages.outputs.base_url && format('{0}/', steps.pages.outputs.base_url) || '' }}
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7
+      # The built site, for inspection. Artifacts are visible only to people with access to the repository.
+      - uses: actions/upload-artifact@v7
+        with:
+          name: site
+          path: dist
+          retention-days: 3
+      - uses: actions/upload-pages-artifact@v5
+        if: env.SHOULD_DEPLOY == 'true'
+        with:
+          path: dist
+
+  deploy:
+    needs: verify
+    if: needs.verify.outputs.should_deploy == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

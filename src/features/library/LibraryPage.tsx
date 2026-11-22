@@ -1,3 +1,4 @@
+import { BookOpen } from 'lucide-react'
 import { motion } from 'motion/react'
 import type { ReactElement } from 'react'
 import { useSearchParams } from 'react-router'
@@ -6,6 +7,7 @@ import { collectionsInSection } from '../../content/index.ts'
 import type { Collection, SectionId } from '../../content/schema.ts'
 import { t } from '../../i18n/t.ts'
 import { CollectionCard } from '../../ui/CollectionCard.tsx'
+import { EmptyState } from '../../ui/EmptyState.tsx'
 import { PageHeader } from '../../ui/PageHeader.tsx'
 import { Segmented } from '../../ui/Segmented.tsx'
 
@@ -13,6 +15,8 @@ const STAGGER_SECONDS = 0.035
 
 function CollectionGrid({ collections, isTracked }: { collections: Collection[]; isTracked: boolean }): ReactElement {
   const { progress, day } = useTodayProgress()
+  // A build limited to cleared content can leave a whole section empty.
+  if (collections.length === 0) return <EmptyState icon={BookOpen} title={t.library.unavailableTitle} body={t.library.unavailableBody} />
   return (
     <ul className="grid gap-3 sm:grid-cols-2">
       {collections.map((collection, index) => (
@@ -48,17 +52,20 @@ function isDuaTab(value: string | null): value is DuaTab {
 export function DuasPage(): ReactElement {
   const [params, setParams] = useSearchParams()
   const requested = params.get('tab')
-  const tab: DuaTab = isDuaTab(requested) ? requested : 'daily-duas'
+  const availableTabs = DUA_TABS.filter((value) => collectionsInSection(value).length > 0)
+  const tab: DuaTab = isDuaTab(requested) && availableTabs.includes(requested) ? requested : (availableTabs[0] ?? 'daily-duas')
   return (
     <>
       <PageHeader title={t.library.duasTitle} subtitle={t.library.duasSubtitle} />
-      <Segmented
-        label={t.library.duasTitle}
-        className="mb-5 max-w-md"
-        options={DUA_TABS.map((value) => ({ value, label: t.library.tabs[value] }))}
-        value={tab}
-        onChange={(value) => setParams({ tab: value }, { replace: true })}
-      />
+      {availableTabs.length > 1 && (
+        <Segmented
+          label={t.library.duasTitle}
+          className="mb-5 max-w-md"
+          options={availableTabs.map((value) => ({ value, label: t.library.tabs[value] }))}
+          value={tab}
+          onChange={(value) => setParams({ tab: value }, { replace: true })}
+        />
+      )}
       <CollectionGrid key={tab} collections={collectionsInSection(tab)} isTracked={false} />
     </>
   )

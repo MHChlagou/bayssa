@@ -1,5 +1,5 @@
 {
-  "name": "muslim-daily",
+  "name": "bayssa",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -16,6 +16,8 @@
     "test:watch": "vitest",
     "build:update-fixture": "vite build --mode update-fixture --outDir dist-next --emptyOutDir",
     "test:e2e": "npm run build:update-fixture && playwright test",
+    "build:public": "CONTENT_RIGHTS=cleared npm run build -- --outDir dist-public --emptyOutDir && node scripts/check-public-build.ts dist-public; status=$?; npm run content:build; exit $status",
+    "test:public": "playwright test -c playwright.public.config.ts",
     "content:fetch": "node scripts/fetch-sources.ts",
     "content:import": "node scripts/import-content.ts",
     "content:build": "node scripts/build-content.ts",

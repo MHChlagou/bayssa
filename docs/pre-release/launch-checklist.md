@@ -9,7 +9,10 @@ Status on 2026-11-22. "Done" means verified in this repository. Everything else 
 - [ ] Decide what happens to `content-sources/hisn-footnotes/`, which is the whole book under a transcriber's MIT file.
 - [ ] Decide how the two existing commits are published, since they contain the unresolved material.
 - [ ] Choose the code licence and add `LICENSE` (and `NOTICE` if Apache-2.0).
-- [ ] Make the Tanzil credit in the sources screen a link to tanzil.net, as Tanzil's terms ask.
+- [x] Tanzil credit in the sources screen is a link to tanzil.net, as Tanzil's terms ask.
+- [x] Licence texts of bundled software and fonts shipped as `licenses.txt`.
+- [x] Provenance recorded for every entry, and a public build that keeps only cleared material and scans itself for leaks.
+- [ ] Do not push the private history to `MHChlagou/bayssa`, which is public.
 - [ ] A qualified scholar reads the 205 published entries. Until then the disclaimer stays.
 - [ ] Review the 16 entries in `footnote-review-list.md` one by one.
 - [ ] Decide on the 6 held entries after independent verification.
@@ -37,7 +40,7 @@ Status on 2026-11-22. "Done" means verified in this repository. Everything else 
 - [x] Lighthouse, home screen: 100 on all four categories, mobile and desktop (lab).
 - [ ] Open: the Firefox offline test failed in 2 of 5 early full runs and has passed since. Cause unknown.
 - [ ] Future: pages opened by a deep link are not prerendered (performance 89 in the lab).
-- [ ] First run of the GitHub Actions workflow. It has never run.
+- [ ] First run of the GitHub Actions workflow. It has never run, so the deployment gate is untested on GitHub.
 
 ## 4. PWA installation
 
@@ -73,7 +76,8 @@ None of this has been done. Automated tests ran on browser engines on a Linux de
 
 - [ ] Create the repository as private first.
 - [ ] Settings, Pages: source "GitHub Actions".
-- [ ] Confirm the repository name is `muslim-daily`, or change `BASE_PATH`.
+- [ ] Add the repository variable `DEPLOY_PAGES` with the value `true`. Without it nothing deploys.
+- [ ] Confirm the repository name is `bayssa`, or change `BASE_PATH`.
 - [ ] Push `main` and watch the first workflow run to the end.
 - [ ] Apply the description, topics and social preview from `github-presentation.md`.
 - [ ] Make the repository public only when section 1 has no blocking item left.

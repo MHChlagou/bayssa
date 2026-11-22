@@ -1,8 +1,28 @@
 import { describe, expect, it } from 'vitest'
-import { allCollections, allEntries, collectionsInSection, getEntry, tasbihPresets } from './index.ts'
+import { SOURCES } from '../../content-sources/sources.ts'
+import { allCollections, allEntries, collectionsInSection, contentScope, contentSources, getEntry, tasbihPresets } from './index.ts'
 
 describe('published content', () => {
+  it('records where every entry comes from and that no scholar has reviewed it', () => {
+    for (const entry of allEntries) {
+      expect(SOURCES[entry.provenance.text], entry.id).toBeDefined()
+      expect(entry.provenance.scholarlyReview, entry.id).toEqual({ status: 'not-reviewed' })
+      if (entry.kind === 'hadith') expect(entry.provenance.reference, entry.id).toBe('hadith-api')
+      if (entry.kind === 'quran') expect(entry.provenance.text).toBe('tanzil-uthmani')
+    }
+    expect(contentSources.map((source) => source.id).sort()).toEqual(
+      [...new Set(allEntries.flatMap((e) => [e.provenance.text, e.provenance.reference, e.provenance.meaning]).filter((id) => id !== undefined))].sort(),
+    )
+  })
+
+  it('a cleared build draws only on sources whose redistribution is documented', () => {
+    if (contentScope !== 'cleared') return
+    expect(contentSources.every((source) => source.redistribution === 'cleared')).toBe(true)
+    expect(allEntries.every((entry) => entry.kind === 'quran' && entry.meaning === undefined)).toBe(true)
+  })
+
   it('has every section the app needs', () => {
+    if (contentScope !== 'full') return
     for (const section of ['adhkar', 'daily-duas', 'quranic', 'prophetic'] as const) {
       expect(collectionsInSection(section).length).toBeGreaterThan(0)
     }

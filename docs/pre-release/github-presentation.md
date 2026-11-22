@@ -6,11 +6,11 @@ Prepared on 2026-11-22. Nothing here has been applied: no repository exists yet.
 
 English (fits GitHub's 350-character limit):
 
-> Muslim Daily (المسلم اليومي): an Arabic, offline-first PWA for daily adhkar and duas with a tasbih counter. Quran text checked against Tanzil, supplications matched against the six hadith collections. No accounts, no tracking.
+> Bayssa: an Arabic, offline-first PWA for daily adhkar and duas with a tasbih counter. Quran text checked against Tanzil, supplications matched against the six hadith collections. No accounts, no tracking.
 
 Arabic alternative:
 
-> المسلم اليومي: تطبيق ويب عربي للأذكار والأدعية اليومية مع مسبحة إلكترونية. يعمل دون اتصال، بلا حسابات ولا تتبّع، مع ذكر مصدر كل دعاء.
+> Bayssa: تطبيق ويب عربي للأذكار والأدعية اليومية مع مسبحة إلكترونية. يعمل دون اتصال، بلا حسابات ولا تتبّع، مع ذكر مصدر كل دعاء.
 
 Website field: the GitHub Pages address once deployed.
 

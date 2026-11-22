@@ -1,12 +1,12 @@
-import { readFileSync } from 'node:fs'
+import { readdirSync, readFileSync } from 'node:fs'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import { createServer, type HtmlTagDescriptor, type Plugin } from 'vite'
 import { defineConfig } from 'vitest/config'
 
-// GitHub Pages serves the site from https://<user>.github.io/muslim-daily/
-const BASE_PATH = '/muslim-daily/'
+// GitHub Pages serves the site from https://<user>.github.io/bayssa/
+const BASE_PATH = '/bayssa/'
 
 // The first screen is Arabic text in these two fonts, so they are fetched
 // alongside the HTML instead of after the stylesheet is parsed.
@@ -32,7 +32,7 @@ function preloadFonts(): Plugin {
 
 /**
  * Public address of the deployed site, with a trailing slash, for example
- * https://example.github.io/muslim-daily/. Link previews on other sites need
+ * https://example.github.io/bayssa/. Link previews on other sites need
  * absolute URLs. The deploy workflow sets it. Local builds leave it unset.
  */
 function readSiteUrl(): URL | undefined {
@@ -87,6 +87,64 @@ function appleSplashScreens(): Plugin {
   }
 }
 
+// Software and fonts that end up inside the built site. Their licences ask that
+// the licence text travels with every copy, so the build writes them to
+// dist/licenses.txt. The build fails if it bundles a package missing from here.
+const BUNDLED_PACKAGES = [
+  'react', 'react-dom', 'scheduler', 'react-router', 'motion', 'framer-motion', 'motion-dom', 'motion-utils',
+  'lucide-react', 'workbox-window', '@fontsource/amiri', '@fontsource-variable/readex-pro',
+] as const
+
+const LICENSES_HEADER = `Bayssa: third-party software and font licences
+====================================================
+
+This file lists the open-source software and fonts included in this
+application, with the licence text of each.
+
+It does not concern the religious content shown by the application. The Quran
+text, the supplications and the tafsir are not software, are not covered by
+any licence in this file, and remain under the terms of their own rights
+holders. See the sources screen inside the application.
+`
+
+function packageNameOf(moduleId: string): string | undefined {
+  return /node_modules\/((?:@[^/]+\/)?[^/]+)\/(?!.*node_modules\/)/.exec(moduleId)?.[1]
+}
+
+function thirdPartyLicenses(): Plugin {
+  return {
+    name: 'third-party-licenses',
+    apply: 'build',
+    generateBundle(_options, bundle) {
+      const bundled = new Set<string>()
+      for (const chunk of Object.values(bundle)) {
+        if (chunk.type !== 'chunk') continue
+        for (const moduleId of Object.keys(chunk.modules)) {
+          const name = packageNameOf(moduleId)
+          if (name !== undefined) bundled.add(name)
+        }
+      }
+      const listed: readonly string[] = BUNDLED_PACKAGES
+      const unlisted = [...bundled].filter((name) => !listed.includes(name))
+      if (unlisted.length > 0) {
+        throw new Error(`third-party-licenses: bundled but not listed in BUNDLED_PACKAGES: ${unlisted.join(', ')}`)
+      }
+
+      const sections = BUNDLED_PACKAGES.map((name) => {
+        const directory = new URL(`./node_modules/${name}/`, import.meta.url)
+        const manifest: unknown = JSON.parse(readFileSync(new URL('package.json', directory), 'utf8'))
+        const field = (key: string): string =>
+          typeof manifest === 'object' && manifest !== null && key in manifest ? String((manifest as Record<string, unknown>)[key]) : 'unknown'
+        const licenseFile = readdirSync(directory).find((file) => /^licen[cs]e(\.|$)/i.test(file))
+        if (licenseFile === undefined) throw new Error(`third-party-licenses: ${name} has no licence file`)
+        const text = readFileSync(new URL(licenseFile, directory), 'utf8').trim()
+        return `${'-'.repeat(72)}\n${name} ${field('version')} (${field('license')})\n${'-'.repeat(72)}\n\n${text}\n`
+      })
+      this.emitFile({ type: 'asset', fileName: 'licenses.txt', source: `${LICENSES_HEADER}\n${sections.join('\n')}` })
+    },
+  }
+}
+
 const EMPTY_ROOT = '<div id="root"></div>'
 
 /**
@@ -136,14 +194,15 @@ export default defineConfig(({ mode }) => ({
     preloadFonts(),
     siteMeta(),
     appleSplashScreens(),
+    thirdPartyLicenses(),
     prerenderShell(),
     VitePWA({
       registerType: 'prompt',
       includeAssets: ['favicon.ico', 'favicon.svg', 'apple-touch-icon-180x180.png'],
       manifest: {
         id: BASE_PATH,
-        name: 'المسلم اليومي · أذكار وأدعية',
-        short_name: 'المسلم اليومي',
+        name: 'Bayssa · أذكار وأدعية',
+        short_name: 'Bayssa',
         description: 'أذكار الصباح والمساء، الأدعية القرآنية والنبوية، والمسبحة الإلكترونية. يعمل دون اتصال.',
         lang: 'ar',
         dir: 'rtl',
@@ -168,7 +227,7 @@ export default defineConfig(({ mode }) => ({
       },
       workbox: {
         // Everything is precached: the app makes no network request after install.
-        globPatterns: ['**/*.{js,css,html,woff2,png,svg,ico}'],
+        globPatterns: ['**/*.{js,css,html,woff2,png,svg,ico,txt}'],
         // Link previews fetch the first image and iOS fetches its launch image at install time.
         globIgnores: ['**/og-image.png', 'splash/**'],
         cleanupOutdatedCaches: true,

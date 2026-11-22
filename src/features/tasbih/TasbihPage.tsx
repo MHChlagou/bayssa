@@ -2,7 +2,7 @@ import { Check, RotateCcw } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useId, useState, type CSSProperties, type ReactElement } from 'react'
 import { haptic, HAPTIC_COMPLETE_PATTERN_MS, HAPTIC_TAP_MS } from '../../app/hooks.ts'
-import { tasbihPresets } from '../../content/index.ts'
+import { FREE_COUNTER, tasbihPresets } from '../../content/index.ts'
 import {
   createCounter, isTargetReached, justCompleted, MAX_TARGET, MIN_TARGET, roundProgress, tasbihReducer,
   type Counter, type TasbihAction, type TasbihState,
@@ -53,8 +53,7 @@ export function TasbihPage(): ReactElement {
   const resetTitleId = useId()
   const customTargetId = useId()
 
-  const preset = tasbihPresets.find((candidate) => candidate.id === state.activeId) ?? tasbihPresets[0]
-  if (!preset) return <PageHeader title={t.tasbih.title} />
+  const preset = tasbihPresets.find((candidate) => candidate.id === state.activeId) ?? tasbihPresets[0] ?? FREE_COUNTER
 
   const counter: Counter = state.counters[preset.id] ?? createCounter(preset.defaultTarget)
   const isReached = isTargetReached(counter)
@@ -85,7 +84,7 @@ export function TasbihPage(): ReactElement {
         actions={<IconButton icon={RotateCcw} label={t.actions.reset} onClick={() => setIsConfirmingReset(true)} disabled={counter.count === 0 && counter.completedRounds === 0} className="disabled:opacity-40" />}
       />
 
-      <div role="radiogroup" aria-label={t.tasbih.choose} className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
+      {tasbihPresets.length > 0 && <div role="radiogroup" aria-label={t.tasbih.choose} className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
         {tasbihPresets.map((candidate) => {
           const isSelected = candidate.id === preset.id
           return (
@@ -104,9 +103,11 @@ export function TasbihPage(): ReactElement {
             </button>
           )
         })}
-      </div>
+      </div>}
 
-      <p className="scripture mt-4 min-h-[2.15em] text-center text-ink" aria-live="polite">{preset.text}</p>
+      {preset.text === ""
+        ? <p className="mt-4 text-center text-sm text-muted">{t.tasbih.freeCounter}</p>
+        : <p className="scripture mt-4 min-h-[2.15em] text-center text-ink" aria-live="polite">{preset.text}</p>}
 
       <div className="relative mx-auto mt-2 grid w-[min(78vw,320px)] place-items-center">
         <button

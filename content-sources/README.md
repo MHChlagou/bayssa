@@ -55,6 +55,12 @@ Everything else stays in `content/dataset/` with status `needs-review` and its r
 left out of the shipped bundle. Preview hidden entries locally with
 `node scripts/build-content.ts --include-unverified`.
 
+## Provenance and rights
+
+`sources.ts` is the registry of every source, with what is known about the right to redistribute it and where that is documented. Each entry in the dataset names the source of its wording, of its references and of its explanation, and carries its scholarly review status, which is `not-reviewed` for every entry today. `npm run build:public` keeps only material from sources marked `cleared` and scans the result. Changing a status in `sources.ts` is a publishing decision.
+
+`node scripts/import-content.ts --quran-only` rebuilds the Quranic part of the dataset from the committed Tanzil files alone.
+
 ## Editorial holds
 
 `hisnHeldForReview` in `curation.ts` lists items kept out of production by a decision of the project owner, whatever the matcher says. `hisnExcludedReferences` lists narrations that a person read and found to be about something else, so they are never offered as a reference again. Held records stay in `content/dataset` with their wording unchanged, and each decision is printed in `docs/pre-release/content-audit.md`.

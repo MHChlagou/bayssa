@@ -2,7 +2,7 @@
 
 <img src="public/pwa-192x192.png" alt="" width="96" height="96">
 
-# Muslim Daily · المسلم اليومي
+# Bayssa
 
 An Arabic, offline-first web app for daily adhkar and duas, with a tasbih counter.
 
@@ -15,7 +15,7 @@ An Arabic, offline-first web app for daily adhkar and duas, with a tasbih counte
 
 ## Overview
 
-Muslim Daily is a progressive web app, in Arabic and laid out right to left, that puts the daily remembrances and supplications a Muslim uses most in one calm, fast place. It installs to a phone's home screen, works with no connection, and keeps everything on the device. There are no accounts, no ads and no tracking.
+Bayssa is a progressive web app, in Arabic and laid out right to left, that puts the daily remembrances and supplications a Muslim uses most in one calm, fast place. It installs to a phone's home screen, works with no connection, and keeps everything on the device. There are no accounts, no ads and no tracking.
 
 It is a static site with no server, built to be hosted on GitHub Pages.
 
@@ -55,13 +55,13 @@ After the first visit the app opens and works without a connection.
 Requires Node 24 or later.
 
 ```
-git clone https://github.com/<your-username>/muslim-daily.git
-cd muslim-daily
+git clone https://github.com/MHChlagou/bayssa.git
+cd bayssa
 npm install
 npm run dev
 ```
 
-The app is served at `http://localhost:5173/muslim-daily/`.
+The app is served at `http://localhost:5173/bayssa/`.
 
 | Command | What it does |
 |---|---|
@@ -72,6 +72,8 @@ The app is served at `http://localhost:5173/muslim-daily/`.
 | `npm run test:e2e` | End-to-end tests against the production build in Chromium, Firefox and WebKit. Run `npx playwright install chromium firefox webkit` once first. |
 | `npm run content:validate` | Checks the content dataset, including the Quran text character for character |
 | `npm run content:audit` | Regenerates the content audit reports (needs `npm run content:fetch` first) |
+| `npm run build:public` | Builds to `dist-public/` with only the content whose redistribution rights are documented, then scans the result for anything else |
+| `npm run test:public` | Smoke tests for that public build |
 
 ## Build
 
@@ -84,11 +86,14 @@ The build validates the content, type-checks, prerenders the home screen to stat
 
 ## Deployment to GitHub Pages
 
-1. Create a repository named `muslim-daily`. For another name, change `BASE_PATH` in `vite.config.ts`.
+1. Create a repository named `bayssa`. For another name, change `BASE_PATH` in `vite.config.ts`.
 2. In the repository settings, under Pages, set the source to "GitHub Actions".
-3. Push to `main`. The workflow in `.github/workflows/deploy.yml` validates the content, runs every test, builds and deploys.
+3. Under Settings, Secrets and variables, Actions, Variables, add a repository variable `DEPLOY_PAGES` with the value `true`.
+4. Push to `main`. The workflow in `.github/workflows/ci.yml` validates the content, runs every test, builds and deploys.
 
-The site is published at `https://<your-username>.github.io/muslim-daily/`. The workflow passes that address to the build so link previews use absolute URLs.
+Deployment is off by default. Without that variable, or in a private repository, the workflow only verifies and builds, and publishes nothing.
+
+The site is published at `https://mhchlagou.github.io/bayssa/`. The workflow passes that address to the build so link previews use absolute URLs.
 
 ## PWA and offline
 
@@ -113,6 +118,8 @@ No religious text in this project is typed by hand. A script cuts every recited 
 
 Current figures: 205 entries published (51 Quran passages, 120 exact matches, 34 approximate matches) and 77 hidden.
 
+Every entry records where its wording, references and explanation come from, and whether a scholar has reviewed it. See [`docs/pre-release/provenance.md`](docs/pre-release/provenance.md).
+
 The full method, its known weaknesses and the audit of every published entry are in [`content-sources/README.md`](content-sources/README.md) and [`docs/pre-release/content-audit.md`](docs/pre-release/content-audit.md).
 
 ## Religious disclaimer
@@ -130,9 +137,9 @@ The app has no accounts, no analytics, no advertising and no cookies. It sends n
 
 ## Licence
 
-No licence has been granted for this repository yet. The intended structure keeps two things apart:
+No licence is in force for this repository yet. The structure decided on keeps two things apart:
 
-- the application source code, to be released under an open-source licence chosen by the project owner;
+- the application source code, to be released under the Apache License 2.0 once the licensing review is complete;
 - third-party content (Quran text, supplication text, tafsir excerpts, fonts), which stays under its own holders' terms and is not covered by the code licence. See [`THIRD_PARTY_CONTENT.md`](THIRD_PARTY_CONTENT.md).
 
 Two content permissions are still being sought. See [`docs/pre-release/licensing.md`](docs/pre-release/licensing.md).

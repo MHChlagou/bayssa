@@ -19,5 +19,5 @@
     "noEmit": true,
     "types": ["vite/client", "vite-plugin-pwa/react", "node"]
   },
-  "include": ["src", "scripts", "content-sources", "tests", "vite.config.ts", "playwright.config.ts", "pwa-assets.config.ts"]
+  "include": ["src", "scripts", "content-sources", "tests", "vite.config.ts", "playwright.config.ts", "playwright.public.config.ts", "pwa-assets.config.ts"]
 }
